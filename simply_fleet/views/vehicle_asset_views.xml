@@ -1,0 +1,115 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <!-- Vehicle Asset Views -->
+    <record id="view_simply_fleet_vehicle_asset_tree" model="ir.ui.view">
+        <field name="name">simply.fleet.vehicle.asset.tree</field>
+        <field name="model">simply.fleet.vehicle.asset</field>
+        <field name="arch" type="xml">
+            <tree>
+                <field name="name"/>
+                <field name="asset_type"/>
+                <field name="vehicle_id"/>
+                <field name="purchase_date"/>
+                <field name="purchase_value"/>
+                <field name="state"/>
+            </tree>
+        </field>
+    </record>
+
+    <record id="view_simply_fleet_vehicle_asset_form" model="ir.ui.view">
+        <field name="name">simply.fleet.vehicle.asset.form</field>
+        <field name="model">simply.fleet.vehicle.asset</field>
+        <field name="arch" type="xml">
+            <form>
+                <header>
+                    <field name="state" widget="statusbar" 
+                           statusbar_visible="active,maintenance,disposed"/>
+                </header>
+                <sheet>
+                    <div class="oe_title">
+                        <h1>
+                            <field name="name" placeholder="Asset Name"/>
+                        </h1>
+                    </div>
+                    <group>
+                        <group>
+                            <field name="vehicle_id"/>
+                            <field name="asset_type"/>
+                            <field name="manufacturer"/>
+                            <field name="model"/>
+                            <field name="serial_number"/>
+                        </group>
+                        <group>
+                            <field name="purchase_date"/>
+                            <field name="purchase_value"/>
+                            <field name="warranty_end_date"/>
+                            <field name="active" widget="boolean_toggle"/>
+                        </group>
+                    </group>
+                    <notebook>
+                        <page name="specifications" string="Specifications">
+                            <field name="specifications" placeholder="Enter asset specifications..."/>
+                        </page>
+                        <page name="maintenance" string="Maintenance History">
+                            <field name="maintenance_history">
+                                <tree editable="bottom">
+                                    <field name="date"/>
+                                    <field name="description"/>
+                                    <field name="cost"/>
+                                    <field name="performed_by"/>
+                                </tree>
+                            </field>
+                        </page>
+                        <page name="notes" string="Notes">
+                            <field name="notes"/>
+                        </page>
+                    </notebook>
+                </sheet>
+                <div class="oe_chatter">
+                    <field name="message_follower_ids" widget="mail_followers"/>
+                    <field name="activity_ids" widget="mail_activity"/>
+                    <field name="message_ids" widget="mail_thread"/>
+                </div>
+            </form>
+        </field>
+    </record>
+
+    <record id="view_simply_fleet_vehicle_asset_search" model="ir.ui.view">
+        <field name="name">simply.fleet.vehicle.asset.search</field>
+        <field name="model">simply.fleet.vehicle.asset</field>
+        <field name="arch" type="xml">
+            <search>
+                <field name="name"/>
+                <field name="vehicle_id"/>
+                <field name="asset_type"/>
+                <field name="manufacturer"/>
+                <field name="serial_number"/>
+                <separator/>
+                <filter name="active" string="Active" domain="[('state','=','active')]"/>
+                <filter name="maintenance" string="In Maintenance" domain="[('state','=','maintenance')]"/>
+                <filter name="disposed" string="Disposed" domain="[('state','=','disposed')]"/>
+                <filter name="archived" string="Archived" domain="[('active','=',False)]"/>
+                <group expand="0" string="Group By">
+                    <filter name="group_by_vehicle" string="Vehicle" context="{'group_by':'vehicle_id'}"/>
+                    <filter name="group_by_type" string="Asset Type" context="{'group_by':'asset_type'}"/>
+                    <filter name="group_by_state" string="Status" context="{'group_by':'state'}"/>
+                </group>
+            </search>
+        </field>
+    </record>
+
+    <!-- Action -->
+    <record id="action_simply_fleet_vehicle_asset" model="ir.actions.act_window">
+        <field name="name">Vehicle Assets</field>
+        <field name="res_model">simply.fleet.vehicle.asset</field>
+        <field name="view_mode">tree,form</field>
+        <field name="help" type="html">
+            <p class="o_view_nocontent_smiling_face">
+                Create your first vehicle asset!
+            </p>
+            <p>
+                Add assets like music systems, GPS devices, etc., to your vehicles.
+            </p>
+        </field>
+    </record>
+</odoo>

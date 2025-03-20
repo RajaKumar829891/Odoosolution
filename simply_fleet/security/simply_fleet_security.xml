@@ -1,0 +1,106 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <data noupdate="0">
+        <!-- Module Category -->
+        <record id="module_category_simply_fleet" model="ir.module.category">
+            <field name="name">Simply Fleet</field>
+            <field name="description">Manage your vehicle fleet</field>
+            <field name="sequence">10</field>
+        </record>
+        
+        <!-- User Group -->
+        <record id="group_simply_fleet_user" model="res.groups">
+            <field name="name">User</field>
+            <field name="category_id" ref="module_category_simply_fleet"/>
+            <field name="implied_ids" eval="[(4, ref('base.group_user'))]"/>
+        </record>
+        
+        <!-- Manager Group -->
+        <record id="group_simply_fleet_manager" model="res.groups">
+            <field name="name">Manager</field>
+            <field name="category_id" ref="module_category_simply_fleet"/>
+            <field name="implied_ids" eval="[(4, ref('group_simply_fleet_user'))]"/>
+            <field name="users" eval="[(4, ref('base.user_admin'))]"/>
+        </record>
+
+        <!-- Vehicle Rules -->
+        <record id="simply_fleet_vehicle_rule_user" model="ir.rule">
+            <field name="name">User can see all vehicles</field>
+            <field name="model_id" ref="model_simply_fleet_vehicle"/>
+            <field name="domain_force">[(1, '=', 1)]</field>
+            <field name="groups" eval="[(4, ref('group_simply_fleet_user'))]"/>
+        </record>
+        
+        <!-- Document Rules -->
+        <record id="simply_fleet_document_rule_user" model="ir.rule">
+            <field name="name">User can see all documents</field>
+            <field name="model_id" ref="model_simply_fleet_document"/>
+            <field name="domain_force">[(1, '=', 1)]</field>
+            <field name="groups" eval="[(4, ref('group_simply_fleet_user'))]"/>
+        </record>
+        
+        <!-- Document Name Rules -->
+        <record id="simply_fleet_document_name_rule_user" model="ir.rule">
+            <field name="name">User can see all document names</field>
+            <field name="model_id" ref="model_simply_fleet_document_name"/>
+            <field name="domain_force">[(1, '=', 1)]</field>
+            <field name="groups" eval="[(4, ref('group_simply_fleet_user'))]"/>
+        </record>
+        
+        <!-- Issuing Authority Rules -->
+        <record id="simply_fleet_issuing_authority_rule_user" model="ir.rule">
+            <field name="name">User can see all issuing authorities</field>
+            <field name="model_id" ref="model_simply_fleet_issuing_authority"/>
+            <field name="domain_force">[(1, '=', 1)]</field>
+            <field name="groups" eval="[(4, ref('group_simply_fleet_user'))]"/>
+        </record>
+        
+        <!-- Document Reminder Rules -->
+        <record id="simply_fleet_document_reminder_rule_user" model="ir.rule">
+            <field name="name">User can see all document reminders</field>
+            <field name="model_id" ref="model_simply_fleet_document_reminder"/>
+            <field name="domain_force">[(1, '=', 1)]</field>
+            <field name="groups" eval="[(4, ref('group_simply_fleet_user'))]"/>
+        </record>
+        
+        <!-- Fuel Log Rules -->
+        <record id="simply_fleet_fuel_log_rule_user" model="ir.rule">
+            <field name="name">User can see all fuel logs</field>
+            <field name="model_id" ref="model_simply_fleet_fuel_log"/>
+            <field name="domain_force">[(1, '=', 1)]</field>
+            <field name="groups" eval="[(4, ref('group_simply_fleet_user'))]"/>
+        </record>
+
+        <!-- Battery Rules -->
+        <record id="simply_fleet_battery_rule_user" model="ir.rule">
+            <field name="name">User can see all batteries</field>
+            <field name="model_id" ref="model_simply_fleet_battery"/>
+            <field name="domain_force">[(1, '=', 1)]</field>
+            <field name="groups" eval="[(4, ref('group_simply_fleet_user'))]"/>
+        </record>
+
+        <!-- Battery Maintenance Rules -->
+        <record id="simply_fleet_battery_maintenance_rule_user" model="ir.rule">
+            <field name="name">User can see all battery maintenance records</field>
+            <field name="model_id" ref="model_simply_fleet_battery_maintenance"/>
+            <field name="domain_force">[(1, '=', 1)]</field>
+            <field name="groups" eval="[(4, ref('group_simply_fleet_user'))]"/>
+        </record>
+
+        <!-- Tyre Rules -->
+        <record id="simply_fleet_tyre_rule_user" model="ir.rule">
+            <field name="name">User can see all tyres</field>
+            <field name="model_id" ref="model_simply_fleet_tyre"/>
+            <field name="domain_force">[(1, '=', 1)]</field>
+            <field name="groups" eval="[(4, ref('group_simply_fleet_user'))]"/>
+        </record>
+
+        <!-- Camera Rules -->
+        <record id="simply_fleet_camera_rule_user" model="ir.rule">
+            <field name="name">User can see all cameras</field>
+            <field name="model_id" ref="model_simply_fleet_camera"/>
+            <field name="domain_force">[(1, '=', 1)]</field>
+            <field name="groups" eval="[(4, ref('group_simply_fleet_user'))]"/>
+        </record>
+    </data>
+</odoo>

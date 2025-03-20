@@ -1,0 +1,58 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <record id="hr_employee_view_form_inherit_fleet" model="ir.ui.view">
+        <field name="name">hr.employee.view.form.inherit.fleet</field>
+        <field name="model">hr.employee</field>
+        <field name="inherit_id" ref="hr.view_employee_form"/>
+        <field name="arch" type="xml">
+            <div name="button_box" position="inside">
+                <button name="action_view_managed_vehicles" 
+                        type="object" 
+                        class="oe_stat_button" 
+                        icon="fa-car"
+                        invisible="not is_fleet_manager or managed_vehicle_count == 0">
+                    <field name="managed_vehicle_count" widget="statinfo" string="Vehicles"/>
+                </button>
+            </div>
+            <notebook position="inside">
+                <page string="Fleet Management">
+                    <group>
+                        <field name="is_fleet_manager"/>
+                    </group>
+                    <group invisible="not is_fleet_manager">
+                        <group>
+                            <field name="managed_vehicle_groups_ids" widget="many2many_tags"/>
+                            <field name="managed_vehicle_count" readonly="1"/>
+                        </group>
+                    </group>
+                </page>
+            </notebook>
+        </field>
+    </record>
+
+    <!-- Employee Tree View Extension -->
+    <record id="hr_employee_view_tree_inherit_fleet" model="ir.ui.view">
+        <field name="name">hr.employee.view.tree.inherit.fleet</field>
+        <field name="model">hr.employee</field>
+        <field name="inherit_id" ref="hr.view_employee_tree"/>
+        <field name="arch" type="xml">
+            <field name="work_phone" position="after">
+                <field name="is_fleet_manager" optional="show"/>
+                <field name="managed_vehicle_count" optional="show" invisible="not is_fleet_manager"/>
+            </field>
+        </field>
+    </record>
+
+    <!-- Employee Search View Extension -->
+    <record id="hr_employee_view_search_inherit_fleet" model="ir.ui.view">
+        <field name="name">hr.employee.view.search.inherit.fleet</field>
+        <field name="model">hr.employee</field>
+        <field name="inherit_id" ref="hr.view_employee_filter"/>
+        <field name="arch" type="xml">
+            <filter name="group_job" position="after">
+                <filter string="Fleet Managers" name="fleet_managers" domain="[('is_fleet_manager', '=', True)]"/>
+                <separator/>
+            </filter>
+        </field>
+    </record>
+</odoo>

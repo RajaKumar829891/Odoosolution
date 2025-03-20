@@ -1,0 +1,13 @@
+cat > .gitignore << 'EOF'
+# Python bytecode
+__pycache__/
+*.py[cod]
+
+# Logs
+*.log
+
+# IDE files
+.vscode/
+.idea/
+*.swp
+EOF

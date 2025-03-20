@@ -1,0 +1,82 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <data>
+        <!-- Add compatibility tab to product form -->
+        <record id="product_template_form_view_simply_fleet_compat" model="ir.ui.view">
+            <field name="name">product.template.form.simply.fleet.compat</field>
+            <field name="model">product.template</field>
+            <field name="inherit_id" ref="product.product_template_form_view"/>
+            <field name="arch" type="xml">
+                <!-- Add smart button for vehicles -->
+                <xpath expr="//div[@name='button_box']" position="inside">
+                    <button class="oe_stat_button" type="object" name="action_open_vehicle_selector"
+                            icon="fa-car" invisible="compatible_vehicle_count == 0">
+                        <field name="compatible_vehicle_count" widget="statinfo" string="Vehicles"/>
+                    </button>
+                </xpath>
+                
+                <!-- Add Vehicle Compatibility tab -->
+                <xpath expr="//notebook" position="inside">
+                    <page string="Vehicle Compatibility" name="vehicle_compatibility">
+                        <group>
+                            <field name="compatible_vehicle_ids" widget="many2many">
+                                <tree>
+                                    <field name="name"/>
+                                    <field name="vehicle_type_id"/>
+                                    <field name="brand"/>
+                                    <field name="model"/>
+                                    <field name="year"/>
+                                    <field name="state"/>
+                                </tree>
+                            </field>
+                            <button string="Select Multiple Vehicles" name="action_open_vehicle_selector" 
+                                    type="object" class="oe_highlight"/>
+                        </group>
+                    </page>
+                </xpath>
+            </field>
+        </record>
+
+        <!-- Add compatible parts button to Simply Fleet vehicle form -->
+        <record id="simply_fleet_vehicle_form_view_compat" model="ir.ui.view">
+            <field name="name">simply.fleet.vehicle.form.compat</field>
+            <field name="model">simply.fleet.vehicle</field>
+            <field name="inherit_id" ref="simply_fleet.view_simply_fleet_vehicle_form"/>
+            <field name="arch" type="xml">
+                <xpath expr="//div[@name='button_box']" position="inside">
+                    <button class="oe_stat_button" name="action_view_compatible_parts"
+                            type="object" icon="fa-cogs" string="Parts">
+                        <field name="compatible_product_count" widget="statinfo" string="Compatible Parts"/>
+                    </button>
+                </xpath>
+            </field>
+        </record>
+
+        <!-- Add filter to product search view for vehicle compatibility -->
+        <record id="product_template_search_view_vehicle_compat" model="ir.ui.view">
+            <field name="name">product.template.search.vehicle.compat</field>
+            <field name="model">product.template</field>
+            <field name="inherit_id" ref="product.product_template_search_view"/>
+            <field name="arch" type="xml">
+                <xpath expr="//filter[@name='consumable']" position="after">
+                    <separator/>
+                    <filter string="Vehicle Compatible" name="vehicle_compatible" 
+                            domain="[('compatible_vehicle_ids', '!=', False)]"/>
+                </xpath>
+            </field>
+        </record>
+        
+        <!-- Add button to stock move lines -->
+        <record id="view_picking_form_inherit_vehicle" model="ir.ui.view">
+            <field name="name">stock.picking.form.inherit.vehicle</field>
+            <field name="model">stock.picking</field>
+            <field name="inherit_id" ref="stock.view_picking_form"/>
+            <field name="arch" type="xml">
+                <xpath expr="//field[@name='move_ids_without_package']/tree" position="inside">
+                    <button name="action_select_compatible_vehicles" string="Select Vehicles" type="object" 
+                            icon="fa-car" class="text-success"/>
+                </xpath>
+            </field>
+        </record>
+    </data>
+</odoo>

@@ -1,0 +1,578 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <!-- Vehicle Type Views - Keep unchanged -->
+    <record id="view_simply_fleet_vehicle_type_tree" model="ir.ui.view">
+        <field name="name">simply.fleet.vehicle.type.tree</field>
+        <field name="model">simply.fleet.vehicle.type</field>
+        <field name="arch" type="xml">
+            <tree>
+                <field name="name"/>
+                <field name="code"/>
+                <field name="vehicle_count"/>
+                <field name="active" widget="boolean_toggle"/>
+            </tree>
+        </field>
+    </record>
+
+    <record id="view_simply_fleet_vehicle_type_form" model="ir.ui.view">
+        <field name="name">simply.fleet.vehicle.type.form</field>
+        <field name="model">simply.fleet.vehicle.type</field>
+        <field name="arch" type="xml">
+            <form>
+                <sheet>
+                    <div class="oe_button_box" name="button_box">
+                        <button name="action_view_vehicles" type="object" 
+                                class="oe_stat_button" icon="fa-car">
+                            <field name="vehicle_count" widget="statinfo" string="Vehicles"/>
+                        </button>
+                    </div>
+                    <group>
+                        <group>
+                            <field name="name"/>
+                            <field name="code"/>
+                            <field name="active" widget="boolean_toggle"/>
+                        </group>
+                    </group>
+                    <notebook>
+                        <page string="Description">
+                            <field name="description" placeholder="Description..."/>
+                        </page>
+                    </notebook>
+                </sheet>
+            </form>
+        </field>
+    </record>
+
+    <!-- Vehicle Views -->
+    <record id="view_simply_fleet_vehicle_tree" model="ir.ui.view">
+        <field name="name">simply.fleet.vehicle.tree</field>
+        <field name="model">simply.fleet.vehicle</field>
+        <field name="arch" type="xml">
+            <tree>
+                <field name="ref"/>
+                <field name="name"/>
+                <field name="vehicle_type_id"/>
+                <field name="brand"/>
+                <field name="year"/>
+                <field name="driver_id"/>
+                <field name="state"/>
+            </tree>
+        </field>
+    </record>
+
+    <record id="view_simply_fleet_vehicle_form" model="ir.ui.view">
+    <field name="name">simply.fleet.vehicle.form</field>
+    <field name="model">simply.fleet.vehicle</field>
+    <field name="arch" type="xml">
+        <form>
+            <header>
+                <field name="state" widget="statusbar"/>
+            </header>
+            <sheet>
+                <div class="oe_button_box" name="button_box">
+                    <!-- Documents Button -->
+                    <button name="action_view_documents" type="object" 
+                            class="oe_stat_button" icon="fa-file-text">
+                        <field name="document_count" widget="statinfo" string="Documents"/>
+                    </button>
+                    <!-- Fuel Logs Button -->
+                    <button name="action_view_fuel_logs" type="object" 
+                            class="oe_stat_button" icon="fa-gas-pump">
+                        <field name="fuel_log_count" widget="statinfo" string="Fuel Logs"/>
+                    </button>
+                    <!-- Tyre Button -->
+                    <button name="action_view_tyres" type="object" 
+                            class="oe_stat_button" icon="fa-circle">
+                        <div class="o_form_field o_stat_info">
+                            <span class="o_stat_value"><field name="active_tyre_count"/></span>
+                            <span class="o_stat_text">Active Tyres</span>
+                        </div>
+                    </button>
+                    <!-- Camera Button -->
+                    <button name="action_view_cameras" type="object" 
+                            class="oe_stat_button" icon="fa-camera">
+                        <field name="camera_count" widget="statinfo" string="Cameras"/>
+                    </button>
+                    <!-- Assets Button -->
+                    <button name="action_view_assets" type="object" 
+                            class="oe_stat_button" icon="fa-cubes">
+                        <field name="asset_count" widget="statinfo" string="Assets"/>
+                    </button>
+                </div>
+                <div class="oe_title">
+                    <h1>
+                        <field name="ref" readonly="1"/>
+                    </h1>
+                    <h2>
+                        <field name="name" placeholder="Vehicle Name"/>
+                    </h2>
+                </div>
+                <group>
+                    <group>
+                        <field name="vehicle_type_id" options="{'no_create': False, 'no_open': False}"/>
+                        <field name="model"/>
+                        <field name="brand"/>
+                        <field name="driver_id"/>
+                        <field name="group_id"/>
+                        <field name="group_ref"/>
+                    </group>
+                    <group>
+                        <field name="year"/>
+                        <field name="chassis_number"/>
+                        <field name="color"/>
+                        <field name="active" widget="boolean_toggle"/>
+                    </group>
+                </group>
+                <notebook>
+                    <page name="fuel_info" string="Fuel Information">
+                        <group>
+                            <group>
+                                <field name="fuel_tank_capacity"/>
+                                <field name="initial_odometer"/>
+                                <separator string="Set the mileage" colspan="2"/>
+            			 <field name="min_mileage"/>
+            			 <field name="max_mileage"/>
+                                <!-- Removed average_efficiency field from here -->
+                            </group>
+                        </group>
+                    </page>
+                    <page name="tyres_info" string="Tyres Information">
+                        <group>
+                            <group>
+                                <field name="tyre_count" string="Total Tyres"/>
+                                <field name="active_tyre_count" string="Active Tyres"/>
+                                <button name="check_tyre_status" 
+                                        string="Check Tyre Status" 
+                                        type="object" 
+                                        class="oe_link"/>
+                            </group>
+                        </group>
+                    </page>
+                    <page name="assets" string="Assets">
+                        <field name="asset_ids" context="{'default_vehicle_id': active_id}">
+                            <tree>
+                                <field name="name"/>
+                                <field name="asset_type"/>
+                                <field name="purchase_date"/>
+                                <field name="purchase_value"/>
+                                <field name="state"/>
+                            </tree>
+                        </field>
+                    </page>
+                    <page name="notes" string="Notes">
+                        <field name="notes"/>
+                    </page>
+                </notebook>
+            </sheet>
+            <div class="oe_chatter">
+                <field name="message_follower_ids" widget="mail_followers"/>
+                <field name="activity_ids" widget="mail_activity"/>
+                <field name="message_ids" widget="mail_thread"/>
+            </div>
+        </form>
+    </field>
+</record>
+
+    <record id="view_simply_fleet_vehicle_search" model="ir.ui.view">
+        <field name="name">simply.fleet.vehicle.search</field>
+        <field name="model">simply.fleet.vehicle</field>
+        <field name="arch" type="xml">
+            <search>
+                <field name="name"/>
+                <field name="ref"/>
+                <field name="model"/>
+                <field name="brand"/>
+                <field name="driver_id"/>
+                <field name="vehicle_type_id"/>
+                <field name="group_id"/>
+                <separator/>
+                <filter name="active" string="Active" domain="[('state','=','active')]"/>
+                <filter name="maintenance" string="In Maintenance" domain="[('state','=','maintenance')]"/>
+                <filter name="inactive" string="Inactive" domain="[('state','=','inactive')]"/>
+                <filter name="archived" string="Archived" domain="[('active','=',False)]"/>
+                <group expand="0" string="Group By">
+                    <filter name="group_by_type" string="Vehicle Type" context="{'group_by':'vehicle_type_id'}"/>
+                    <filter name="group_by_brand" string="Brand" context="{'group_by':'brand'}"/>
+                    <filter name="group_by_state" string="Status" context="{'group_by':'state'}"/>
+                    <filter name="group_by_driver" string="Driver" context="{'group_by':'driver_id'}"/>
+                    <filter name="group_by_group" string="Vehicle Group" context="{'group_by':'group_id'}"/>
+                </group>
+            </search>
+        </field>
+    </record>
+
+    <!-- Actions -->
+    <record id="action_simply_fleet_vehicle_type" model="ir.actions.act_window">
+        <field name="name">Vehicle Types</field>
+        <field name="res_model">simply.fleet.vehicle.type</field>
+        <field name="view_mode">tree,form</field>
+        <field name="help" type="html">
+            <p class="o_view_nocontent_smiling_face">
+                Create your first vehicle type!
+            </p>
+            <p>
+                Define different types of vehicles in your fleet.
+            </p>
+        </field>
+    </record>
+
+    <record id="action_simply_fleet_vehicle" model="ir.actions.act_window">
+        <field name="name">Vehicles</field>
+        <field name="res_model">simply.fleet.vehicle</field>
+        <field name="view_mode">tree,form</field>
+        <field name="help" type="html">
+            <p class="o_view_nocontent_smiling_face">
+                Create your first vehicle!
+            </p>
+            <p>
+                Add vehicles to your fleet.
+            </p>
+        </field>
+    </record>
+
+    <!-- Document Name Views -->
+    <record id="view_document_name_tree" model="ir.ui.view">
+        <field name="name">simply.fleet.document.name.tree</field>
+        <field name="model">simply.fleet.document.name</field>
+        <field name="arch" type="xml">
+            <tree editable="bottom">
+                <field name="name"/>
+                <field name="description"/>
+                <field name="active"/>
+            </tree>
+        </field>
+    </record>
+
+    <!-- Issuing Authority Views -->
+    <record id="view_issuing_authority_tree" model="ir.ui.view">
+        <field name="name">simply.fleet.issuing.authority.tree</field>
+        <field name="model">simply.fleet.issuing.authority</field>
+        <field name="arch" type="xml">
+            <tree editable="bottom">
+                <field name="name"/>
+                <field name="description"/>
+                <field name="active"/>
+            </tree>
+        </field>
+    </record>
+
+    <!-- Document Reminder Views -->
+    <record id="view_document_reminder_tree" model="ir.ui.view">
+        <field name="name">simply.fleet.document.reminder.tree</field>
+        <field name="model">simply.fleet.document.reminder</field>
+        <field name="arch" type="xml">
+            <tree editable="bottom">
+                <field name="days_before"/>
+                <field name="reminder_type"/>
+                <field name="is_active"/>
+            </tree>
+        </field>
+    </record>
+
+    <!-- Document Views -->
+    <record id="view_document_tree" model="ir.ui.view">
+        <field name="name">simply.fleet.document.tree</field>
+        <field name="model">simply.fleet.document</field>
+        <field name="arch" type="xml">
+            <tree>
+                <field name="name"/>
+                <field name="vehicle_id"/>
+                <field name="document_number"/>
+                <field name="issue_date"/>
+                <field name="expiry_date"/>
+                <field name="days_to_expire"/>
+                <field name="issuing_authority"/>
+                <field name="state"/>
+            </tree>
+        </field>
+    </record>
+
+    <record id="view_document_form" model="ir.ui.view">
+        <field name="name">simply.fleet.document.form</field>
+        <field name="model">simply.fleet.document</field>
+        <field name="arch" type="xml">
+            <form>
+                <header>
+                    <field name="state" widget="statusbar"/>
+                </header>
+                <sheet>
+                    <div class="oe_button_box" name="button_box">
+                        <button name="toggle_active" type="object" class="oe_stat_button" icon="fa-archive">
+                            <field name="active" widget="boolean_button"/>
+                        </button>
+                    </div>
+                    <div class="oe_title">
+                        <h1>
+                            <field name="name" placeholder="Document Name"/>
+                        </h1>
+                    </div>
+                    <group>
+                        <group>
+                            <field name="vehicle_id"/>
+                            <field name="document_number"/>
+                            <field name="issuing_authority"/>
+                            <field name="renewal_cost"/>
+                        </group>
+                        <group>
+                            <field name="issue_date"/>
+                            <field name="expiry_date"/>
+                            <field name="days_to_expire"/>
+                            <field name="last_renewal_date" readonly="1"/>
+                            <field name="next_renewal_date" readonly="1"/>
+                        </group>
+                    </group>
+                    <notebook>
+                        <page name="document" string="Document">
+                            <group>
+                                <field name="document_file" filename="file_name"/>
+                                <field name="file_name" invisible="1"/>
+                            </group>
+                        </page>
+                        <page name="reminders" string="Reminders">
+                            <field name="reminder_ids">
+                                <tree editable="bottom">
+                                    <field name="days_before"/>
+                                    <field name="reminder_type"/>
+                                    <field name="is_active"/>
+                                </tree>
+                            </field>
+                        </page>
+                        <page name="notes" string="Notes">
+                            <field name="notes"/>
+                        </page>
+                    </notebook>
+                </sheet>
+                <div class="oe_chatter">
+                    <field name="message_follower_ids" widget="mail_followers"/>
+                    <field name="activity_ids" widget="mail_activity"/>
+                    <field name="message_ids" widget="mail_thread"/>
+                </div>
+            </form>
+        </field>
+    </record>
+
+    <record id="view_document_search" model="ir.ui.view">
+        <field name="name">simply.fleet.document.search</field>
+        <field name="model">simply.fleet.document</field>
+        <field name="arch" type="xml">
+            <search>
+                <field name="name"/>
+                <field name="vehicle_id"/>
+                <field name="document_number"/>
+                <field name="issuing_authority"/>
+                <separator/>
+                <filter name="valid" string="Valid" domain="[('state','=','valid')]"/>
+                <filter name="expiring_soon" string="Expiring Soon" domain="[('state','=','expiring_soon')]"/>
+                <filter name="expired" string="Expired" domain="[('state','=','expired')]"/>
+                <separator/>
+                <filter name="archived" string="Archived" domain="[('active','=',False)]"/>
+                <group expand="0" string="Group By">
+                    <filter name="group_by_vehicle" string="Vehicle" context="{'group_by': 'vehicle_id'}"/>
+                    <filter name="group_by_name" string="Document Name" context="{'group_by': 'name'}"/>
+                    <filter name="group_by_state" string="Status" context="{'group_by': 'state'}"/>
+                    <filter name="group_by_issue_date" string="Issue Date" context="{'group_by': 'issue_date'}"/>
+                    <filter name="group_by_expiry_date" string="Expiry Date" context="{'group_by': 'expiry_date'}"/>
+                </group>
+            </search>
+        </field>
+    </record>
+
+<!-- Fuel Log Views -->
+  <!-- Updated Fuel Log Tree View with datetime -->
+    <record id="view_simply_fleet_fuel_log_tree" model="ir.ui.view">
+        <field name="name">simply.fleet.fuel.log.tree</field>
+        <field name="model">simply.fleet.fuel.log</field>
+        <field name="arch" type="xml">
+            <tree string="Fuel Logs" default_order="datetime desc">
+                <field name="name" optional="hide"/>
+                <field name="vehicle_id"/>
+                <field name="datetime" string="Date &amp; Time"/>
+                <field name="fuel_type" optional="hide"/>
+                <field name="fill_type" optional="hide"/>
+                <field name="liters_display" string="Quantity"/>
+                <field name="price_per_liter" optional="hide" widget="monetary" options="{'currency_field': 'currency_id'}"/>
+                <field name="total_amount" optional="hide" widget="monetary" options="{'currency_field': 'currency_id'}"/>
+                <field name="previous_odometer_display" optional="hide" string="Previous ODO"/>
+                <field name="odometer_display" string="ODO"/>
+                <field name="distance_travelled_display" string="Distance"/>
+                <field name="mileage_display"/>
+                <field name="created_by"/>
+                <field name="station_type"/>
+            </tree>
+        </field>
+    </record>
+
+<record id="view_simply_fleet_fuel_log_form" model="ir.ui.view">
+    <field name="name">simply.fleet.fuel.log.form</field>
+    <field name="model">simply.fleet.fuel.log</field>
+    <field name="arch" type="xml">
+        <form>
+            <header>
+                <field name="fill_type" widget="statusbar" options="{'clickable': '1'}"/>
+            </header>
+            <sheet>
+                <div class="oe_title">
+                    <h1><field name="name" readonly="1"/></h1>
+                </div>
+                <group>
+                    <group>
+                        <field name="vehicle_id" options="{'no_create': True, 'no_open': False}"/>
+                        <field name="datetime" string="Date &amp; Time" options="{'step': 1}" widget="datetime"/>
+                        <field name="station_type"/>
+                        <field name="show_transaction_type" invisible="1"/>
+                        <field name="transaction_type_id" 
+                               invisible="not show_transaction_type"
+                               required="show_transaction_type"
+                               options="{'no_create': True}"/>
+                        <field name="fuel_type"/>
+                    </group>
+                    <group>
+                        <field name="fill_type"/>
+                        <label for="liters" string="Quantity"/>
+                        <div class="o_row">
+                            <field name="liters" class="oe_inline"/> <span>L</span>
+                        </div>
+                        <field name="currency_id" invisible="1"/>
+                        <field name="price_per_liter" widget="monetary" options="{'currency_field': 'currency_id'}"/>
+                        <field name="total_amount" widget="monetary" options="{'currency_field': 'currency_id'}"/>
+                    </group>
+                </group>
+                <group string="Odometer Information">
+                    <group>
+                        <label for="previous_odometer" string="Previous Odometer"/>
+                        <div class="o_row">
+                            <field name="previous_odometer" readonly="1" force_save="1" widget="integer" class="oe_inline"/> <span>km</span>
+                        </div>
+                        <label for="odometer" string="Current Odometer"/>
+                        <div class="o_row">
+                            <field name="odometer" widget="integer" class="oe_inline"/> <span>km</span>
+                        </div>
+                        <label for="distance_travelled" string="Distance Travelled"/>
+                        <div class="o_row">
+                            <field name="distance_travelled" widget="integer" class="oe_inline"/> <span>km</span>
+                        </div>
+                        <field name="show_mileage" invisible="1"/>
+                        <label for="mileage" invisible="not show_mileage"/>
+                        <div class="o_row" invisible="not show_mileage">
+                            <field name="mileage" class="oe_inline"/> <span>km/L</span>
+                        </div>
+                        <field name="created_by" options="{'no_create': True}"/>
+                    </group>
+                </group>
+                
+                <notebook>
+                    <page name="notes" string="Notes">
+                        <field name="notes" placeholder="Add notes here..."/>
+                    </page>
+                    <page name="images" string="Images">
+                        <!-- Direct attachment field using your existing attachment_ids field -->
+                        <field name="attachment_ids" widget="many2many_binary" 
+                               string="Images"
+                               domain="[('mimetype', 'ilike', 'image')]"
+                               options="{'accepted_file_extensions': 'image/*'}" />
+                               
+                        <!-- CSS to style the attachments display -->
+                        <style>
+                            /* Make attachment list display horizontally */
+                            .o_field_widget.o_field_many2many[name="attachment_ids"] .o_attachments {
+                                display: flex;
+                                flex-wrap: wrap;
+                                gap: 10px;
+                            }
+                            
+                            /* Style for each attachment item */
+                            .o_field_widget.o_field_many2many[name="attachment_ids"] .o_attachment {
+                                flex: 0 0 auto;
+                                margin-bottom: 10px;
+                            }
+                            
+                            /* Enlarge preview images */
+                            .o_field_widget.o_field_many2many[name="attachment_ids"] .o_image {
+                                width: 100px;
+                                height: 100px;
+                                object-fit: cover;
+                            }
+                            
+                            /* Hide the filename text */
+                            .o_field_widget.o_field_many2many[name="attachment_ids"] .o_attachment_name {
+                                display: none;
+                            }
+                        </style>
+                    </page>
+                </notebook>
+            </sheet>
+            
+            <!-- Simplified Chatter -->
+            <div class="oe_chatter">
+                <field name="message_ids" widget="mail_thread"/>
+            </div>
+        </form>
+    </field>
+</record>
+
+    <!-- Desktop Search View -->
+    <record id="view_simply_fleet_fuel_log_search" model="ir.ui.view">
+        <field name="name">simply.fleet.fuel.log.search</field>
+        <field name="model">simply.fleet.fuel.log</field>
+        <field name="arch" type="xml">
+            <search>
+                <field name="vehicle_id"/>
+                <field name="station_type"/>
+                <field name="fuel_type"/>
+                <field name="fill_type"/>
+                <separator/>
+                <filter name="my_fuel_logs" string="My Fuel Logs" domain="[('created_by', '=', uid)]"/>
+                <filter name="full_tank" string="Full Tank" domain="[('fill_type', '=', 'full')]"/>
+                <filter name="partial_fill" string="Partial Fill" domain="[('fill_type', '=', 'partial')]"/>
+                <group expand="0" string="Group By">
+                    <filter name="group_by_vehicle" string="Vehicle" context="{'group_by': 'vehicle_id'}"/>
+                    <filter name="group_by_station" string="Station Type" context="{'group_by': 'station_type'}"/>
+                    <filter name="group_by_fuel" string="Fuel Type" context="{'group_by': 'fuel_type'}"/>
+                    <filter name="group_by_fill_type" string="Fill Type" context="{'group_by': 'fill_type'}"/>
+                    <filter name="group_by_user" string="Created By" context="{'group_by': 'created_by'}"/>
+                    <filter name="group_by_day" string="Day" context="{'group_by': 'datetime:day'}"/>
+                    <filter name="group_by_month" string="Month" context="{'group_by': 'datetime:month'}"/>
+                </group>
+            </search>
+        </field>
+    </record>
+
+    <!-- Desktop Action -->
+    <record id="action_simply_fleet_fuel_log" model="ir.actions.act_window">
+        <field name="name">Fuel Logs</field>
+        <field name="res_model">simply.fleet.fuel.log</field>
+        <field name="view_mode">tree,form,graph,pivot</field>
+        <field name="view_ids" eval="[(5, 0, 0),
+            (0, 0, {'view_mode': 'tree', 'view_id': ref('view_simply_fleet_fuel_log_tree')}),
+            (0, 0, {'view_mode': 'form', 'view_id': ref('view_simply_fleet_fuel_log_form')})]"/>
+        <field name="search_view_id" ref="view_simply_fleet_fuel_log_search"/>
+        <field name="target">main</field>
+        <field name="context">{
+            'search_default_my_fuel_logs': 1
+        }</field>
+        <field name="help" type="html">
+            <p class="o_view_nocontent_smiling_face">
+                Create your first fuel log!
+            </p>
+            <p>
+                Track your vehicle's fuel consumption with detailed logs.
+            </p>
+        </field>
+    </record>
+
+    <!-- Action for Vehicle Types -->
+    <record id="action_simply_fleet_vehicle_type" model="ir.actions.act_window">
+        <field name="name">Vehicle Types</field>
+        <field name="res_model">simply.fleet.vehicle.type</field>
+        <field name="view_mode">tree,form</field>
+        <field name="help" type="html">
+            <p class="o_view_nocontent_smiling_face">
+                Create your first vehicle type!
+            </p>
+            <p>
+                Define different types of vehicles in your fleet.
+            </p>
+        </field>
+    </record>
+
+</odoo>

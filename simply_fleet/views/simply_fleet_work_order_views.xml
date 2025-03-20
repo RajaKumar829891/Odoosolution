@@ -1,0 +1,314 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <!-- Tree View -->
+    <record id="view_vehicle_work_order_tree" model="ir.ui.view">
+        <field name="name">simply.vehicle.work.order.tree</field>
+        <field name="model">simply.vehicle.work.order</field>
+        <field name="arch" type="xml">
+            <tree decoration-info="state == 'draft'" decoration-muted="state == 'cancelled'" decoration-success="state == 'done'">
+                <field name="name"/>
+                <field name="vehicle_id"/>
+                <field name="date"/>
+                <field name="scheduled_date"/>
+                <field name="technician_id"/>
+                <field name="priority" widget="priority"/>
+                <field name="total_cost" sum="Total"/>
+                <field name="state" widget="badge" 
+                       decoration-info="state in ('draft','confirmed')" 
+                       decoration-success="state == 'done'"
+                       decoration-danger="state == 'cancelled'"
+                       decoration-warning="state == 'in_progress'"/>
+            </tree>
+        </field>
+    </record>
+
+    <!-- Form View -->
+    <record id="view_vehicle_work_order_form" model="ir.ui.view">
+        <field name="name">simply.vehicle.work.order.form</field>
+        <field name="model">simply.vehicle.work.order</field>
+        <field name="arch" type="xml">
+            <form>
+                <header>
+                    <button name="action_confirm" string="Confirm" type="object" 
+                            class="oe_highlight" invisible="state != 'draft'"/>
+                    <button name="action_start" string="Start Work" type="object" 
+                            class="oe_highlight" invisible="state != 'confirmed'"/>
+                    <button name="action_complete" string="Complete" type="object" 
+                            class="oe_highlight" invisible="state != 'in_progress'"/>
+                    <button name="action_cancel" string="Cancel" type="object" 
+                            invisible="state not in ('draft', 'confirmed', 'in_progress')"/>
+                    <button name="action_reset_to_draft" string="Reset to Draft" type="object" 
+                            invisible="state not in ('cancelled', 'done')"/>
+                    <field name="state" widget="statusbar" 
+                           options="{'clickable': '1'}"
+                           statusbar_visible="draft,confirmed,in_progress,done"/>
+                </header>
+                <sheet>
+                    <div class="oe_button_box" name="button_box">
+                    </div>
+                    <div class="oe_title">
+                        <h1>
+                            <field name="name" readonly="1"/>
+                        </h1>
+                    </div>
+                    <group>
+                        <group>
+                            <field name="vehicle_id" readonly="state != 'draft'"/>
+                            <field name="inspection_id" readonly="state != 'draft'"/>
+                            <field name="technician_id"/>
+                            <field name="priority" widget="priority"/>
+                        </group>
+                        <group>
+                            <field name="date"/>
+                            <field name="scheduled_date"/>
+                            <field name="completion_date" readonly="1"/>
+                            <field name="location_id" readonly="state != 'draft'"/>
+                            <field name="parts_transferred" invisible="1"/>
+                        </group>
+                    </group>
+                    <notebook>
+                        <page string="Tasks" name="tasks">
+                            <field name="work_order_line_ids" readonly="state in ('done', 'cancelled')">
+                                <tree editable="bottom">
+                                    <field name="sequence" widget="handle"/>
+                                    <field name="name"/>
+                                    <field name="description"/>
+                                    <field name="recommended_action"/>
+                                    <field name="priority" widget="priority"/>
+                                    <field name="estimated_cost"/>
+                                    <field name="actual_cost"/>
+                                    <field name="state"/>
+                                    <field name="completion_date"/>
+                                    <field name="technician_notes"/>
+                                </tree>
+                            </field>
+                        </page>
+                        <page string="Parts Required" name="parts">
+                            <div class="row mb-2">
+                                <div class="col-12">
+                                    <button name="action_scan_part" 
+                                            string="Scan Part" 
+                                            type="object" 
+                                            class="btn btn-primary"
+                                            invisible="state in ('done', 'cancelled')"/>
+                                    <button name="action_manual_barcode_entry" 
+                                            string="Enter Barcode" 
+                                            type="object" 
+                                            class="btn btn-secondary ml-2"
+                                            invisible="state in ('done', 'cancelled')"/>
+                                    <button name="action_scan_barcode" 
+                                            string="Advanced Barcode Scanner" 
+                                            type="object" 
+                                            class="btn btn-primary ml-2"
+                                            invisible="state in ('done', 'cancelled')"/>
+                                    <span class="ml-2 text-muted" 
+                                          title="You can search products by entering the last 4 digits of a barcode">
+                                        (Tip: You can enter just the last 4 digits of a barcode)
+                                    </span>
+                                </div>
+                            </div>
+                            <field name="part_line_ids" readonly="state in ('done', 'cancelled')" 
+                                   context="{'display_default_code': True}">
+                                <tree editable="bottom">
+                                    <field name="barcode" widget="barcode_handler" placeholder="Scan or enter barcode (last 4 digits OK)"/>
+                                    <field name="product_id" 
+                                           options="{
+                                               'no_create': True,
+                                               'no_open': True
+                                           }"
+                                           context="{
+                                               'display_default_code': True
+                                           }"/>
+                                    <field name="description"/>
+                                    <field name="quantity"/>
+                                    <field name="product_uom"/>
+                                    <field name="unit_price"/>
+                                    <field name="subtotal" sum="Total"/>
+                                </tree>
+                            </field>
+                            <group class="oe_subtotal_footer oe_right">
+                                <field name="parts_cost" widget="monetary"/>
+                                <field name="labor_cost" widget="monetary"/>
+                                <div class="oe_subtotal_footer_separator oe_inline">
+                                    <label for="total_cost"/>
+                                </div>
+                                <field name="total_cost" nolabel="1" class="oe_subtotal_footer_separator" widget="monetary"/>
+                            </group>
+                        </page>
+                        <page string="Notes" name="notes">
+                            <field name="notes"/>
+                        </page>
+                        <page string="Documents" name="documents">
+                            <field name="document_ids" widget="many2many_binary"/>
+                        </page>
+                    </notebook>
+                </sheet>
+                <div class="oe_chatter">
+                    <field name="message_follower_ids"/>
+                    <field name="activity_ids"/>
+                    <field name="message_ids"/>
+                </div>
+            </form>
+        </field>
+    </record>
+
+    <!-- Enhanced Part Line Search View with Last 4 Digits Support -->
+    <record id="view_vehicle_work_order_part_line_search" model="ir.ui.view">
+        <field name="name">simply.vehicle.work.order.part.line.search</field>
+        <field name="model">simply.vehicle.work.order.part.line</field>
+        <field name="arch" type="xml">
+            <search>
+                <field name="product_id"/>
+                <field name="barcode"/>
+                <field name="work_order_id"/>
+                <!-- Enhanced search to include last 4 digits matching -->
+                <field name="product_id" string="Barcode/Code Search (incl. last 4 digits)"
+                       filter_domain="['|', '|', '|', '|', '|',
+                                     ('product_id.barcode', '=', self),
+                                     ('product_id.default_code', '=', self),
+                                     ('product_id.barcode', 'ilike', self),
+                                     ('product_id.default_code', 'ilike', self),
+                                     ('product_id.name', 'ilike', self),
+                                     '&amp;', ('product_id.barcode', '!=', False),
+                                            ('product_id.barcode', 'like', (len(self) == 4 and self.isdigit()) and ('%' + self) or self)]"/>
+                <!-- Last 4 Digits Only Filter -->
+                <filter string="Last 4 Digits" name="last_4_digits" domain="[]" 
+                        help="Search by last 4 digits of barcode"
+                        context="{'last_4_digits_mode': True}"/>
+            </search>
+        </field>
+    </record>
+
+<!-- Fixed Part Line Form View for Odoo 17 -->
+<record id="view_vehicle_work_order_part_line_form" model="ir.ui.view">
+    <field name="name">simply.vehicle.work.order.part.line.form</field>
+    <field name="model">simply.vehicle.work.order.part.line</field>
+    <field name="arch" type="xml">
+        <form>
+            <sheet>
+                <group>
+                    <field name="work_order_id" invisible="1"/>
+                    <field name="barcode" widget="barcode_handler" placeholder="Scan or enter barcode (last 4 digits OK)"/>
+                    <div class="text-muted" invisible="not barcode">
+                        <small>You can enter just the last 4 digits of a barcode</small>
+                    </div>
+                    <field name="product_id" 
+                           options="{
+                               'no_create': True,
+                               'no_open': True
+                           }"
+                           context="{
+                               'display_default_code': True
+                           }"/>
+                    <field name="description"/>
+                    <field name="quantity"/>
+                    <field name="product_uom"/>
+                    <field name="unit_price"/>
+                    <field name="subtotal"/>
+                </group>
+            </sheet>
+            <footer>
+                <button string="Save" name="create" type="object" class="btn-primary"/>
+                <button string="Discard" class="btn-secondary" special="cancel"/>
+            </footer>
+        </form>
+    </field>
+</record>
+
+    <!-- Search View -->
+    <record id="view_vehicle_work_order_search" model="ir.ui.view">
+        <field name="name">simply.vehicle.work.order.search</field>
+        <field name="model">simply.vehicle.work.order</field>
+        <field name="arch" type="xml">
+            <search string="Work Orders">
+                <field name="name"/>
+                <field name="vehicle_id"/>
+                <field name="technician_id"/>
+                <field name="inspection_id"/>
+                <separator/>
+                <filter string="Draft" name="draft" domain="[('state', '=', 'draft')]"/>
+                <filter string="Confirmed" name="confirmed" domain="[('state', '=', 'confirmed')]"/>
+                <filter string="In Progress" name="in_progress" domain="[('state', '=', 'in_progress')]"/>
+                <filter string="Completed" name="done" domain="[('state', '=', 'done')]"/>
+                <filter string="Cancelled" name="cancelled" domain="[('state', '=', 'cancelled')]"/>
+                <separator/>
+                <filter string="High Priority" name="high_priority" domain="[('priority', 'in', ['2', '3'])]"/>
+                <group expand="0" string="Group By">
+                    <filter string="Vehicle" name="group_vehicle" context="{'group_by': 'vehicle_id'}"/>
+                    <filter string="Status" name="group_state" context="{'group_by': 'state'}"/>
+                    <filter string="Technician" name="group_technician" context="{'group_by': 'technician_id'}"/>
+                    <filter string="Creation Date" name="group_date" context="{'group_by': 'date'}"/>
+                </group>
+            </search>
+        </field>
+    </record>
+
+    <!-- Calendar View -->
+    <record id="view_vehicle_work_order_calendar" model="ir.ui.view">
+        <field name="name">simply.vehicle.work.order.calendar</field>
+        <field name="model">simply.vehicle.work.order</field>
+        <field name="arch" type="xml">
+            <calendar string="Work Orders" date_start="date" color="vehicle_id">
+                <field name="name"/>
+                <field name="vehicle_id"/>
+                <field name="technician_id"/>
+                <field name="state"/>
+            </calendar>
+        </field>
+    </record>
+
+    <!-- Action -->
+    <record id="action_vehicle_work_order" model="ir.actions.act_window">
+        <field name="name">Work Orders</field>
+        <field name="res_model">simply.vehicle.work.order</field>
+        <field name="view_mode">tree,form,calendar</field>
+        <field name="search_view_id" ref="view_vehicle_work_order_search"/>
+        <field name="help" type="html">
+            <p class="o_view_nocontent_smiling_face">
+                Create your first work order
+            </p>
+            <p>
+                Create work orders to track vehicle repairs and maintenance tasks.
+            </p>
+        </field>
+    </record>
+
+    <!-- Inspection Form View Inheritance -->
+    <record id="view_vehicle_inspection_form_inherit_work_order" model="ir.ui.view">
+        <field name="name">simply.fleet.vehicle.inspection.form.inherit.work.order</field>
+        <field name="model">simply.fleet.vehicle.inspection</field>
+        <field name="inherit_id" ref="simply_fleet.view_simply_fleet_vehicle_inspection_form"/>
+        <field name="arch" type="xml">
+            <xpath expr="//sheet" position="inside">
+                <div class="oe_button_box" name="button_box" groups="base.group_user">
+                    <button name="action_view_work_orders" type="object" 
+                            class="oe_stat_button" icon="fa-wrench">
+                        <field name="work_order_count" widget="statinfo" string="Work Orders"/>
+                    </button>
+                </div>
+            </xpath>
+            <xpath expr="//header/button[last()]" position="after">
+                <button name="action_create_work_order" 
+                        string="Create Work Order" 
+                        type="object" 
+                        class="oe_highlight"
+                        invisible="state not in ('in_progress', 'completed')"/>
+            </xpath>
+        </field>
+    </record>
+
+    <!-- Menu Items -->
+    <menuitem 
+        id="menu_simply_fleet_work_orders"
+        name="Work Orders"
+        parent="menu_simply_fleet_root"
+        sequence="27"/>
+
+    <menuitem 
+        id="menu_vehicle_work_order"
+        name="Work Orders"
+        parent="menu_simply_fleet_work_orders"
+        action="action_vehicle_work_order"
+        sequence="10"/>
+
+</odoo>

@@ -1,0 +1,178 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <!-- Inspection Template Views -->
+    <record id="view_simply_fleet_inspection_template_tree" model="ir.ui.view">
+        <field name="name">simply.fleet.inspection.template.tree</field>
+        <field name="model">simply.fleet.inspection.template</field>
+        <field name="arch" type="xml">
+            <tree string="Inspection Templates">
+                <field name="name"/>
+                <field name="description"/>
+                <field name="active"/>
+            </tree>
+        </field>
+    </record>
+
+    <record id="view_simply_fleet_inspection_template_form" model="ir.ui.view">
+        <field name="name">simply.fleet.inspection.template.form</field>
+        <field name="model">simply.fleet.inspection.template</field>
+        <field name="arch" type="xml">
+            <form string="Inspection Template">
+                <sheet>
+                    <div class="oe_button_box" name="button_box">
+                        <button name="toggle_active" type="object" class="oe_stat_button" 
+                                icon="fa-archive">
+                            <field name="active" widget="boolean_button"/>
+                        </button>
+                    </div>
+                    <div class="oe_title">
+                        <h1>
+                            <field name="name" placeholder="Template Name"/>
+                        </h1>
+                    </div>
+                    <group>
+                        <field name="description"/>
+                    </group>
+                    <notebook>
+                        <page string="Inspection Items" name="inspection_items">
+                            <field name="template_line_ids">
+                                <tree editable="bottom">
+                                    <field name="sequence" widget="handle"/>
+                                    <field name="category"/>
+                                    <field name="component"/>
+                                    <field name="instructions"/>
+                                    <field name="default_priority"/>
+                                </tree>
+                            </field>
+                        </page>
+                    </notebook>
+                </sheet>
+                <div class="oe_chatter">
+                    <field name="message_follower_ids" widget="mail_followers"/>
+                    <field name="activity_ids" widget="mail_activity"/>
+                    <field name="message_ids" widget="mail_thread"/>
+                </div>
+            </form>
+        </field>
+    </record>
+
+    <!-- Inspection Schedule Views -->
+    <record id="view_simply_fleet_inspection_schedule_tree" model="ir.ui.view">
+        <field name="name">simply.fleet.inspection.schedule.tree</field>
+        <field name="model">simply.fleet.inspection.schedule</field>
+        <field name="arch" type="xml">
+            <tree string="Inspection Schedules">
+                <field name="name"/>
+                <field name="template_id"/>
+                <field name="schedule_type"/>
+                <field name="next_execution_date"/>
+                <field name="active"/>
+            </tree>
+        </field>
+    </record>
+
+    <record id="view_simply_fleet_inspection_schedule_form" model="ir.ui.view">
+        <field name="name">simply.fleet.inspection.schedule.form</field>
+        <field name="model">simply.fleet.inspection.schedule</field>
+        <field name="arch" type="xml">
+            <form string="Inspection Schedule">
+                <sheet>
+                    <div class="oe_button_box" name="button_box">
+                        <button name="toggle_active" type="object" class="oe_stat_button" 
+                                icon="fa-archive">
+                            <field name="active" widget="boolean_button"/>
+                        </button>
+                    </div>
+                    <div class="oe_title">
+                        <h1>
+                            <field name="name" placeholder="Schedule Name"/>
+                        </h1>
+                    </div>
+                    <group>
+                        <group>
+                            <field name="template_id"/>
+                            <field name="schedule_type"/>
+                        </group>
+                        <group>
+                            <field name="next_execution_date"/>
+                            <field name="last_execution_date"/>
+                        </group>
+                    </group>
+                    <notebook>
+                        <page string="Scheduling" name="scheduling">
+                            <group>
+                                <group string="Time-based Schedule" invisible="schedule_type == 'mileage'">
+                                    <field name="interval_number"/>
+                                    <field name="interval_type"/>
+                                </group>
+                                <group string="Mileage-based Schedule" invisible="schedule_type == 'time'">
+                                    <field name="mileage_interval"/>
+                                </group>
+                            </group>
+                        </page>
+                        <page string="Vehicles" name="vehicles">
+                            <field name="vehicle_ids"/>
+                        </page>
+                    </notebook>
+                </sheet>
+                <div class="oe_chatter">
+                    <field name="message_follower_ids" widget="mail_followers"/>
+                    <field name="activity_ids" widget="mail_activity"/>
+                    <field name="message_ids" widget="mail_thread"/>
+                </div>
+            </form>
+        </field>
+    </record>
+
+    <record id="view_simply_fleet_inspection_schedule_search" model="ir.ui.view">
+        <field name="name">simply.fleet.inspection.schedule.search</field>
+        <field name="model">simply.fleet.inspection.schedule</field>
+        <field name="arch" type="xml">
+            <search string="Search Inspection Schedules">
+                <field name="name"/>
+                <field name="template_id"/>
+                <filter string="Time-based" name="time_based" 
+                        domain="[('schedule_type', 'in', ['time', 'both'])]"/>
+                <filter string="Mileage-based" name="mileage_based" 
+                        domain="[('schedule_type', 'in', ['mileage', 'both'])]"/>
+                <filter string="Active" name="active" domain="[('active', '=', True)]"/>
+                <group expand="0" string="Group By">
+                    <filter string="Template" name="group_template" 
+                            context="{'group_by': 'template_id'}"/>
+                    <filter string="Schedule Type" name="group_type" 
+                            context="{'group_by': 'schedule_type'}"/>
+                </group>
+            </search>
+        </field>
+    </record>
+
+    <!-- Action Windows -->
+    <record id="action_simply_fleet_inspection_template" model="ir.actions.act_window">
+        <field name="name">Inspection Templates</field>
+        <field name="res_model">simply.fleet.inspection.template</field>
+        <field name="view_mode">tree,form</field>
+        <field name="help" type="html">
+            <p class="o_view_nocontent_smiling_face">
+                Create your first inspection template
+            </p>
+            <p>
+                Define templates for different types of vehicle inspections.
+            </p>
+        </field>
+    </record>
+
+    <record id="action_simply_fleet_inspection_schedule" model="ir.actions.act_window">
+        <field name="name">Inspection Schedules</field>
+        <field name="res_model">simply.fleet.inspection.schedule</field>
+        <field name="view_mode">tree,form</field>
+        <field name="context">{'search_default_active': 1}</field>
+        <field name="help" type="html">
+            <p class="o_view_nocontent_smiling_face">
+                Create your first inspection schedule
+            </p>
+            <p>
+                Set up automated inspection schedules for your vehicles.
+            </p>
+        </field>
+    </record>
+</odoo>

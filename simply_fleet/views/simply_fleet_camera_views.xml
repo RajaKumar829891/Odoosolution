@@ -1,0 +1,149 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <!-- Camera Views -->
+    <record id="view_simply_fleet_camera_tree" model="ir.ui.view">
+        <field name="name">simply.fleet.camera.tree</field>
+        <field name="model">simply.fleet.camera</field>
+        <field name="arch" type="xml">
+            <tree>
+                <field name="name"/>
+                <field name="vehicle_id"/>
+                <field name="camera_type"/>
+                <field name="brand"/>
+                <field name="model"/>
+                <field name="installation_date"/>
+                <field name="status"/>
+                <field name="active" widget="boolean_toggle"/>
+            </tree>
+        </field>
+    </record>
+
+    <record id="view_simply_fleet_camera_form" model="ir.ui.view">
+        <field name="name">simply.fleet.camera.form</field>
+        <field name="model">simply.fleet.camera</field>
+        <field name="arch" type="xml">
+            <form>
+                <header>
+                    <field name="status" widget="statusbar"/>
+                </header>
+                <sheet>
+                    <div class="oe_button_box" name="button_box">
+                        <button name="action_view_vehicle" type="object" 
+                                class="oe_stat_button" icon="fa-car" 
+                                invisible="not vehicle_id">
+                            <field name="vehicle_id" widget="many2one_button"/>
+                        </button>
+                    </div>
+                    <div class="oe_title">
+                        <h1>
+                            <field name="ref" readonly="1"/>
+                        </h1>
+                        <h2>
+                            <field name="name" placeholder="Camera Name"/>
+                        </h2>
+                    </div>
+                    <group>
+                        <group>
+                            <field name="vehicle_id" options="{'no_create': False, 'no_open': False}"/>
+                            <field name="camera_type"/>
+                            <field name="brand"/>
+                            <field name="model"/>
+                            <field name="serial_number"/>
+                            <field name="active" widget="boolean_toggle"/>
+                        </group>
+                        <group>
+                            <field name="installation_date"/>
+                            <field name="last_maintenance_date"/>
+                            <field name="next_maintenance_date"/>
+                            <field name="status"/>
+                        </group>
+                    </group>
+                    <notebook>
+                        <page string="Technical Details">
+                            <group>
+                                <group>
+                                    <field name="resolution"/>
+                                    <field name="storage_capacity"/>
+                                    <field name="recording_mode"/>
+                                </group>
+                                <group>
+                                    <field name="night_vision_range"/>
+                                    <field name="connectivity_type"/>
+                                    <field name="power_source"/>
+                                </group>
+                            </group>
+                        </page>
+                        <page string="SIM Details">
+                            <group>
+                                <group>
+                                    <field name="sim_name"/>
+                                    <field name="sim_number"/>
+                                    <field name="mobile_number"/>
+                                    <field name="network_provider"/>
+                                </group>
+                                <group>
+                                    <field name="sim_validity_start_date"/>
+                                    <field name="sim_validity_end_date"/>
+                                    <field name="sim_status"/>
+                                </group>
+                            </group>
+                        </page>
+                        <page string="Notes">
+                            <field name="notes" placeholder="Additional notes..."/>
+                        </page>
+                    </notebook>
+                </sheet>
+                <div class="oe_chatter">
+                    <field name="message_follower_ids" widget="mail_followers"/>
+                    <field name="activity_ids" widget="mail_activity"/>
+                    <field name="message_ids" widget="mail_thread"/>
+                </div>
+            </form>
+        </field>
+    </record>
+
+    <record id="view_simply_fleet_camera_search" model="ir.ui.view">
+        <field name="name">simply.fleet.camera.search</field>
+        <field name="model">simply.fleet.camera</field>
+        <field name="arch" type="xml">
+            <search>
+                <field name="name"/>
+                <field name="ref"/>
+                <field name="vehicle_id"/>
+                <field name="camera_type"/>
+                <field name="brand"/>
+                <field name="model"/>
+                <field name="serial_number"/>
+                <field name="sim_number"/>
+                <field name="mobile_number"/>
+                <separator/>
+                <filter name="active" string="Active" domain="[('active','=',True)]"/>
+                <filter name="needs_maintenance" string="Needs Maintenance" domain="[('next_maintenance_date','&lt;=', context_today())]"/>
+                <filter name="expired_sim" string="Expired SIM" domain="[('sim_status','=','expired')]"/>
+                <group expand="0" string="Group By">
+                    <filter name="group_by_vehicle" string="Vehicle" context="{'group_by':'vehicle_id'}"/>
+                    <filter name="group_by_type" string="Camera Type" context="{'group_by':'camera_type'}"/>
+                    <filter name="group_by_brand" string="Brand" context="{'group_by':'brand'}"/>
+                    <filter name="group_by_status" string="Status" context="{'group_by':'status'}"/>
+                </group>
+            </search>
+        </field>
+    </record>
+
+    <!-- Action for Camera -->
+    <record id="action_simply_fleet_camera" model="ir.actions.act_window">
+        <field name="name">Cameras</field>
+        <field name="res_model">simply.fleet.camera</field>
+        <field name="view_mode">tree,form</field>
+        <field name="context">{'default_vehicle_id': active_id}</field>
+        <field name="domain">[('vehicle_id', '=', active_id)]</field>
+        <field name="help" type="html">
+            <p class="o_view_nocontent_smiling_face">
+                Create your first Camera!
+            </p>
+            <p>
+                Add cameras for this vehicle.
+            </p>
+        </field>
+    </record>
+</odoo>

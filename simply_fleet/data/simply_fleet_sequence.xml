@@ -1,0 +1,149 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <data noupdate="1">
+        <!-- Vehicle Sequence -->
+        <record id="seq_simply_fleet_vehicle" model="ir.sequence">
+            <field name="name">Vehicle Sequence</field>
+            <field name="code">simply.fleet.vehicle</field>
+            <field name="prefix">VEH/%(year)s/</field>
+            <field name="padding">5</field>
+            <field name="company_id" eval="False"/>
+            <field name="implementation">standard</field>
+            <field name="number_increment" eval="1"/>
+            <field name="number_next" eval="1"/>
+        </record>
+        
+        <!-- Fuel Log Sequence -->
+        <record id="seq_simply_fleet_fuel_log" model="ir.sequence">
+            <field name="name">Fleet Fuel Log</field>
+            <field name="code">simply.fleet.fuel.log</field>
+            <field name="prefix">FUEL/%(year)s/</field>
+            <field name="padding">5</field>
+            <field name="company_id" eval="False"/>
+            <field name="implementation">standard</field>
+            <field name="number_increment" eval="1"/>
+            <field name="number_next" eval="1"/>
+        </record>
+        
+        <!-- Vehicle Group Sequence -->
+        <record id="seq_simply_fleet_vehicle_group" model="ir.sequence">
+            <field name="name">Vehicle Group Sequence</field>
+            <field name="code">simply.fleet.vehicle.group</field>
+            <field name="prefix">GRP/%(year)s/</field>
+            <field name="padding">5</field>
+            <field name="company_id" eval="False"/>
+            <field name="implementation">standard</field>
+            <field name="number_increment" eval="1"/>
+            <field name="number_next" eval="1"/>
+        </record>
+        
+        <!-- Fleet Manager Assignment Sequence -->
+        <record id="seq_simply_fleet_manager_assignment" model="ir.sequence">
+            <field name="name">Fleet Manager Assignment</field>
+            <field name="code">simply.fleet.manager.assignment</field>
+            <field name="prefix">FMA/%(year)s/</field>
+            <field name="padding">5</field>
+            <field name="company_id" eval="False"/>
+            <field name="implementation">standard</field>
+            <field name="number_increment" eval="1"/>
+            <field name="number_next" eval="1"/>
+        </record>
+
+        <!-- Fleet Document Sequence -->
+        <record id="seq_simply_fleet_document" model="ir.sequence">
+            <field name="name">Fleet Document Sequence</field>
+            <field name="code">simply.fleet.document</field>
+            <field name="prefix">DOC/%(year)s/</field>
+            <field name="padding">5</field>
+            <field name="company_id" eval="False"/>
+            <field name="implementation">standard</field>
+            <field name="number_increment" eval="1"/>
+            <field name="number_next" eval="1"/>
+        </record>
+
+        <!-- Vehicle Maintenance Sequence -->
+        <record id="seq_simply_fleet_maintenance" model="ir.sequence">
+            <field name="name">Vehicle Maintenance Sequence</field>
+            <field name="code">simply.fleet.maintenance</field>
+            <field name="prefix">MAINT/%(year)s/</field>
+            <field name="padding">5</field>
+            <field name="company_id" eval="False"/>
+            <field name="implementation">standard</field>
+            <field name="number_increment" eval="1"/>
+            <field name="number_next" eval="1"/>
+        </record>
+
+        <!-- Vehicle Service Sequence -->
+        <record id="seq_simply_fleet_service" model="ir.sequence">
+            <field name="name">Vehicle Service Sequence</field>
+            <field name="code">simply.fleet.service</field>
+            <field name="prefix">SVC/%(year)s/</field>
+            <field name="padding">5</field>
+            <field name="company_id" eval="False"/>
+            <field name="implementation">standard</field>
+            <field name="number_increment" eval="1"/>
+            <field name="number_next" eval="1"/>
+        </record>
+
+        <!-- Vehicle Accident Report Sequence -->
+        <record id="seq_simply_fleet_accident" model="ir.sequence">
+            <field name="name">Vehicle Accident Report Sequence</field>
+            <field name="code">simply.fleet.accident</field>
+            <field name="prefix">ACC/%(year)s/</field>
+            <field name="padding">5</field>
+            <field name="company_id" eval="False"/>
+            <field name="implementation">standard</field>
+            <field name="number_increment" eval="1"/>
+            <field name="number_next" eval="1"/>
+        </record>
+
+        <!-- Vehicle Inspection Sequence -->
+        <record id="seq_simply_fleet_vehicle_inspection" model="ir.sequence">
+            <field name="name">Vehicle Inspection Sequence</field>
+            <field name="code">simply.fleet.vehicle.inspection</field>
+            <field name="prefix">INSP/%(year)s/</field>
+            <field name="padding">5</field>
+            <field name="company_id" eval="False"/>
+            <field name="implementation">standard</field>
+            <field name="number_increment" eval="1"/>
+            <field name="number_next" eval="1"/>
+        </record>
+
+        <!-- Inspection Template Sequence -->
+        <record id="seq_simply_fleet_inspection_template" model="ir.sequence">
+            <field name="name">Inspection Template Sequence</field>
+            <field name="code">simply.fleet.inspection.template</field>
+            <field name="prefix">TMPL/%(year)s/</field>
+            <field name="padding">5</field>
+            <field name="company_id" eval="False"/>
+            <field name="implementation">standard</field>
+            <field name="number_increment" eval="1"/>
+            <field name="number_next" eval="1"/>
+        </record>
+
+        <!-- Inspection Schedule Sequence -->
+        <record id="seq_simply_fleet_inspection_schedule" model="ir.sequence">
+            <field name="name">Inspection Schedule Sequence</field>
+            <field name="code">simply.fleet.inspection.schedule</field>
+            <field name="prefix">SCHD/%(year)s/</field>
+            <field name="padding">5</field>
+            <field name="company_id" eval="False"/>
+            <field name="implementation">standard</field>
+            <field name="number_increment" eval="1"/>
+            <field name="number_next" eval="1"/>
+        </record>
+
+        <!-- Scheduled Job for Inspection Generation -->
+        <record id="ir_cron_generate_inspections" model="ir.cron">
+            <field name="name">Generate Scheduled Vehicle Inspections</field>
+            <field name="model_id" ref="model_simply_fleet_inspection_schedule"/>
+            <field name="state">code</field>
+            <field name="code">model._cron_generate_inspections()</field>
+            <field name="interval_number">1</field>
+            <field name="interval_type">days</field>
+            <field name="numbercall">-1</field>
+            <field name="doall" eval="False"/>
+            <field name="active" eval="True"/>
+        </record>
+    </data>
+</odoo>

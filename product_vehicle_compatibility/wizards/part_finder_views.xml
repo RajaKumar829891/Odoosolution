@@ -1,0 +1,52 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <data>
+        <record id="view_simply_fleet_part_finder_wizard" model="ir.ui.view">
+            <field name="name">simply.fleet.part.finder.wizard.form</field>
+            <field name="model">simply.fleet.part.finder.wizard</field>
+            <field name="arch" type="xml">
+                <form string="Find Compatible Parts">
+                    <sheet>
+                        <group>
+                            <group>
+                                <field name="vehicle_id" options="{'no_create': True}"/>
+                                <field name="vehicle_type_id" options="{'no_create': True}"/>
+                                <field name="product_category_id" options="{'no_create': True}"/>
+                            </group>
+                            <group>
+                                <field name="include_vehicle_specific"/>
+                                <field name="include_type_specific"/>
+                            </group>
+                        </group>
+                    </sheet>
+                    <footer>
+                        <button name="action_find_parts" string="Find Parts" type="object" class="btn-primary"/>
+                        <button string="Cancel" class="btn-secondary" special="cancel"/>
+                    </footer>
+                </form>
+            </field>
+        </record>
+
+        <!-- Action to open wizard -->
+        <record id="action_simply_fleet_part_finder" model="ir.actions.act_window">
+            <field name="name">Find Vehicle Parts</field>
+            <field name="res_model">simply.fleet.part.finder.wizard</field>
+            <field name="view_mode">form</field>
+            <field name="target">new</field>
+        </record>
+
+        <!-- Menu item -->
+        <menuitem id="menu_simply_fleet_part_finder"
+                  name="Find Compatible Parts"
+                  parent="stock.menu_stock_inventory_control"
+                  action="action_simply_fleet_part_finder"
+                  sequence="25"/>
+                  
+        <!-- Add to simply fleet menu as well -->
+        <menuitem id="menu_simply_fleet_part_finder_fleet"
+                  name="Find Compatible Parts"
+                  parent="simply_fleet.menu_simply_fleet_vehicles"
+                  action="action_simply_fleet_part_finder"
+                  sequence="40"/>
+    </data>
+</odoo>

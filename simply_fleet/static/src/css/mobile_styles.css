@@ -1,0 +1,55 @@
+/* Mobile Styles */
+@media (max-width: 767px) {
+    /* Kanban Card Styles */
+    .o_kanban_mobile .oe_kanban_global_click {
+        margin-bottom: 0 !important;
+        border-radius: 8px !important;
+        box-shadow: 0 2px 4px rgba(0,0,0,0.1) !important;
+        background-color: #ffffff !important;
+        padding: 0 !important;
+    }
+    /* Title Styles */
+    .o_kanban_mobile .o_kanban_record_title {
+        font-size: 1.2em !important;
+        color: #2b2b2b !important;
+        font-weight: bold !important;
+        margin-bottom: 0 !important;
+    }
+    /* Subtitle Styles */
+    .o_kanban_mobile .o_kanban_record_subtitle {
+        font-size: 1.1em !important;
+        color: #666666 !important;
+        margin-bottom: 0 !important;
+    }
+    /* Body Content Styles */
+    .o_kanban_mobile .o_kanban_record_body {
+        font-size: 1.1em !important;
+        line-height: 1 !important;
+    }
+    /* Row Styles */
+    .o_kanban_mobile .row {
+        padding: 0 !important;
+        border-bottom: 1px solid #f0f0f0 !important;
+        margin: 0 !important;
+    }
+    .o_kanban_mobile .row:last-child {
+        border-bottom: none !important;
+    }
+    /* Column Labels */
+    .o_kanban_mobile .row .col-6:first-child {
+        color: #666666 !important;
+        font-weight: normal !important;
+    }
+    /* Column Values */
+    .o_kanban_mobile .row .col-6:last-child {
+        color: #2b2b2b !important;
+        font-weight: 500 !important;
+        text-align: right !important;
+    }
+    /* Badge Styles */
+    .o_kanban_mobile .badge {
+        padding: 0 !important;
+        font-size: 0.9em !important;
+        border-radius: 16px !important;
+    }
+}

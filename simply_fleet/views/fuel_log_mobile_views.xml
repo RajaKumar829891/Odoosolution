@@ -1,0 +1,155 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<odoo>
+  <!-- Mobile Kanban View -->
+  <record id="simply_fleet_fuel_log_kanban" model="ir.ui.view">
+      <field name="name">simply.fleet.fuel.log.kanban</field>
+      <field name="model">simply.fleet.fuel.log</field>
+      <field name="priority">16</field>
+      <field name="arch" type="xml">
+          <kanban class="o_kanban_mobile" js_class="fuel_log_kanban" default_order="date desc" create="true" delete="true">
+              <field name="name"/>
+              <field name="vehicle_id"/>
+              <!-- Add the computed vehicle type code field -->
+              <field name="vehicle_type_code"/>
+              <field name="date"/>
+              <field name="display_date"/>
+              <field name="liters"/>
+              <field name="odometer"/>
+              <field name="distance_travelled"/>
+              <field name="station_type"/>
+              <field name="mileage"/>
+              <field name="currency_id"/>
+              <field name="price_per_liter"/>
+              <field name="total_amount"/>
+              <field name="fuel_type"/>
+              <field name="fill_type"/>
+              <!-- Add vehicle min and max mileage for comparison -->
+              <field name="vehicle_min_mileage"/>
+              <field name="vehicle_max_mileage"/>
+              
+              <!-- Add direct JavaScript solution -->
+              <script type="text/javascript">
+                  odoo.define('simply_fleet.time_field_fix', function (require) {
+                      'use strict';
+                      
+                      // Wait for document to be fully loaded
+                      $(document).ready(function() {
+                          // Apply immediately for any existing elements
+                          fixTimeDropdowns();
+                          
+                          // Set interval to keep checking for new elements
+                          setInterval(fixTimeDropdowns, 500);
+                          
+                          function fixTimeDropdowns() {
+                              // Target the specific minute and AM/PM selects
+                              $('select.o_time_input_minute, select.o_time_input_period').each(function() {
+                                  var $select = $(this);
+                                  
+                                  // If we haven't modified this element yet
+                                  if (!$select.hasClass('arrow-fixed')) {
+                                      // Apply inline styles directly to the element
+                                      $select.css({
+                                          'appearance': 'none',
+                                          '-webkit-appearance': 'none',
+                                          '-moz-appearance': 'none',
+                                          'background': 'none',
+                                          'background-image': 'none',
+                                          'border': 'none',
+                                          'color': '#000000',
+                                          'font-weight': 'bold',
+                                          'padding-right': '0'
+                                      });
+                                      
+                                      // Add class to mark as fixed
+                                      $select.addClass('arrow-fixed');
+                                      
+                                      // Try to find and remove any parent wrapper that might be adding the arrow
+                                      $select.parents('.o_input_dropdown').css({
+                                          'background': 'none',
+                                          'background-image': 'none'
+                                      });
+                                  }
+                              });
+                          }
+                      });
+                  });
+              </script>
+              
+              <templates>
+                  <t t-name="kanban-box">
+                      <div class="oe_kanban_global_click" style="background-color: #ffffff; color: black; border: 2px solid #000000; border-radius: 15px; margin: 0px;">
+                          <div class="row mx-0 py-0">
+                              <div class="col-2 d-flex align-items-center justify-content-center">
+                                  <!-- Replace image icon with Font Awesome icons based on mileage -->
+                                  <div class="d-flex align-items-center justify-content-center">
+    <t t-if="record.mileage.raw_value &gt; 0 and record.vehicle_min_mileage.raw_value &gt; 0 and record.vehicle_max_mileage.raw_value &gt; 0">
+        <!-- Below minimum mileage (red icon) -->
+        <t t-if="record.mileage.raw_value &lt; record.vehicle_min_mileage.raw_value">
+            <i class="fa fa-bus" style="font-size:48px;color:red"></i>
+        </t>
+        <!-- Between min and max mileage (gold icon) -->
+        <t t-elif="record.mileage.raw_value &gt;= record.vehicle_min_mileage.raw_value and record.mileage.raw_value &lt;= record.vehicle_max_mileage.raw_value">
+            <i class="fa fa-bus" style="font-size:48px;color:gold"></i>
+        </t>
+        <!-- Above maximum mileage (green icon) -->
+        <t t-elif="record.mileage.raw_value &gt; record.vehicle_max_mileage.raw_value">
+            <i class="fa fa-bus" style="font-size:48px;color:green"></i>
+        </t>
+        <!-- Default icon for other cases -->
+        <t t-else="">
+            <i class="fa fa-bus" style="font-size:48px;color:blue"></i>
+        </t>
+    </t>
+    <!-- Default for when we can't compare (no mileage data) -->
+    <t t-else="">
+        <i class="fa fa-bus" style="font-size:48px;color:pink"></i>
+    </t>
+                                  </div>
+                              </div>
+                              <div class="col-4">
+                                  <div class="row">
+                                      <div class="col-12 text-nowrap">
+                                          <strong class="text-black"><field name="vehicle_id"/></strong>
+                                      </div>
+                                  </div>
+                                  <div class="row">
+                                      <div class="col-12">
+                                          <span class="text-black"><field name="date"/></span>
+                                      </div>
+                                  </div>
+                                  <div class="row">
+                                      <div class="col-12 text-nowrap">
+                                          <span class="text-black">(+<field name="distance_travelled"/>) km</span>
+                                      </div>
+                                  </div>
+                              </div>
+                              <div class="col-4 text-end">
+                                  <div class="row">
+                                      <div class="col-12 text-nowrap">
+                                          <strong class="text-black"><field name="mileage"/> km/L</strong>
+                                      </div>
+                                  </div>
+                                  <div class="row" style="margin-top: 0; margin-bottom: 0;">
+                                      <div class="col-12 text-nowrap">
+                                          <span class="text-black">Odo: <field name="odometer" widget="float_thousand"/> km</span>
+                                      </div>
+                                  </div>
+                                  <div class="row" style="margin-top: 0; margin-bottom: 0;">
+                                      <div class="col-12 text-nowrap">
+                                          <span class="text-black"><field name="total_amount"/> INR</span>
+                                      </div>
+                                  </div>
+                                  <div class="row" style="margin-top: 0; margin-bottom: 0;">
+                                      <div class="col-12 text-nowrap">
+                                          <span class="text-black"><field name="liters"/> Ltr</span>
+                                      </div>
+                                  </div>
+                              </div>
+                          </div>
+                      </div>
+                  </t>
+              </templates>
+          </kanban>
+      </field>
+  </record>
+</odoo>

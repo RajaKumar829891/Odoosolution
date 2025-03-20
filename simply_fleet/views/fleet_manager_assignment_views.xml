@@ -1,0 +1,98 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <!-- Tree View -->
+    <record id="fleet_manager_assignment_view_tree" model="ir.ui.view">
+        <field name="name">simply.fleet.manager.assignment.tree</field>
+        <field name="model">simply.fleet.manager.assignment</field>
+        <field name="arch" type="xml">
+            <tree decoration-danger="state == 'expired'" decoration-muted="state == 'cancelled'">
+                <field name="name"/>
+                <field name="fleet_manager_id"/>
+                <field name="vehicle_group_ids" widget="many2many_tags"/>
+                <field name="start_date"/>
+                <field name="end_date"/>
+                <field name="vehicle_count"/>
+                <field name="state" widget="badge" decoration-success="state == 'active'" decoration-danger="state == 'expired'" decoration-info="state == 'draft'" decoration-warning="state == 'cancelled'"/>
+            </tree>
+        </field>
+    </record>
+
+    <!-- Form View -->
+    <record id="fleet_manager_assignment_view_form" model="ir.ui.view">
+        <field name="name">simply.fleet.manager.assignment.form</field>
+        <field name="model">simply.fleet.manager.assignment</field>
+        <field name="arch" type="xml">
+            <form>
+                <header>
+                    <button name="action_set_active" string="Set Active" type="object" class="oe_highlight" invisible="state != 'draft'"/>
+                    <button name="action_set_expired" string="Set Expired" type="object" invisible="state != 'active'"/>
+                    <button name="action_set_cancelled" string="Cancel" type="object" invisible="state not in ('draft', 'active')"/>
+                    <field name="state" widget="statusbar" statusbar_visible="draft,active,expired"/>
+                </header>
+                <sheet>
+                    <div class="oe_button_box" name="button_box">
+                        <button name="action_view_vehicles" type="object" class="oe_stat_button" icon="fa-car">
+                            <field name="vehicle_count" widget="statinfo" string="Vehicles"/>
+                        </button>
+                    </div>
+                    <div class="oe_title">
+                        <h1>
+                            <field name="name" readonly="1"/>
+                        </h1>
+                    </div>
+                    <group>
+                        <group>
+                            <field name="fleet_manager_id" options="{'no_create': True}"/>
+                            <field name="start_date"/>
+                            <field name="end_date"/>
+                        </group>
+                        <group>
+                            <field name="active" invisible="1"/>
+                        </group>
+                    </group>
+                    <notebook>
+                        <page string="Vehicle Groups" name="vehicle_groups">
+                            <field name="vehicle_group_ids" options="{'no_create': True}">
+                                <tree>
+                                    <field name="name"/>
+                                    <field name="ref"/>
+                                    <field name="vehicle_count"/>
+                                </tree>
+                            </field>
+                        </page>
+                        <page string="Notes" name="notes">
+                            <field name="notes"/>
+                        </page>
+                    </notebook>
+                </sheet>
+                <div class="oe_chatter">
+                    <field name="message_follower_ids"/>
+                    <field name="activity_ids"/>
+                    <field name="message_ids"/>
+                </div>
+            </form>
+        </field>
+    </record>
+
+    <!-- Search View -->
+    <record id="fleet_manager_assignment_view_search" model="ir.ui.view">
+        <field name="name">simply.fleet.manager.assignment.search</field>
+        <field name="model">simply.fleet.manager.assignment</field>
+        <field name="arch" type="xml">
+            <search>
+                <field name="name"/>
+                <field name="fleet_manager_id"/>
+                <field name="vehicle_group_ids"/>
+                <filter string="Draft" name="draft" domain="[('state', '=', 'draft')]"/>
+                <filter string="Active" name="active" domain="[('state', '=', 'active')]"/>
+                <filter string="Expired" name="expired" domain="[('state', '=', 'expired')]"/>
+                <filter string="Cancelled" name="cancelled" domain="[('state', '=', 'cancelled')]"/>
+                <group expand="0" string="Group By">
+                    <filter string="Fleet Manager" name="group_by_manager" context="{'group_by': 'fleet_manager_id'}"/>
+                    <filter string="Status" name="group_by_state" context="{'group_by': 'state'}"/>
+                    <filter string="Start Date" name="group_by_start_date" context="{'group_by': 'start_date'}"/>
+                </group>
+            </search>
+        </field>
+    </record>
+</odoo>

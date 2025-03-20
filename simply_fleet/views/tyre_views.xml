@@ -1,0 +1,163 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <!-- Tree View -->
+    <record id="view_simply_fleet_tyre_tree" model="ir.ui.view">
+        <field name="name">simply.fleet.tyre.tree</field>
+        <field name="model">simply.fleet.tyre</field>
+        <field name="arch" type="xml">
+            <tree>
+                <field name="name"/>
+                <field name="vehicle_id"/>
+                <field name="brand"/>
+                <field name="model"/>
+                <field name="size"/>
+                <field name="position"/>
+                <field name="installation_date"/>
+                <field name="current_tread_depth"/>
+                <field name="state"/>
+            </tree>
+        </field>
+    </record>
+
+    <!-- Kanban View -->
+    <record id="view_simply_fleet_tyre_kanban" model="ir.ui.view">
+        <field name="name">simply.fleet.tyre.kanban</field>
+        <field name="model">simply.fleet.tyre</field>
+        <field name="arch" type="xml">
+            <kanban>
+                <field name="name"/>
+                <field name="vehicle_id"/>
+                <field name="brand"/>
+                <field name="model"/>
+                <field name="state"/>
+                <templates>
+                    <t t-name="kanban-box">
+                        <div class="oe_kanban_global_click">
+                            <div class="oe_kanban_details">
+                                <strong class="o_kanban_record_title">
+                                    <field name="name"/>
+                                </strong>
+                                <div class="o_kanban_record_subtitle">
+                                    <field name="vehicle_id"/>
+                                </div>
+                                <div>
+                                    <field name="brand"/> - <field name="model"/>
+                                </div>
+                                <div>
+                                    <field name="state" widget="label_selection" 
+                                        options="{'classes': {'new': 'success', 'in_use': 'primary', 
+                                        'worn': 'warning', 'damaged': 'danger', 'disposed': 'default'}}"/>
+                                </div>
+                            </div>
+                        </div>
+                    </t>
+                </templates>
+            </kanban>
+        </field>
+    </record>
+
+    <!-- Form View (Unchanged) -->
+    <record id="view_simply_fleet_tyre_form" model="ir.ui.view">
+        <field name="name">simply.fleet.tyre.form</field>
+        <field name="model">simply.fleet.tyre</field>
+        <field name="arch" type="xml">
+            <form>
+                <header>
+                    <field name="state" widget="statusbar"/>
+                </header>
+                <sheet>
+                    <div class="oe_button_box" name="button_box">
+                        <button name="toggle_active" type="object" class="oe_stat_button" icon="fa-archive">
+                            <field name="active" widget="boolean_button"/>
+                        </button>
+                    </div>
+                    <div class="oe_title">
+                        <h1>
+                            <field name="name" placeholder="Tyre ID"/>
+                        </h1>
+                    </div>
+                    <group>
+                        <group>
+                            <field name="vehicle_id"/>
+                            <field name="brand"/>
+                            <field name="model"/>
+                            <field name="size"/>
+                            <field name="position"/>
+                        </group>
+                        <group>
+                            <field name="installation_date"/>
+                            <field name="removal_date"/>
+                            <field name="initial_tread_depth"/>
+                            <field name="current_tread_depth"/>
+                        </group>
+                    </group>
+                    <notebook>
+                        <page name="purchase_info" string="Purchase Information">
+                            <group>
+                                <group>
+                                    <field name="purchase_date"/>
+                                    <field name="purchase_price"/>
+                                    <field name="supplier_id"/>
+                                </group>
+                            </group>
+                        </page>
+                        <page name="notes" string="Notes">
+                            <field name="notes"/>
+                        </page>
+                    </notebook>
+                </sheet>
+                <div class="oe_chatter">
+                    <field name="message_follower_ids" widget="mail_followers"/>
+                    <field name="activity_ids" widget="mail_activity"/>
+                    <field name="message_ids" widget="mail_thread"/>
+                </div>
+            </form>
+        </field>
+    </record>
+
+    <!-- Search View (Unchanged) -->
+    <record id="view_simply_fleet_tyre_search" model="ir.ui.view">
+        <field name="name">simply.fleet.tyre.search</field>
+        <field name="model">simply.fleet.tyre</field>
+        <field name="arch" type="xml">
+            <search>
+                <field name="name"/>
+                <field name="vehicle_id"/>
+                <field name="brand"/>
+                <field name="model"/>
+                <field name="position"/>
+                <separator/>
+                <filter name="new" string="New" domain="[('state','=','new')]"/>
+                <filter name="in_use" string="In Use" domain="[('state','=','in_use')]"/>
+                <filter name="worn" string="Worn" domain="[('state','=','worn')]"/>
+                <filter name="damaged" string="Damaged" domain="[('state','=','damaged')]"/>
+                <filter name="disposed" string="Disposed" domain="[('state','=','disposed')]"/>
+                <separator/>
+                <filter name="archived" string="Archived" domain="[('active','=',False)]"/>
+                <group expand="0" string="Group By">
+                    <filter name="group_by_vehicle" string="Vehicle" context="{'group_by': 'vehicle_id'}"/>
+                    <filter name="group_by_brand" string="Brand" context="{'group_by': 'brand'}"/>
+                    <filter name="group_by_position" string="Position" context="{'group_by': 'position'}"/>
+                    <filter name="group_by_state" string="Status" context="{'group_by': 'state'}"/>
+                </group>
+            </search>
+        </field>
+    </record>
+
+    <!-- Updated Action -->
+    <record id="action_simply_fleet_tyre" model="ir.actions.act_window">
+        <field name="name">Vehicle Tyres</field>
+        <field name="res_model">simply.fleet.tyre</field>
+        <field name="view_mode">kanban,tree,form,graph,pivot</field>
+        <field name="context">{'search_default_in_use': 1}</field>
+        <field name="help" type="html">
+            <p class="o_view_nocontent_smiling_face">
+                Create your first tyre record!
+            </p>
+            <p>
+                Track and manage your vehicle tyres.
+            </p>
+        </field>
+    </record>
+
+</odoo>

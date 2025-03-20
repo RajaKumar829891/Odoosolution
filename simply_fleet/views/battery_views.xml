@@ -1,0 +1,231 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <!-- Battery Tree View -->
+    <record id="view_simply_fleet_battery_tree" model="ir.ui.view">
+        <field name="name">simply.fleet.battery.tree</field>
+        <field name="model">simply.fleet.battery</field>
+        <field name="arch" type="xml">
+            <tree>
+                <field name="ref"/>
+                <field name="name"/>
+                <field name="vehicle_id"/>
+                <field name="brand"/>
+                <field name="model"/>
+                <field name="installation_date"/>
+                <field name="expiry_date"/>
+                <field name="health_percentage" widget="percentage"/>
+                <field name="state" 
+                       decoration-success="state in ('new','in_use')" 
+                       decoration-warning="state == 'degraded'" 
+                       decoration-danger="state == 'replaced'"
+                       widget="badge"/>
+                <field name="last_inspection_date"/>
+            </tree>
+        </field>
+    </record>
+
+    <!-- Battery Form View -->
+    <record id="view_simply_fleet_battery_form" model="ir.ui.view">
+        <field name="name">simply.fleet.battery.form</field>
+        <field name="model">simply.fleet.battery</field>
+        <field name="arch" type="xml">
+            <form>
+                <header>
+                    <button name="action_mark_degraded" 
+                            string="Mark as Degraded" 
+                            type="object" 
+                            class="oe_highlight"
+                            invisible="state in ('degraded', 'replaced')"/>
+                    <button name="action_mark_replaced" 
+                            string="Mark as Replaced" 
+                            type="object"
+                            invisible="state == 'replaced'"/>
+                    <field name="state" widget="statusbar" statusbar_visible="new,in_use,degraded,replaced"/>
+                </header>
+                <sheet>
+                    <div class="oe_button_box" name="button_box">
+                        <button name="toggle_active" type="object" class="oe_stat_button" icon="fa-archive">
+                            <field name="active" widget="boolean_button"/>
+                        </button>
+                    </div>
+                    <div class="oe_title">
+                        <h1>
+                            <field name="ref" readonly="1"/>
+                        </h1>
+                        <h2>
+                            <field name="name" placeholder="Battery Name"/>
+                        </h2>
+                    </div>
+                    <group>
+                        <group>
+                            <field name="vehicle_id" options="{'no_create': True, 'no_open': False}"/>
+                            <field name="brand"/>
+                            <field name="model"/>
+                            <field name="capacity"/>
+                            <field name="voltage"/>
+                        </group>
+                        <group>
+                            <field name="health_percentage" widget="percentage"/>
+                            <field name="installation_date"/>
+                            <field name="expiry_date"/>
+                            <field name="warranty_end_date"/>
+                        </group>
+                    </group>
+                    <notebook>
+                        <page string="Maintenance History" name="maintenance_history">
+                            <field name="maintenance_history_ids">
+                                <tree editable="bottom">
+                                    <field name="date"/>
+                                    <field name="maintenance_type"/>
+                                    <field name="voltage_reading"/>
+                                    <field name="performed_by" options="{'no_create': True}"/>
+                                    <field name="next_maintenance_date"/>
+                                    <field name="notes"/>
+                                </tree>
+                            </field>
+                        </page>
+                        <page string="Notes" name="notes">
+                            <field name="notes" placeholder="Add notes here..."/>
+                        </page>
+                    </notebook>
+                </sheet>
+                <div class="oe_chatter">
+                    <field name="message_follower_ids" widget="mail_followers"/>
+                    <field name="activity_ids" widget="mail_activity"/>
+                    <field name="message_ids" widget="mail_thread"/>
+                </div>
+            </form>
+        </field>
+    </record>
+
+    <!-- Battery Search View -->
+    <record id="view_simply_fleet_battery_search" model="ir.ui.view">
+        <field name="name">simply.fleet.battery.search</field>
+        <field name="model">simply.fleet.battery</field>
+        <field name="arch" type="xml">
+            <search>
+                <field name="name"/>
+                <field name="ref"/>
+                <field name="vehicle_id"/>
+                <field name="brand"/>
+                <field name="model"/>
+                <separator/>
+                <filter string="Active" name="active" domain="[('active','=',True)]"/>
+                <filter string="Archived" name="inactive" domain="[('active','=',False)]"/>
+                <separator/>
+                <filter string="New" name="state_new" domain="[('state','=','new')]"/>
+                <filter string="In Use" name="state_in_use" domain="[('state','=','in_use')]"/>
+                <filter string="Degraded" name="state_degraded" domain="[('state','=','degraded')]"/>
+                <filter string="Replaced" name="state_replaced" domain="[('state','=','replaced')]"/>
+                <group expand="0" string="Group By">
+                    <filter string="Vehicle" name="group_by_vehicle" context="{'group_by': 'vehicle_id'}"/>
+                    <filter string="Status" name="group_by_state" context="{'group_by': 'state'}"/>
+                    <filter string="Brand" name="group_by_brand" context="{'group_by': 'brand'}"/>
+                    <filter string="Installation Date" name="group_by_installation" context="{'group_by': 'installation_date'}"/>
+                </group>
+            </search>
+        </field>
+    </record>
+
+    <!-- Battery Maintenance Tree View -->
+    <record id="view_simply_fleet_battery_maintenance_tree" model="ir.ui.view">
+        <field name="name">simply.fleet.battery.maintenance.tree</field>
+        <field name="model">simply.fleet.battery.maintenance</field>
+        <field name="arch" type="xml">
+            <tree editable="bottom">
+                <field name="battery_id"/>
+                <field name="date"/>
+                <field name="maintenance_type"/>
+                <field name="voltage_reading"/>
+                <field name="performed_by" options="{'no_create': True}"/>
+                <field name="next_maintenance_date"/>
+                <field name="notes"/>
+            </tree>
+        </field>
+    </record>
+
+    <!-- Battery Maintenance Form View -->
+    <record id="view_simply_fleet_battery_maintenance_form" model="ir.ui.view">
+        <field name="name">simply.fleet.battery.maintenance.form</field>
+        <field name="model">simply.fleet.battery.maintenance</field>
+        <field name="arch" type="xml">
+            <form>
+                <sheet>
+                    <group>
+                        <group>
+                            <field name="battery_id"/>
+                            <field name="date"/>
+                            <field name="maintenance_type"/>
+                            <field name="performed_by" options="{'no_create': True}"/>
+                        </group>
+                        <group>
+                            <field name="voltage_reading"/>
+                            <field name="next_maintenance_date"/>
+                            <field name="notes"/>
+                        </group>
+                    </group>
+                </sheet>
+            </form>
+        </field>
+    </record>
+
+    <!-- Update Vehicle Form View -->
+    <record id="view_simply_fleet_vehicle_form_inherit_battery" model="ir.ui.view">
+        <field name="name">simply.fleet.vehicle.form.inherit.battery</field>
+        <field name="model">simply.fleet.vehicle</field>
+        <field name="inherit_id" ref="view_simply_fleet_vehicle_form"/>
+        <field name="arch" type="xml">
+            <xpath expr="//div[@name='button_box']" position="inside">
+                <button name="action_view_batteries"
+                        type="object"
+                        class="oe_stat_button"
+                        icon="fa-car-battery">
+                    <field name="battery_count" widget="statinfo" string="Batteries"/>
+                </button>
+            </xpath>
+            <xpath expr="//notebook" position="inside">
+                <page string="Battery Information" name="battery_info">
+                    <group>
+                        <group>
+                            <field name="current_battery_id"/>
+                            <field name="battery_health" widget="percentage"/>
+                            <field name="last_battery_maintenance_date"/>
+                        </group>
+                    </group>
+                </page>
+            </xpath>
+        </field>
+    </record>
+
+    <!-- Battery Action Window -->
+    <record id="action_simply_fleet_battery" model="ir.actions.act_window">
+        <field name="name">Batteries</field>
+        <field name="res_model">simply.fleet.battery</field>
+        <field name="view_mode">tree,form</field>
+        <field name="search_view_id" ref="view_simply_fleet_battery_search"/>
+        <field name="context">{'search_default_active': 1}</field>
+        <field name="help" type="html">
+            <p class="o_view_nocontent_smiling_face">
+                Create your first battery record!
+            </p>
+            <p>
+                Keep track of all your vehicle batteries, their maintenance history, and performance.
+            </p>
+        </field>
+    </record>
+
+    <!-- Battery Maintenance Action Window -->
+    <record id="action_simply_fleet_battery_maintenance" model="ir.actions.act_window">
+        <field name="name">Battery Maintenance</field>
+        <field name="res_model">simply.fleet.battery.maintenance</field>
+        <field name="view_mode">tree,form</field>
+        <field name="help" type="html">
+            <p class="o_view_nocontent_smiling_face">
+                Create your first battery maintenance record!
+            </p>
+            <p>
+                Track all maintenance activities for your vehicle batteries.
+            </p>
+        </field>
+    </record>
+</odoo>

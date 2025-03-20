@@ -1,0 +1,358 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <data>
+        <!-- Actions -->
+        <record id="action_simply_fleet_vehicle" model="ir.actions.act_window">
+            <field name="name">Vehicles</field>
+            <field name="res_model">simply.fleet.vehicle</field>
+            <field name="view_mode">tree,form</field>
+            <field name="help" type="html">
+                <p class="o_view_nocontent_smiling_face">
+                    Create your first vehicle
+                </p>
+            </field>
+        </record>
+
+        <record id="action_simply_fleet_document" model="ir.actions.act_window">
+            <field name="name">Documents</field>
+            <field name="res_model">simply.fleet.document</field>
+            <field name="view_mode">tree,form</field>
+            <field name="context">{'search_default_valid': 1}</field>
+            <field name="help" type="html">
+                <p class="o_view_nocontent_smiling_face">
+                    Create your first vehicle document
+                </p>
+            </field>
+        </record>
+
+        <!-- Vehicle Inspection Action -->
+        <record id="action_simply_fleet_vehicle_inspection" model="ir.actions.act_window">
+            <field name="name">Vehicle Inspections</field>
+            <field name="res_model">simply.fleet.vehicle.inspection</field>
+            <field name="view_mode">tree,form</field>
+            <field name="context">{'search_default_my_inspections': 1}</field>
+            <field name="help" type="html">
+                <p class="o_view_nocontent_smiling_face">
+                    Create your first vehicle inspection
+                </p>
+                <p>
+                    Track and manage vehicle inspections, maintenance issues, and repairs.
+                </p>
+            </field>
+        </record>
+
+        <!-- Unified Fuel Logs Action -->
+        <record id="action_simply_fleet_fuel_log" model="ir.actions.act_window">
+            <field name="name">Fuel Logs</field>
+            <field name="res_model">simply.fleet.fuel.log</field>
+            <field name="view_mode">kanban,tree,form,graph,pivot</field>
+            <field name="context">{'search_default_this_month': 1, 'search_default_my_logs': 1}</field>
+            <field name="help" type="html">
+                <p class="o_view_nocontent_smiling_face">
+                    Create your first fuel log
+                </p>
+            </field>
+        </record>
+
+        <!-- Vehicle Group Action -->
+        <record id="action_simply_fleet_vehicle_group" model="ir.actions.act_window">
+            <field name="name">Vehicle Groups</field>
+            <field name="res_model">simply.fleet.vehicle.group</field>
+            <field name="view_mode">tree,form</field>
+            <field name="help" type="html">
+                <p class="o_view_nocontent_smiling_face">
+                    Create your first vehicle group!
+                </p>
+                <p>
+                    Organize your fleet by creating vehicle groups.
+                </p>
+            </field>
+        </record>
+
+        <!-- Vehicle Type Action -->
+        <record id="action_simply_fleet_vehicle_type" model="ir.actions.act_window">
+            <field name="name">Vehicle Types</field>
+            <field name="res_model">simply.fleet.vehicle.type</field>
+            <field name="view_mode">tree,form</field>
+            <field name="help" type="html">
+                <p class="o_view_nocontent_smiling_face">
+                    Create your first vehicle type!
+                </p>
+                <p>
+                    Define different types of vehicles in your fleet.
+                </p>
+            </field>
+        </record>
+
+        <!-- Fleet Manager Assignment Action -->
+        <record id="action_fleet_manager_assignment" model="ir.actions.act_window">
+            <field name="name">Fleet Manager Assignments</field>
+            <field name="res_model">simply.fleet.manager.assignment</field>
+            <field name="view_mode">tree,form</field>
+            <field name="context">{'search_default_active': 1}</field>
+            <field name="help" type="html">
+                <p class="o_view_nocontent_smiling_face">
+                    Create your first Fleet Manager Assignment!
+                </p>
+                <p>
+                    Assign vehicle groups to fleet managers and track their responsibilities.
+                </p>
+            </field>
+        </record>
+
+        <!-- Tyre Action -->
+        <record id="action_simply_fleet_tyre" model="ir.actions.act_window">
+            <field name="name">Vehicle Tyres</field>
+            <field name="res_model">simply.fleet.tyre</field>
+            <field name="view_mode">kanban,tree,form,graph,pivot</field>
+            <field name="context">{'search_default_in_use': 1}</field>
+            <field name="help" type="html">
+                <p class="o_view_nocontent_smiling_face">
+                    Create your first tyre record!
+                </p>
+                <p>
+                    Track and manage your vehicle tyres.
+                </p>
+            </field>
+        </record>
+
+        <!-- Inspection Template Action -->
+        <record id="action_simply_fleet_inspection_template" model="ir.actions.act_window">
+            <field name="name">Inspection Templates</field>
+            <field name="res_model">simply.fleet.inspection.template</field>
+            <field name="view_mode">tree,form</field>
+            <field name="help" type="html">
+                <p class="o_view_nocontent_smiling_face">
+                    Create your first inspection template
+                </p>
+                <p>
+                    Define templates for different types of vehicle inspections.
+                </p>
+            </field>
+        </record>
+
+        <!-- Inspection Schedule Action -->
+        <record id="action_simply_fleet_inspection_schedule" model="ir.actions.act_window">
+            <field name="name">Inspection Schedules</field>
+            <field name="res_model">simply.fleet.inspection.schedule</field>
+            <field name="view_mode">tree,form</field>
+            <field name="context">{'search_default_active': 1}</field>
+            <field name="help" type="html">
+                <p class="o_view_nocontent_smiling_face">
+                    Create your first inspection schedule
+                </p>
+                <p>
+                    Set up automated inspection schedules for your vehicles.
+                </p>
+            </field>
+        </record>
+
+        <!-- Vehicle Inspection Views -->
+        <record id="view_simply_fleet_vehicle_inspection_tree" model="ir.ui.view">
+            <field name="name">simply.fleet.vehicle.inspection.tree</field>
+            <field name="model">simply.fleet.vehicle.inspection</field>
+            <field name="arch" type="xml">
+                <tree string="Vehicle Inspections" decoration-danger="state=='failed'" decoration-success="state=='completed'" decoration-info="state=='in_progress'">
+                    <field name="name"/>
+                    <field name="vehicle_id"/>
+                    <field name="inspection_date"/>
+                    <field name="inspector_id"/>
+                    <field name="total_issues"/>
+                    <field name="critical_issues"/>
+                    <field name="state"/>
+                </tree>
+            </field>
+        </record>
+
+        <record id="view_simply_fleet_vehicle_inspection_form" model="ir.ui.view">
+            <field name="name">simply.fleet.vehicle.inspection.form</field>
+            <field name="model">simply.fleet.vehicle.inspection</field>
+            <field name="arch" type="xml">
+                <form string="Vehicle Inspection">
+                    <header>
+                        <button name="action_start_inspection" string="Start Inspection" 
+                                type="object" class="oe_highlight" 
+                                invisible="state != 'draft'"/>
+                        <button name="action_complete_inspection" string="Complete Inspection" 
+                                type="object" class="oe_highlight"
+                                invisible="state != 'in_progress'"/>
+                        <field name="state" widget="statusbar" 
+                               statusbar_visible="draft,in_progress,completed,failed"
+                               options="{'clickable': '1'}"/>
+                    </header>
+                    <sheet>
+                        <div class="oe_button_box" name="button_box">
+                            <!-- Add smart buttons here if needed -->
+                        </div>
+                        <div class="oe_title">
+                            <h1>
+                                <field name="name" readonly="1"/>
+                            </h1>
+                        </div>
+                        <group>
+                            <group>
+                                <field name="vehicle_id" invisible="state != 'draft'"/>
+                                <field name="inspection_date"/>
+                                <field name="inspector_id"/>
+                            </group>
+                            <group>
+                                <field name="odometer"/>
+                                <field name="odometer_unit"/>
+                                <field name="total_issues"/>
+                                <field name="critical_issues"/>
+                            </group>
+                        </group>
+                        <notebook>
+                            <page string="Inspection Items" name="inspection_items">
+                                <field name="inspection_line_ids">
+                                    <tree editable="bottom">
+                                        <field name="category"/>
+                                        <field name="component"/>
+                                        <field name="status"/>
+                                        <field name="priority"/>
+                                        <field name="description"/>
+                                        <field name="recommended_action"/>
+                                        <field name="estimated_cost"/>
+                                    </tree>
+                                </field>
+                            </page>
+                            <page string="Notes" name="notes">
+                                <field name="notes"/>
+                            </page>
+                            <page string="Documents" name="documents">
+                                <field name="inspection_document_ids" widget="many2many_binary"/>
+                            </page>
+                        </notebook>
+                    </sheet>
+                    <div class="oe_chatter">
+                        <field name="message_follower_ids"/>
+                        <field name="activity_ids"/>
+                        <field name="message_ids"/>
+                    </div>
+                </form>
+            </field>
+        </record>
+
+        <record id="view_simply_fleet_vehicle_inspection_search" model="ir.ui.view">
+            <field name="name">simply.fleet.vehicle.inspection.search</field>
+            <field name="model">simply.fleet.vehicle.inspection</field>
+            <field name="arch" type="xml">
+                <search string="Search Vehicle Inspections">
+                    <field name="name"/>
+                    <field name="vehicle_id"/>
+                    <field name="inspector_id"/>
+                    <filter string="My Inspections" name="my_inspections" 
+                            domain="[('inspector_id', '=', uid)]"/>
+                    <filter string="Draft" name="draft_inspections" 
+                            domain="[('state', '=', 'draft')]"/>
+                    <filter string="In Progress" name="in_progress_inspections" 
+                            domain="[('state', '=', 'in_progress')]"/>
+                    <filter string="Completed" name="completed_inspections" 
+                            domain="[('state', '=', 'completed')]"/>
+                    <filter string="Failed" name="failed_inspections" 
+                            domain="[('state', '=', 'failed')]"/>
+                    <group expand="0" string="Group By">
+                        <filter string="Vehicle" name="group_vehicle" 
+                                context="{'group_by': 'vehicle_id'}"/>
+                        <filter string="Status" name="group_state" 
+                                context="{'group_by': 'state'}"/>
+                        <filter string="Inspection Date" name="group_date" 
+                                context="{'group_by': 'inspection_date:month'}"/>
+                    </group>
+                </search>
+            </field>
+        </record>
+
+        <!-- Unified Menu Structure -->
+        <menuitem 
+            id="menu_simply_fleet_root"
+            name="Simply Fleet"
+            web_icon="simply_fleet,static/description/icon.png"
+            sequence="10"/>
+
+        <menuitem 
+            id="menu_simply_fleet_vehicles"
+            name="Vehicles"
+            parent="menu_simply_fleet_root"
+            action="action_simply_fleet_vehicle"
+            sequence="10"/>
+
+        <menuitem 
+            id="menu_simply_fleet_documents"
+            name="Documents"
+            parent="menu_simply_fleet_root"
+            action="action_simply_fleet_document"
+            sequence="20"/>
+
+        <!-- Inspections Menu Group -->
+        <menuitem 
+            id="menu_simply_fleet_inspections"
+            name="Inspections"
+            parent="menu_simply_fleet_root"
+            sequence="25"/>
+
+        <!-- Vehicle Inspections Menu Item -->
+        <menuitem 
+            id="menu_simply_fleet_vehicle_inspection"
+            name="Vehicle Inspections"
+            parent="menu_simply_fleet_inspections"
+            action="action_simply_fleet_vehicle_inspection"
+            sequence="10"/>
+
+        <menuitem 
+            id="menu_simply_fleet_fuel_logs"
+            name="Fuel Logs"
+            parent="menu_simply_fleet_root"
+            action="action_simply_fleet_fuel_log"
+            sequence="30"/>
+
+        <menuitem 
+            id="menu_simply_fleet_reporting"
+            name="Reporting"
+            parent="menu_simply_fleet_root"
+            sequence="50"/>
+
+        <menuitem 
+            id="menu_simply_fleet_config"
+            name="Configuration"
+            parent="menu_simply_fleet_root"
+            sequence="100"/>
+
+        <!-- Configuration Menu Items -->
+        <menuitem 
+            id="menu_simply_fleet_vehicle_type"
+            name="Vehicle Types"
+            parent="menu_simply_fleet_config"
+            action="action_simply_fleet_vehicle_type"
+            sequence="10"/>
+
+        <menuitem 
+            id="menu_simply_fleet_inspection_template"
+            name="Inspection Templates"
+            parent="menu_simply_fleet_inspections"
+            action="action_simply_fleet_inspection_template"
+            sequence="20"/>
+
+        <menuitem 
+            id="menu_simply_fleet_inspection_schedule"
+            name="Inspection Schedules"
+            parent="menu_simply_fleet_inspections"
+            action="action_simply_fleet_inspection_schedule"
+            sequence="30"/>
+
+        <menuitem 
+            id="menu_simply_fleet_vehicle_group"
+            name="Vehicle Groups"
+            parent="menu_simply_fleet_config"
+            action="action_simply_fleet_vehicle_group"
+            sequence="20"/>
+
+        <menuitem 
+            id="menu_fleet_manager_assignment"
+            name="Fleet Manager Assignments"
+            parent="menu_simply_fleet_config"
+            action="action_fleet_manager_assignment"
+            sequence="30"/>
+
+    </data>
+</odoo>

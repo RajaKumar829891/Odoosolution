@@ -1,0 +1,85 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <!-- Vehicle Group Tree View -->
+    <record id="view_simply_fleet_vehicle_group_tree" model="ir.ui.view">
+        <field name="name">simply.fleet.vehicle.group.tree</field>
+        <field name="model">simply.fleet.vehicle.group</field>
+        <field name="arch" type="xml">
+            <tree>
+                <field name="ref"/>
+                <field name="name"/>
+                <field name="vehicle_count"/>
+            </tree>
+        </field>
+    </record>
+
+    <!-- Vehicle Group Form View -->
+    <record id="view_simply_fleet_vehicle_group_form" model="ir.ui.view">
+        <field name="name">simply.fleet.vehicle.group.form</field>
+        <field name="model">simply.fleet.vehicle.group</field>
+        <field name="arch" type="xml">
+            <form>
+                <sheet>
+                    <div class="oe_button_box" name="button_box">
+                        <button name="action_view_vehicles" type="object" 
+                                class="oe_stat_button" icon="fa-car">
+                            <field name="vehicle_count" widget="statinfo" string="Vehicles"/>
+                        </button>
+                    </div>
+                    <div class="oe_title">
+                        <h1>
+                            <field name="ref" readonly="1"/>
+                        </h1>
+                        <h2>
+                            <field name="name" placeholder="Group Name"/>
+                        </h2>
+                    </div>
+                    <group>
+                        <group>
+                            <field name="active" widget="boolean_toggle"/>
+                        </group>
+                    </group>
+                    <notebook>
+                        <page string="Description">
+                            <field name="description" placeholder="Description..."/>
+                        </page>
+                        <page string="Notes">
+                            <field name="notes" placeholder="Internal notes..."/>
+                        </page>
+                        <page string="Vehicles">
+                            <field name="vehicle_ids" readonly="1">
+                                <tree>
+                                    <field name="ref"/>
+                                    <field name="name"/>
+                                    <field name="brand"/>
+                                    <field name="model"/>
+                                    <field name="year"/>
+                                    <field name="state"/>
+                                </tree>
+                            </field>
+                        </page>
+                    </notebook>
+                </sheet>
+                <div class="oe_chatter">
+                    <field name="message_follower_ids" widget="mail_followers"/>
+                    <field name="activity_ids" widget="mail_activity"/>
+                    <field name="message_ids" widget="mail_thread"/>
+                </div>
+            </form>
+        </field>
+    </record>
+
+    <!-- Vehicle Group Search View -->
+    <record id="view_simply_fleet_vehicle_group_search" model="ir.ui.view">
+        <field name="name">simply.fleet.vehicle.group.search</field>
+        <field name="model">simply.fleet.vehicle.group</field>
+        <field name="arch" type="xml">
+            <search>
+                <field name="name"/>
+                <field name="ref"/>
+                <separator/>
+                <filter string="Archived" name="inactive" domain="[('active', '=', False)]"/>
+            </search>
+        </field>
+    </record>
+</odoo>

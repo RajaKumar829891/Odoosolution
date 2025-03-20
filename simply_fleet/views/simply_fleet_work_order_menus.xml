@@ -1,0 +1,48 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <!-- Work Order Action -->
+    <record id="action_simply_fleet_work_order" model="ir.actions.act_window">
+        <field name="name">Work Orders</field>
+        <field name="res_model">simply.vehicle.work.order</field>
+        <field name="view_mode">tree,form</field>
+        <field name="context">{'search_default_my_work_orders': 1}</field>
+        <field name="help" type="html">
+            <p class="o_view_nocontent_smiling_face">
+                Create your first work order
+            </p>
+            <p>
+                Create work orders to track vehicle repairs and maintenance tasks.
+            </p>
+        </field>
+    </record>
+
+    <!-- Work Orders Menu Group -->
+    <menuitem 
+        id="menu_simply_fleet_work_orders"
+        name="Work Orders"
+        parent="menu_simply_fleet_root"
+        sequence="27"/>
+
+    <!-- Work Orders Menu Item -->
+    <menuitem 
+        id="menu_simply_fleet_vehicle_work_order"
+        name="Work Orders"
+        parent="menu_simply_fleet_work_orders"
+        action="action_simply_fleet_work_order"
+        sequence="10"/>
+
+    <!-- Work Order Templates Configuration -->
+    <menuitem 
+        id="menu_simply_fleet_work_order_config"
+        name="Work Order Templates"
+        parent="menu_simply_fleet_work_orders"
+        sequence="20"/>
+
+    <!-- Work Order Analysis Report -->
+    <menuitem 
+        id="menu_simply_fleet_work_order_reporting"
+        name="Work Order Analysis"
+        parent="menu_simply_fleet_reporting"
+        action="action_simply_fleet_work_order"
+        sequence="20"/>
+</odoo>

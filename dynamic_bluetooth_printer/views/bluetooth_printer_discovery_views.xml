@@ -1,0 +1,37 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <!-- Bluetooth Printer Discovery Wizard Form View -->
+    <record id="view_bluetooth_printer_discovery_form" model="ir.ui.view">
+        <field name="name">bluetooth.printer.discovery.form</field>
+        <field name="model">bluetooth.printer.discovery</field>
+        <field name="arch" type="xml">
+            <form string="Discover Bluetooth Printers">
+                <field name="scan_message" readonly="1"/>
+                
+                <group>
+                    <field name="discovered_printer_ids" nolabel="1">
+                        <tree editable="bottom">
+                            <field name="selected" widget="boolean_toggle"/>
+                            <field name="name"/>
+                            <field name="mac_address"/>
+                        </tree>
+                    </field>
+                </group>
+                
+                <footer>
+                    <button name="action_scan" string="Scan Again" type="object" class="btn-primary"/>
+                    <button name="action_add_printer" string="Add Selected Printer" type="object" class="btn-primary"/>
+                    <button special="cancel" string="Cancel" class="btn-secondary"/>
+                </footer>
+            </form>
+        </field>
+    </record>
+
+    <!-- Bluetooth Printer Discovery Wizard Action -->
+    <record id="action_bluetooth_printer_discovery" model="ir.actions.act_window">
+        <field name="name">Discover Printers</field>
+        <field name="res_model">bluetooth.printer.discovery</field>
+        <field name="view_mode">form</field>
+        <field name="target">new</field>
+    </record>
+</odoo>
