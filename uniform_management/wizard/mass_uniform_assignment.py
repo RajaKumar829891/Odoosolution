@@ -1,6 +1,20 @@
 from odoo import models, fields, api, _
 from odoo.exceptions import ValidationError
 
+class MassUniformAssignmentLine(models.TransientModel):
+    _name = 'mass.uniform.assignment.line'
+    _description = 'Mass Uniform Assignment Line'
+    
+    wizard_id = fields.Many2one('mass.uniform.assignment', string='Wizard')
+    employee_id = fields.Many2one('hr.employee', string='Employee', required=True)
+    size_id = fields.Many2one('uniform.size', string='Size')
+    quantity = fields.Integer('Quantity', default=1)
+    has_size = fields.Boolean('Has Size', help="Indicates if a size was automatically determined")
+    
+    # Additional fields to help in display
+    department_id = fields.Many2one(related='employee_id.department_id', string='Department')
+    job_id = fields.Many2one(related='employee_id.job_id', string='Job Position')
+
 class MassUniformAssignment(models.TransientModel):
     _name = 'mass.uniform.assignment'
     _description = 'Mass Uniform Assignment'

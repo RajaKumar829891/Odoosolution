@@ -1,12 +1,20 @@
 <?xml version="1.0" encoding="utf-8"?>
 <odoo>
-    <!-- Main menu for uniform management -->
+    <!-- Main menu for uniform management (define root menu first) -->
     <menuitem id="menu_uniform_root" 
               name="Uniforms" 
               parent="hr.menu_hr_root" 
               sequence="90" 
               groups="hr.group_hr_user"/>
     
+    <!-- Dashboard submenu -->
+    <menuitem id="menu_uniform_dashboard" 
+              name="Dashboard" 
+              parent="menu_uniform_root" 
+              action="action_uniform_dashboard" 
+              sequence="1" 
+              groups="hr.group_hr_user"/>
+              
     <!-- Uniform assignments submenu -->
     <menuitem id="menu_uniform_assignments" 
               name="Uniform Assignments" 

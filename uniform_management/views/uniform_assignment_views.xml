@@ -27,9 +27,9 @@
         <field name="arch" type="xml">
             <form string="Uniform Assignment">
                 <header>
-                    <button name="action_assign" string="Assign" type="object" class="oe_highlight" attrs="{'invisible': [('state', '!=', 'draft')]}"/>
-                    <button name="action_return" string="Return" type="object" class="oe_highlight" attrs="{'invisible': ['|', ('state', 'not in', ['assigned', 'partially_returned']), ('quantity', '&lt;=', 'returned_qty')]}"/>
-                    <button name="action_cancel" string="Cancel" type="object" attrs="{'invisible': [('state', 'in', ['returned', 'cancelled'])]}"/>
+                    <button name="action_assign" string="Assign" type="object" class="oe_highlight" invisible="state != 'draft'"/>
+                    <button name="action_return" string="Return" type="object" class="oe_highlight" invisible="state not in ['assigned', 'partially_returned'] or quantity &lt;= returned_qty"/>
+                    <button name="action_cancel" string="Cancel" type="object" invisible="state in ['returned', 'cancelled']"/>
                     <field name="state" widget="statusbar" statusbar_visible="draft,assigned,partially_returned,returned"/>
                 </header>
                 <sheet>
@@ -40,16 +40,16 @@
                     </div>
                     <group>
                         <group>
-                            <field name="employee_id" attrs="{'readonly': [('state', '!=', 'draft')]}"/>
-                            <field name="assignment_date" attrs="{'readonly': [('state', '!=', 'draft')]}"/>
+                            <field name="employee_id" readonly="state != 'draft'"/>
+                            <field name="assignment_date" readonly="state != 'draft'"/>
                             <field name="expected_return_date" readonly="1"/>
                         </group>
                         <group>
-                            <field name="item_id" attrs="{'readonly': [('state', '!=', 'draft')]}"/>
+                            <field name="item_id" readonly="state != 'draft'"/>
                             <field name="category" readonly="1"/>
                             <field name="type_id" readonly="1"/>
-                            <field name="size_id" attrs="{'readonly': [('state', '!=', 'draft')]}"/>
-                            <field name="quantity" attrs="{'readonly': [('state', '!=', 'draft')]}"/>
+                            <field name="size_id" readonly="state != 'draft'"/>
+                            <field name="quantity" readonly="state != 'draft'"/>
                             <field name="returned_qty" readonly="1"/>
                         </group>
                     </group>
@@ -57,7 +57,7 @@
                         <page string="Notes">
                             <field name="notes" placeholder="Add additional notes here..."/>
                         </page>
-                        <page string="Returns" attrs="{'invisible': [('returned_qty', '=', 0)]}">
+                        <page string="Returns" invisible="returned_qty == 0">
                             <field name="return_ids" readonly="1">
                                 <tree>
                                     <field name="name"/>
