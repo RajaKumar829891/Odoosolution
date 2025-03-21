@@ -1,0 +1,14 @@
+id,name,model_id:id,group_id:id,perm_read,perm_write,perm_create,perm_unlink
+access_uniform_item_user,uniform.item.user,model_uniform_item,hr.group_hr_user,1,0,0,0
+access_uniform_item_manager,uniform.item.manager,model_uniform_item,hr.group_hr_manager,1,1,1,1
+access_uniform_type_user,uniform.type.user,model_uniform_type,hr.group_hr_user,1,0,0,0
+access_uniform_type_manager,uniform.type.manager,model_uniform_type,hr.group_hr_manager,1,1,1,1
+access_uniform_size_user,uniform.size.user,model_uniform_size,hr.group_hr_user,1,0,0,0
+access_uniform_size_manager,uniform.size.manager,model_uniform_size,hr.group_hr_manager,1,1,1,1
+access_uniform_assignment_user,uniform.assignment.user,model_uniform_assignment,hr.group_hr_user,1,1,1,0
+access_uniform_assignment_manager,uniform.assignment.manager,model_uniform_assignment,hr.group_hr_manager,1,1,1,1
+access_uniform_return_user,uniform.return.user,model_uniform_return,hr.group_hr_user,1,1,1,0
+access_uniform_return_manager,uniform.return.manager,model_uniform_return,hr.group_hr_manager,1,1,1,1
+access_uniform_return_wizard_user,uniform.return.wizard.user,model_uniform_return_wizard,hr.group_hr_user,1,1,1,1
+access_mass_uniform_assignment_manager,mass.uniform.assignment.manager,model_mass_uniform_assignment,hr.group_hr_manager,1,1,1,1
+access_mass_uniform_assignment_line_manager,mass.uniform.assignment.line.manager,model_mass_uniform_assignment_line,hr.group_hr_manager,1,1,1,1

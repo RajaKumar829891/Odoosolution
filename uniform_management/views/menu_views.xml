@@ -1,0 +1,86 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <!-- Main menu for uniform management -->
+    <menuitem id="menu_uniform_root" 
+              name="Uniforms" 
+              parent="hr.menu_hr_root" 
+              sequence="90" 
+              groups="hr.group_hr_user"/>
+    
+    <!-- Uniform assignments submenu -->
+    <menuitem id="menu_uniform_assignments" 
+              name="Uniform Assignments" 
+              parent="menu_uniform_root" 
+              action="action_uniform_assignment" 
+              sequence="10" 
+              groups="hr.group_hr_user"/>
+              
+    <!-- Uniform returns submenu -->
+    <menuitem id="menu_uniform_returns" 
+              name="Uniform Returns" 
+              parent="menu_uniform_root" 
+              action="action_uniform_return" 
+              sequence="20" 
+              groups="hr.group_hr_user"/>
+              
+    <!-- Configuration submenu -->
+    <menuitem id="menu_uniform_config" 
+              name="Configuration" 
+              parent="menu_uniform_root" 
+              sequence="100" 
+              groups="hr.group_hr_manager"/>
+              
+    <!-- Uniform items submenu -->
+    <menuitem id="menu_uniform_items" 
+              name="Uniform Items" 
+              parent="menu_uniform_config" 
+              action="action_uniform_item" 
+              sequence="10" 
+              groups="hr.group_hr_manager"/>
+    
+    <!-- Uniform types submenu -->
+    <menuitem id="menu_uniform_types" 
+              name="Uniform Types" 
+              parent="menu_uniform_config" 
+              action="action_uniform_type" 
+              sequence="20" 
+              groups="hr.group_hr_manager"/>
+              
+    <!-- Uniform sizes submenu -->
+    <menuitem id="menu_uniform_sizes" 
+              name="Size Chart" 
+              parent="menu_uniform_config" 
+              action="action_uniform_size" 
+              sequence="30" 
+              groups="hr.group_hr_manager"/>
+              
+    <!-- Mass operations submenu -->
+    <menuitem id="menu_uniform_mass_operations" 
+              name="Mass Operations" 
+              parent="menu_uniform_root" 
+              sequence="50" 
+              groups="hr.group_hr_manager"/>
+              
+    <!-- Mass assignment submenu -->
+    <menuitem id="menu_mass_uniform_assignment" 
+              name="Mass Uniform Assignment" 
+              parent="menu_uniform_mass_operations" 
+              action="action_mass_uniform_assignment" 
+              sequence="10" 
+              groups="hr.group_hr_manager"/>
+              
+    <!-- Reports submenu -->
+    <menuitem id="menu_uniform_reports" 
+              name="Reports" 
+              parent="menu_uniform_root" 
+              sequence="90" 
+              groups="hr.group_hr_user"/>
+              
+    <!-- Uniform assignment report submenu -->
+    <menuitem id="menu_uniform_assignment_report" 
+              name="Uniform Assignment Report" 
+              parent="menu_uniform_reports" 
+              action="action_uniform_assignment_report" 
+              sequence="10" 
+              groups="hr.group_hr_user"/>
+</odoo>

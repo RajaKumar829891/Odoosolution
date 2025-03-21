@@ -1,0 +1,47 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <data noupdate="1">
+        <!-- Default Uniform Types -->
+        <record id="uniform_type_office" model="uniform.type">
+            <field name="name">Office Uniform</field>
+            <field name="code">OFFICE</field>
+            <field name="description">Standard office attire for administrative staff</field>
+        </record>
+        
+        <record id="uniform_type_factory" model="uniform.type">
+            <field name="name">Factory Uniform</field>
+            <field name="code">FACTORY</field>
+            <field name="description">Protective clothing for factory workers</field>
+        </record>
+        
+        <record id="uniform_type_field" model="uniform.type">
+            <field name="name">Field Uniform</field>
+            <field name="code">FIELD</field>
+            <field name="description">Durable clothing for field workers</field>
+        </record>
+        
+        <record id="uniform_type_maintenance" model="uniform.type">
+            <field name="name">Maintenance Uniform</field>
+            <field name="code">MAINT</field>
+            <field name="description">Specialized attire for maintenance staff</field>
+        </record>
+        
+        <!-- Create IR sequence for uniform assignment -->
+        <record id="seq_uniform_assignment" model="ir.sequence">
+            <field name="name">Uniform Assignment</field>
+            <field name="code">uniform.assignment</field>
+            <field name="prefix">UNI/</field>
+            <field name="padding">5</field>
+            <field name="company_id" eval="False"/>
+        </record>
+        
+        <!-- Create IR sequence for uniform return -->
+        <record id="seq_uniform_return" model="ir.sequence">
+            <field name="name">Uniform Return</field>
+            <field name="code">uniform.return</field>
+            <field name="prefix">RET/</field>
+            <field name="padding">5</field>
+            <field name="company_id" eval="False"/>
+        </record>
+    </data>
+</odoo>

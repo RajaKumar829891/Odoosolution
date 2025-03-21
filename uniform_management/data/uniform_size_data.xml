@@ -1,0 +1,258 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <data noupdate="1">
+        <!-- T-Shirt Sizes (Letter) -->
+        <record id="uniform_size_xs" model="uniform.size">
+            <field name="name">XS</field>
+            <field name="sequence">10</field>
+            <field name="size_type">letter</field>
+            <field name="description">Extra Small</field>
+            <field name="chest_measurement">86</field>
+            <field name="equivalent_international">XS</field>
+            <field name="equivalent_us">XS</field>
+            <field name="equivalent_eu">42</field>
+            <field name="equivalent_uk">32</field>
+        </record>
+        
+        <record id="uniform_size_s" model="uniform.size">
+            <field name="name">S</field>
+            <field name="sequence">20</field>
+            <field name="size_type">letter</field>
+            <field name="description">Small</field>
+            <field name="chest_measurement">91</field>
+            <field name="equivalent_international">S</field>
+            <field name="equivalent_us">S</field>
+            <field name="equivalent_eu">44-46</field>
+            <field name="equivalent_uk">34-36</field>
+        </record>
+        
+        <record id="uniform_size_m" model="uniform.size">
+            <field name="name">M</field>
+            <field name="sequence">30</field>
+            <field name="size_type">letter</field>
+            <field name="description">Medium</field>
+            <field name="chest_measurement">97</field>
+            <field name="equivalent_international">M</field>
+            <field name="equivalent_us">M</field>
+            <field name="equivalent_eu">48-50</field>
+            <field name="equivalent_uk">38-40</field>
+        </record>
+        
+        <record id="uniform_size_l" model="uniform.size">
+            <field name="name">L</field>
+            <field name="sequence">40</field>
+            <field name="size_type">letter</field>
+            <field name="description">Large</field>
+            <field name="chest_measurement">104</field>
+            <field name="equivalent_international">L</field>
+            <field name="equivalent_us">L</field>
+            <field name="equivalent_eu">52-54</field>
+            <field name="equivalent_uk">42-44</field>
+        </record>
+        
+        <record id="uniform_size_xl" model="uniform.size">
+            <field name="name">XL</field>
+            <field name="sequence">50</field>
+            <field name="size_type">letter</field>
+            <field name="description">Extra Large</field>
+            <field name="chest_measurement">111</field>
+            <field name="equivalent_international">XL</field>
+            <field name="equivalent_us">XL</field>
+            <field name="equivalent_eu">56-58</field>
+            <field name="equivalent_uk">46-48</field>
+        </record>
+        
+        <record id="uniform_size_xxl" model="uniform.size">
+            <field name="name">XXL</field>
+            <field name="sequence">60</field>
+            <field name="size_type">letter</field>
+            <field name="description">Double Extra Large</field>
+            <field name="chest_measurement">118</field>
+            <field name="equivalent_international">XXL</field>
+            <field name="equivalent_us">XXL</field>
+            <field name="equivalent_eu">60-62</field>
+            <field name="equivalent_uk">50-52</field>
+        </record>
+        
+        <!-- Pants Sizes (Numeric) -->
+        <record id="uniform_size_28" model="uniform.size">
+            <field name="name">28</field>
+            <field name="sequence">10</field>
+            <field name="size_type">numeric</field>
+            <field name="description">Waist size 28 inches</field>
+            <field name="waist_measurement">71</field>
+        </record>
+        
+        <record id="uniform_size_30" model="uniform.size">
+            <field name="name">30</field>
+            <field name="sequence">20</field>
+            <field name="size_type">numeric</field>
+            <field name="description">Waist size 30 inches</field>
+            <field name="waist_measurement">76</field>
+        </record>
+        
+        <record id="uniform_size_32" model="uniform.size">
+            <field name="name">32</field>
+            <field name="sequence">30</field>
+            <field name="size_type">numeric</field>
+            <field name="description">Waist size 32 inches</field>
+            <field name="waist_measurement">81</field>
+        </record>
+        
+        <record id="uniform_size_34" model="uniform.size">
+            <field name="name">34</field>
+            <field name="sequence">40</field>
+            <field name="size_type">numeric</field>
+            <field name="description">Waist size 34 inches</field>
+            <field name="waist_measurement">86</field>
+        </record>
+        
+        <record id="uniform_size_36" model="uniform.size">
+            <field name="name">36</field>
+            <field name="sequence">50</field>
+            <field name="size_type">numeric</field>
+            <field name="description">Waist size 36 inches</field>
+            <field name="waist_measurement">91</field>
+        </record>
+        
+        <record id="uniform_size_38" model="uniform.size">
+            <field name="name">38</field>
+            <field name="sequence">60</field>
+            <field name="size_type">numeric</field>
+            <field name="description">Waist size 38 inches</field>
+            <field name="waist_measurement">97</field>
+        </record>
+        
+        <record id="uniform_size_40" model="uniform.size">
+            <field name="name">40</field>
+            <field name="sequence">70</field>
+            <field name="size_type">numeric</field>
+            <field name="description">Waist size 40 inches</field>
+            <field name="waist_measurement">102</field>
+        </record>
+        
+        <record id="uniform_size_42" model="uniform.size">
+            <field name="name">42</field>
+            <field name="sequence">80</field>
+            <field name="size_type">numeric</field>
+            <field name="description">Waist size 42 inches</field>
+            <field name="waist_measurement">107</field>
+        </record>
+        
+        <!-- Shoe Sizes -->
+        <record id="uniform_size_shoe_38" model="uniform.size">
+            <field name="name">38</field>
+            <field name="sequence">10</field>
+            <field name="size_type">shoe</field>
+            <field name="description">EU Size 38</field>
+            <field name="foot_length">24.0</field>
+            <field name="equivalent_us">6</field>
+            <field name="equivalent_uk">5</field>
+        </record>
+        
+        <record id="uniform_size_shoe_39" model="uniform.size">
+            <field name="name">39</field>
+            <field name="sequence">20</field>
+            <field name="size_type">shoe</field>
+            <field name="description">EU Size 39</field>
+            <field name="foot_length">24.6</field>
+            <field name="equivalent_us">6.5</field>
+            <field name="equivalent_uk">5.5</field>
+        </record>
+        
+        <record id="uniform_size_shoe_40" model="uniform.size">
+            <field name="name">40</field>
+            <field name="sequence">30</field>
+            <field name="size_type">shoe</field>
+            <field name="description">EU Size 40</field>
+            <field name="foot_length">25.2</field>
+            <field name="equivalent_us">7</field>
+            <field name="equivalent_uk">6</field>
+        </record>
+        
+        <record id="uniform_size_shoe_41" model="uniform.size">
+            <field name="name">41</field>
+            <field name="sequence">40</field>
+            <field name="size_type">shoe</field>
+            <field name="description">EU Size 41</field>
+            <field name="foot_length">25.8</field>
+            <field name="equivalent_us">8</field>
+            <field name="equivalent_uk">7</field>
+        </record>
+        
+        <record id="uniform_size_shoe_42" model="uniform.size">
+            <field name="name">42</field>
+            <field name="sequence">50</field>
+            <field name="size_type">shoe</field>
+            <field name="description">EU Size 42</field>
+            <field name="foot_length">26.5</field>
+            <field name="equivalent_us">9</field>
+            <field name="equivalent_uk">8</field>
+        </record>
+        
+        <record id="uniform_size_shoe_43" model="uniform.size">
+            <field name="name">43</field>
+            <field name="sequence">60</field>
+            <field name="size_type">shoe</field>
+            <field name="description">EU Size 43</field>
+            <field name="foot_length">27.1</field>
+            <field name="equivalent_us">10</field>
+            <field name="equivalent_uk">9</field>
+        </record>
+        
+        <record id="uniform_size_shoe_44" model="uniform.size">
+            <field name="name">44</field>
+            <field name="sequence">70</field>
+            <field name="size_type">shoe</field>
+            <field name="description">EU Size 44</field>
+            <field name="foot_length">27.8</field>
+            <field name="equivalent_us">10.5</field>
+            <field name="equivalent_uk">9.5</field>
+        </record>
+        
+        <record id="uniform_size_shoe_45" model="uniform.size">
+            <field name="name">45</field>
+            <field name="sequence">80</field>
+            <field name="size_type">shoe</field>
+            <field name="description">EU Size 45</field>
+            <field name="foot_length">28.5</field>
+            <field name="equivalent_us">11</field>
+            <field name="equivalent_uk">10</field>
+        </record>
+        
+        <record id="uniform_size_shoe_46" model="uniform.size">
+            <field name="name">46</field>
+            <field name="sequence">90</field>
+            <field name="size_type">shoe</field>
+            <field name="description">EU Size 46</field>
+            <field name="foot_length">29.1</field>
+            <field name="equivalent_us">12</field>
+            <field name="equivalent_uk">11</field>
+        </record>
+        
+        <!-- Link sizes to items -->
+        <!-- T-shirts (letter sizes) -->
+        <function model="uniform.item" name="write">
+            <value model="uniform.item" eval="[ref('uniform_item_office_tshirt'), ref('uniform_item_factory_tshirt')]"/>
+            <value eval="{'available_sizes': [(6, 0, [ref('uniform_size_xs'), ref('uniform_size_s'), ref('uniform_size_m'), ref('uniform_size_l'), ref('uniform_size_xl'), ref('uniform_size_xxl')])]}"/>
+        </function>
+        
+        <!-- Pants (numeric sizes) -->
+        <function model="uniform.item" name="write">
+            <value model="uniform.item" eval="[ref('uniform_item_office_pants'), ref('uniform_item_factory_pants')]"/>
+            <value eval="{'available_sizes': [(6, 0, [ref('uniform_size_28'), ref('uniform_size_30'), ref('uniform_size_32'), ref('uniform_size_34'), ref('uniform_size_36'), ref('uniform_size_38'), ref('uniform_size_40'), ref('uniform_size_42')])]}"/>
+        </function>
+        
+        <!-- Shoes (shoe sizes) -->
+        <function model="uniform.item" name="write">
+            <value model="uniform.item" eval="[ref('uniform_item_factory_shoes')]"/>
+            <value eval="{'available_sizes': [(6, 0, [ref('uniform_size_shoe_38'), ref('uniform_size_shoe_39'), ref('uniform_size_shoe_40'), ref('uniform_size_shoe_41'), ref('uniform_size_shoe_42'), ref('uniform_size_shoe_43'), ref('uniform_size_shoe_44'), ref('uniform_size_shoe_45'), ref('uniform_size_shoe_46')])]}"/>
+        </function>
+        
+        <!-- Belt (numeric sizes) -->
+        <function model="uniform.item" name="write">
+            <value model="uniform.item" eval="[ref('uniform_item_maintenance_belt')]"/>
+            <value eval="{'available_sizes': [(6, 0, [ref('uniform_size_28'), ref('uniform_size_30'), ref('uniform_size_32'), ref('uniform_size_34'), ref('uniform_size_36'), ref('uniform_size_38'), ref('uniform_size_40'), ref('uniform_size_42')])]}"/>
+        </function>
+    </data>
+</odoo>
