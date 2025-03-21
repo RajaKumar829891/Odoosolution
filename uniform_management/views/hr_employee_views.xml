@@ -22,7 +22,7 @@
                             <field name="last_uniform_date"/>
                             <button name="action_view_uniforms" string="View Uniforms" type="object" 
                                     class="oe_stat_button" icon="fa-list"
-                                    attrs="{'invisible': [('uniform_assignment_count', '=', 0)]}"/>
+                                    invisible="uniform_assignment_count == 0"/>
                             <button name="action_assign_uniform" string="Assign Uniform" type="object" 
                                     class="oe_highlight" icon="fa-plus"/>
                         </group>
@@ -49,17 +49,6 @@
         </field>
     </record>
     
-    <!-- Add uniforms button to employee kanban view -->
-    <record id="hr_employee_view_kanban_uniform" model="ir.ui.view">
-        <field name="name">hr.employee.kanban.uniform</field>
-        <field name="model">hr.employee</field>
-        <field name="inherit_id" ref="hr.hr_employee_view_kanban"/>
-        <field name="arch" type="xml">
-            <xpath expr="//div[hasclass('oe_kanban_details')]/ul" position="inside">
-                <li t-if="record.uniform_active_count.raw_value > 0">
-                    <span class="o_value"><t t-esc="record.uniform_active_count.value"/> Uniform(s)</span>
-                </li>
-            </xpath>
-        </field>
-    </record>
+    <!-- We'll remove the kanban view extension since the structure has likely changed in Odoo 17 -->
+    <!-- If needed, we can later add a revised kanban extension after checking Odoo 17's structure -->
 </odoo>

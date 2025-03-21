@@ -34,15 +34,15 @@
                             <field name="active"/>
                         </group>
                         <group>
-                            <field name="chest_measurement" attrs="{'invisible': [('size_type', '=', 'shoe')]}"/>
-                            <field name="waist_measurement" attrs="{'invisible': [('size_type', '=', 'shoe')]}"/>
-                            <field name="hip_measurement" attrs="{'invisible': [('size_type', '=', 'shoe')]}"/>
-                            <field name="length_measurement" attrs="{'invisible': [('size_type', '=', 'shoe')]}"/>
-                            <field name="foot_length" attrs="{'invisible': [('size_type', '!=', 'shoe')]}"/>
+                            <field name="chest_measurement" invisible="size_type == 'shoe'"/>
+                            <field name="waist_measurement" invisible="size_type == 'shoe'"/>
+                            <field name="hip_measurement" invisible="size_type == 'shoe'"/>
+                            <field name="length_measurement" invisible="size_type == 'shoe'"/>
+                            <field name="foot_length" invisible="size_type != 'shoe'"/>
                         </group>
                     </group>
                     <notebook>
-                        <page string="Size Equivalents" attrs="{'invisible': [('size_type', '=', 'numeric')]}">
+                        <page string="Size Equivalents" invisible="size_type == 'numeric'">
                             <group>
                                 <group>
                                     <field name="equivalent_international"/>
