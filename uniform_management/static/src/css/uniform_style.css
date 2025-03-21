@@ -1,0 +1,125 @@
+.o_uniform_dashboard {
+    padding: 20px;
+}
+
+.o_uniform_dashboard .o_stats_box {
+    background-color: #ffffff;
+    border-radius: 5px;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+    margin-bottom: 20px;
+    padding: 15px;
+    text-align: center;
+    transition: transform 0.2s ease;
+}
+
+.o_uniform_dashboard .o_stats_box:hover {
+    transform: translateY(-3px);
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.15);
+}
+
+.o_uniform_dashboard .o_stats_box .o_stat_value {
+    color: #212529;
+    font-size: 24px;
+    font-weight: 600;
+    margin: 10px 0;
+}
+
+.o_uniform_dashboard .o_stats_box .o_stat_title {
+    color: #6c757d;
+    font-size: 14px;
+    margin-bottom: 5px;
+}
+
+.o_uniform_dashboard .o_stats_box.o_assigned {
+    border-top: 3px solid #28a745;
+}
+
+.o_uniform_dashboard .o_stats_box.o_pending {
+    border-top: 3px solid #ffc107;
+}
+
+.o_uniform_dashboard .o_stats_box.o_stock {
+    border-top: 3px solid #dc3545;
+}
+
+.o_uniform_dashboard .o_stats_box .o_stat_icon {
+    font-size: 20px;
+    color: #6c757d;
+}
+
+.o_uniform_dashboard .o_chart_box {
+    background-color: #ffffff;
+    border-radius: 5px;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+    margin-bottom: 20px;
+    padding: 15px;
+}
+
+.o_uniform_dashboard .o_chart_box h3 {
+    color: #495057;
+    font-size: 16px;
+    margin-bottom: 15px;
+    font-weight: 600;
+}
+
+.o_uniform_dashboard .o_action_buttons {
+    margin-top: 20px;
+    margin-bottom: 20px;
+}
+
+.o_uniform_dashboard .o_uniform_action {
+    margin-right: 10px;
+}
+
+/* Assignment form styling */
+.o_form_view.o_uniform_assignment_form .o_status {
+    display: inline-block;
+    width: 12px;
+    height: 12px;
+    border-radius: 6px;
+    margin-right: 5px;
+}
+
+.o_form_view.o_uniform_assignment_form .o_status.o_status_assigned {
+    background-color: #28a745;
+}
+
+.o_form_view.o_uniform_assignment_form .o_status.o_status_returned {
+    background-color: #6c757d;
+}
+
+.o_form_view.o_uniform_assignment_form .o_status.o_status_partial {
+    background-color: #ffc107;
+}
+
+/* Mobile responsive adjustments */
+@media (max-width: 767.98px) {
+    .o_uniform_dashboard .row > div {
+        margin-bottom: 15px;
+    }
+    
+    .o_uniform_dashboard .o_stats_box .o_stat_value {
+        font-size: 20px;
+    }
+    
+    .o_uniform_dashboard .o_chart_box {
+        margin-bottom: 15px;
+    }
+}
+
+/* Print styles */
+@media print {
+    .o_uniform_dashboard .o_stats_box {
+        border: 1px solid #dee2e6;
+        box-shadow: none;
+    }
+    
+    .o_uniform_dashboard .o_chart_box {
+        border: 1px solid #dee2e6;
+        box-shadow: none;
+    }
+    
+    .o_uniform_dashboard .o_action_buttons {
+        display: none;
+    }
+}

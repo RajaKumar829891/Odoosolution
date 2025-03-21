@@ -1,0 +1,126 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<templates xml:space="preserve">
+    <t t-name="UniformDashboard">
+        <div class="o_uniform_dashboard">
+            <div class="container-fluid">
+                <!-- Title and Action Buttons -->
+                <div class="row mb-3">
+                    <div class="col-12">
+                        <h1 class="mt-2">Uniform Management Dashboard</h1>
+                    </div>
+                </div>
+                
+                <div class="row o_action_buttons">
+                    <div class="col-12">
+                        <button class="btn btn-primary o_uniform_action" data-action="uniform_management.action_uniform_assignment">
+                            <i class="fa fa-list"></i> View Assignments
+                        </button>
+                        <button class="btn btn-success o_uniform_action" data-action="uniform_management.action_mass_uniform_assignment">
+                            <i class="fa fa-users"></i> Mass Assignment
+                        </button>
+                        <button class="btn btn-info o_uniform_action" data-action="uniform_management.action_uniform_item">
+                            <i class="fa fa-cubes"></i> Manage Items
+                        </button>
+                        <button class="btn btn-secondary o_uniform_action" data-action="uniform_management.action_uniform_assignment_report">
+                            <i class="fa fa-bar-chart"></i> View Reports
+                        </button>
+                    </div>
+                </div>
+                
+                <!-- Statistics Cards -->
+                <div class="row">
+                    <div class="col-lg-4 col-md-6 col-12">
+                        <div class="o_stats_box o_assigned">
+                            <div class="o_stat_icon">
+                                <i class="fa fa-users"></i>
+                            </div>
+                            <div class="o_stat_value o_uniform_assigned">0</div>
+                            <div class="o_stat_title">Active Uniform Assignments</div>
+                        </div>
+                    </div>
+                    
+                    <div class="col-lg-4 col-md-6 col-12">
+                        <div class="o_stats_box o_pending">
+                            <div class="o_stat_icon">
+                                <i class="fa fa-clock-o"></i>
+                            </div>
+                            <div class="o_stat_value o_uniform_pending_returns">0</div>
+                            <div class="o_stat_title">Pending Returns</div>
+                        </div>
+                    </div>
+                    
+                    <div class="col-lg-4 col-md-6 col-12">
+                        <div class="o_stats_box o_stock">
+                            <div class="o_stat_icon">
+                                <i class="fa fa-exclamation-triangle"></i>
+                            </div>
+                            <div class="o_stat_value o_uniform_low_stock">0</div>
+                            <div class="o_stat_title">Items Low in Stock</div>
+                        </div>
+                    </div>
+                </div>
+                
+                <!-- Charts Row -->
+                <div class="row">
+                    <div class="col-lg-6 col-12">
+                        <div class="o_chart_box">
+                            <h3>Uniform Distribution by Category</h3>
+                            <canvas class="o_uniform_category_chart" height="200"></canvas>
+                        </div>
+                    </div>
+                    
+                    <div class="col-lg-6 col-12">
+                        <div class="o_chart_box">
+                            <h3>Monthly Uniform Assignments</h3>
+                            <canvas class="o_uniform_monthly_chart" height="200"></canvas>
+                        </div>
+                    </div>
+                </div>
+                
+                <!-- Recent Assignments Table -->
+                <div class="row">
+                    <div class="col-12">
+                        <div class="o_chart_box">
+                            <h3>Recent Uniform Assignments</h3>
+                            <table class="table table-sm table-hover">
+                                <thead>
+                                    <tr>
+                                        <th>Reference</th>
+                                        <th>Employee</th>
+                                        <th>Item</th>
+                                        <th>Date</th>
+                                        <th>Status</th>
+                                    </tr>
+                                </thead>
+                                <tbody class="o_recent_assignments">
+                                    <tr>
+                                        <td colspan="5" class="text-center">
+                                            <em>Loading recent assignments...</em>
+                                        </td>
+                                    </tr>
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </t>
+    
+    <!-- Template for recent assignments rows -->
+    <t t-name="UniformDashboardAssignmentRow">
+        <tr t-foreach="assignments" t-as="assignment">
+            <td><t t-esc="assignment.name"/></td>
+            <td><t t-esc="assignment.employee_name"/></td>
+            <td><t t-esc="assignment.item_name"/></td>
+            <td><t t-esc="assignment.date"/></td>
+            <td>
+                <span t-att-class="'badge ' + (assignment.state === 'assigned' ? 'badge-success' : 
+                                              assignment.state === 'partially_returned' ? 'badge-warning' : 
+                                              assignment.state === 'returned' ? 'badge-secondary' : 'badge-primary')">
+                    <t t-esc="assignment.state_label"/>
+                </span>
+            </td>
+        </tr>
+    </t>
+</templates>

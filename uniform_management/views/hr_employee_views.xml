@@ -1,0 +1,65 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <!-- Add uniform information to employee form -->
+    <record id="view_employee_form_uniform_inherit" model="ir.ui.view">
+        <field name="name">hr.employee.form.uniform.inherit</field>
+        <field name="model">hr.employee</field>
+        <field name="inherit_id" ref="hr.view_employee_form"/>
+        <field name="arch" type="xml">
+            <!-- Add a new notebook page for uniform information -->
+            <notebook position="inside">
+                <page string="Uniforms" name="uniforms">
+                    <group>
+                        <group string="Uniform Sizes">
+                            <field name="tshirt_size_id"/>
+                            <field name="pants_size_id"/>
+                            <field name="shoe_size_id"/>
+                            <field name="belt_size"/>
+                        </group>
+                        <group string="Uniform Information">
+                            <field name="uniform_assignment_count"/>
+                            <field name="uniform_active_count"/>
+                            <field name="last_uniform_date"/>
+                            <button name="action_view_uniforms" string="View Uniforms" type="object" 
+                                    class="oe_stat_button" icon="fa-list"
+                                    attrs="{'invisible': [('uniform_assignment_count', '=', 0)]}"/>
+                            <button name="action_assign_uniform" string="Assign Uniform" type="object" 
+                                    class="oe_highlight" icon="fa-plus"/>
+                        </group>
+                    </group>
+                    
+                    <!-- Show uniform assignments -->
+                    <field name="uniform_assignment_ids" readonly="1">
+                        <tree>
+                            <field name="name"/>
+                            <field name="item_id"/>
+                            <field name="category"/>
+                            <field name="size_id"/>
+                            <field name="assignment_date"/>
+                            <field name="expected_return_date"/>
+                            <field name="quantity"/>
+                            <field name="returned_qty"/>
+                            <field name="state" decoration-success="state == 'assigned'" 
+                                   decoration-info="state == 'partially_returned'" 
+                                   decoration-muted="state == 'returned'"/>
+                        </tree>
+                    </field>
+                </page>
+            </notebook>
+        </field>
+    </record>
+    
+    <!-- Add uniforms button to employee kanban view -->
+    <record id="hr_employee_view_kanban_uniform" model="ir.ui.view">
+        <field name="name">hr.employee.kanban.uniform</field>
+        <field name="model">hr.employee</field>
+        <field name="inherit_id" ref="hr.hr_employee_view_kanban"/>
+        <field name="arch" type="xml">
+            <xpath expr="//div[hasclass('oe_kanban_details')]/ul" position="inside">
+                <li t-if="record.uniform_active_count.raw_value > 0">
+                    <span class="o_value"><t t-esc="record.uniform_active_count.value"/> Uniform(s)</span>
+                </li>
+            </xpath>
+        </field>
+    </record>
+</odoo>

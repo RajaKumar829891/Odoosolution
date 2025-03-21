@@ -1,0 +1,45 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <data noupdate="0">
+        <!-- Create a specific security group for Uniform Management -->
+        <record id="group_uniform_user" model="res.groups">
+            <field name="name">Uniform User</field>
+            <field name="category_id" ref="base.module_category_human_resources_employees"/>
+            <field name="implied_ids" eval="[(4, ref('hr.group_hr_user'))]"/>
+        </record>
+        
+        <record id="group_uniform_manager" model="res.groups">
+            <field name="name">Uniform Manager</field>
+            <field name="category_id" ref="base.module_category_human_resources_employees"/>
+            <field name="implied_ids" eval="[(4, ref('group_uniform_user'))]"/>
+            <field name="users" eval="[(4, ref('base.user_root')), (4, ref('base.user_admin'))]"/>
+        </record>
+    </data>
+    
+    <data noupdate="1">
+        <!-- Record rules -->
+        <record id="uniform_assignment_comp_rule" model="ir.rule">
+            <field name="name">Uniform Assignment Multi-Company Rule</field>
+            <field name="model_id" ref="model_uniform_assignment"/>
+            <field name="domain_force">['|',('employee_id.company_id','=',False),('employee_id.company_id','in',company_ids)]</field>
+        </record>
+        
+        <record id="uniform_return_comp_rule" model="ir.rule">
+            <field name="name">Uniform Return Multi-Company Rule</field>
+            <field name="model_id" ref="model_uniform_return"/>
+            <field name="domain_force">['|',('employee_id.company_id','=',False),('employee_id.company_id','in',company_ids)]</field>
+        </record>
+        
+        <!-- Department managers can see their employees' uniforms -->
+        <record id="uniform_assignment_department_rule" model="ir.rule">
+            <field name="name">Department Manager Uniform Rule</field>
+            <field name="model_id" ref="model_uniform_assignment"/>
+            <field name="groups" eval="[(4, ref('hr.group_hr_user'))]"/>
+            <field name="domain_force">['|', ('employee_id.department_id.manager_id', '=', user.id), ('employee_id.user_id', '=', user.id)]</field>
+            <field name="perm_read" eval="True"/>
+            <field name="perm_write" eval="False"/>
+            <field name="perm_create" eval="False"/>
+            <field name="perm_unlink" eval="False"/>
+        </record>
+    </data>
+</odoo>

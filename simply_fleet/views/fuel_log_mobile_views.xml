@@ -13,6 +13,7 @@
               <field name="vehicle_type_code"/>
               <field name="date"/>
               <field name="display_date"/>
+              <field name="datetime"/>
               <field name="liters"/>
               <field name="odometer"/>
               <field name="distance_travelled"/>
@@ -115,6 +116,11 @@
                                   <div class="row">
                                       <div class="col-12">
                                           <span class="text-black"><field name="date"/></span>
+                                      </div>
+                                  </div>
+                                  <div class="row">
+                                      <div class="col-12 text-nowrap">
+                                          <span class="text-black"><field name="datetime_display" readonly="1"/></span>
                                       </div>
                                   </div>
                                   <div class="row">

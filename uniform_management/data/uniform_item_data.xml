@@ -1,0 +1,79 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <data noupdate="1">
+        <!-- Office Uniform Items -->
+        <record id="uniform_item_office_tshirt" model="uniform.item">
+            <field name="name">Office T-Shirt</field>
+            <field name="code">OFFICE-TS</field>
+            <field name="type_id" ref="uniform_type_office"/>
+            <field name="category">tshirt</field>
+            <field name="description">Comfortable cotton T-shirt with company logo</field>
+            <field name="size_type">letter</field>
+            <field name="qty_available">50</field>
+            <field name="min_qty">10</field>
+            <field name="replacement_period">12</field>
+        </record>
+        
+        <record id="uniform_item_office_pants" model="uniform.item">
+            <field name="name">Office Pants</field>
+            <field name="code">OFFICE-P</field>
+            <field name="type_id" ref="uniform_type_office"/>
+            <field name="category">pants</field>
+            <field name="description">Formal office pants</field>
+            <field name="size_type">numeric</field>
+            <field name="qty_available">50</field>
+            <field name="min_qty">10</field>
+            <field name="replacement_period">12</field>
+        </record>
+        
+        <!-- Factory Uniform Items -->
+        <record id="uniform_item_factory_tshirt" model="uniform.item">
+            <field name="name">Factory T-Shirt</field>
+            <field name="code">FACTORY-TS</field>
+            <field name="type_id" ref="uniform_type_factory"/>
+            <field name="category">tshirt</field>
+            <field name="description">Durable cotton T-shirt with high visibility features</field>
+            <field name="size_type">letter</field>
+            <field name="qty_available">30</field>
+            <field name="min_qty">5</field>
+            <field name="replacement_period">6</field>
+        </record>
+        
+        <record id="uniform_item_factory_pants" model="uniform.item">
+            <field name="name">Factory Pants</field>
+            <field name="code">FACTORY-P</field>
+            <field name="type_id" ref="uniform_type_factory"/>
+            <field name="category">pants</field>
+            <field name="description">Heavy-duty work pants with reinforced knees</field>
+            <field name="size_type">numeric</field>
+            <field name="qty_available">30</field>
+            <field name="min_qty">5</field>
+            <field name="replacement_period">6</field>
+        </record>
+        
+        <record id="uniform_item_factory_shoes" model="uniform.item">
+            <field name="name">Safety Shoes</field>
+            <field name="code">FACTORY-S</field>
+            <field name="type_id" ref="uniform_type_factory"/>
+            <field name="category">shoes</field>
+            <field name="description">Steel-toed safety shoes for factory workers</field>
+            <field name="size_type">shoe</field>
+            <field name="qty_available">25</field>
+            <field name="min_qty">5</field>
+            <field name="replacement_period">12</field>
+        </record>
+        
+        <!-- Maintenance Uniform Items -->
+        <record id="uniform_item_maintenance_belt" model="uniform.item">
+            <field name="name">Tool Belt</field>
+            <field name="code">MAINT-B</field>
+            <field name="type_id" ref="uniform_type_maintenance"/>
+            <field name="category">belt</field>
+            <field name="description">Utility belt for carrying maintenance tools</field>
+            <field name="size_type">numeric</field>
+            <field name="qty_available">15</field>
+            <field name="min_qty">3</field>
+            <field name="replacement_period">24</field>
+        </record>
+    </data>
+</odoo>

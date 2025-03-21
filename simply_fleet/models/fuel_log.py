@@ -22,6 +22,7 @@ class SimplyFleetFuelLog(models.Model):
         index=True
     )
     
+    
     # Add attachment field for custom chatter functionality
     attachment_ids = fields.Many2many(
         'ir.attachment',
@@ -75,12 +76,25 @@ class SimplyFleetFuelLog(models.Model):
         store=True,
         tracking=True
     )
+    # Add datetime_display field
+    datetime_display = fields.Char(
+        string='Formatted Date & Time',
+        compute='_compute_display_date',
+        store=True,
+        help='Formatted datetime for display purposes'
+    )
 
     # Add display date computed field
     display_date = fields.Date(
         string='Display Date',
         compute='_compute_display_date',
         store=True
+    )
+    time_display = fields.Char(
+        string='Time',
+        compute='_compute_time_display',
+        store=True,
+        help='Time portion of the datetime field'
     )
     
     show_transaction_type = fields.Boolean(
@@ -269,6 +283,14 @@ class SimplyFleetFuelLog(models.Model):
                 record.date = record.datetime.date()
             else:
                 record.date = False
+    @api.depends('datetime')
+    def _compute_time_display(self):
+        for record in self:
+            if record.datetime:
+            # Format the time as HH:MM:SS
+                record.time_display = record.datetime.strftime('%H:%M:%S:%')
+            else:
+                record.time_display = Falsee
 
     # Compute method for display fields with units
     @api.depends('liters', 'odometer', 'previous_odometer', 'distance_travelled', 'mileage')
@@ -295,14 +317,17 @@ class SimplyFleetFuelLog(models.Model):
             else:
                 record.vehicle_type_code = 'car'  # Default to car if no type code found
 
-    @api.depends('date')
+    @api.depends('datetime')
     def _compute_display_date(self):
         for record in self:
-            if record.date:
-                # Simply assign the date directly since it's already a date object
-                record.display_date = record.date
+            if record.datetime:
+            # Include both date and formatted time
+                record.display_date = record.datetime.date()
+            # Create a new field for the formatted datetime
+                record.datetime_display = record.datetime.strftime('%I:%M:%S %p')
             else:
                 record.display_date = False
+                record.datetime_display = False
 
     @api.depends('fill_type')
     def _compute_show_mileage(self):
