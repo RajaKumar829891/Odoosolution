@@ -1,8 +1,0 @@
-id,name,model_id:id,group_id:id,perm_read,perm_write,perm_create,perm_unlink
-access_bluetooth_printer_user,bluetooth.printer.user,model_bluetooth_printer,stock.group_stock_user,1,0,0,0
-access_bluetooth_printer_manager,bluetooth.printer.manager,model_bluetooth_printer,stock.group_stock_manager,1,1,1,1
-access_print_label_wizard_user,print.label.wizard.user,model_print_label_wizard,stock.group_stock_user,1,1,1,0
-access_bluetooth_printer_scan_wizard_user,bluetooth.printer.scan.wizard.user,model_bluetooth_printer_scan_wizard,stock.group_stock_user,1,1,1,0
-access_bluetooth_printer_device_user,bluetooth.printer.device.user,model_bluetooth_printer_device,stock.group_stock_user,1,1,1,1
-access_bluetooth_printer_discovery_user,bluetooth.printer.discovery.user,model_bluetooth_printer_discovery,stock.group_stock_user,1,1,1,1
-access_bluetooth_printer_discovery_line_user,bluetooth.printer.discovery.line.user,model_bluetooth_printer_discovery_line,stock.group_stock_user,1,1,1,1
