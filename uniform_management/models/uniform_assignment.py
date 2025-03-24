@@ -2,6 +2,23 @@ from odoo import models, fields, api, _
 from odoo.exceptions import ValidationError
 from datetime import timedelta
 
+class UniformAssignmentLine(models.Model):
+    _name = 'hr.uniform.assignment.line'
+    _description = 'Uniform Assignment Line'
+    
+    name = fields.Char('Reference', readonly=True, default='New')
+    assignment_id = fields.Many2one('uniform.assignment', string='Assignment', ondelete='cascade')
+    employee_id = fields.Many2one(related='assignment_id.employee_id', string='Employee', store=True)
+    item_id = fields.Many2one('uniform.item', string='Uniform Item', required=True, tracking=True)
+    type_id = fields.Many2one(related='item_id.type_id', string='Uniform Type', store=True)
+    category = fields.Selection(related='item_id.category', string='Category', store=True)
+    size_id = fields.Many2one('uniform.size', string='Size', required=True, tracking=True)
+    assignment_date = fields.Date('Assignment Date', default=fields.Date.today, required=True, tracking=True)
+    return_date = fields.Date('Return Date', tracking=True)
+    quantity = fields.Integer('Quantity', default=1, required=True)
+    state = fields.Selection(related='assignment_id.state', string='Status', store=True)
+
+
 class UniformAssignment(models.Model):
     _name = 'uniform.assignment'
     _description = 'Uniform Assignment'
@@ -10,13 +27,14 @@ class UniformAssignment(models.Model):
 
     name = fields.Char('Reference', readonly=True, default='New')
     employee_id = fields.Many2one('hr.employee', string='Employee', required=True, tracking=True)
-    item_id = fields.Many2one('uniform.item', string='Uniform Item', required=True, tracking=True)
+    uniform_line_ids = fields.One2many('hr.uniform.assignment.line', 'assignment_id', string='Uniform Lines')
+    item_id = fields.Many2one('uniform.item', string='Uniform Item', tracking=True)
     type_id = fields.Many2one(related='item_id.type_id', string='Uniform Type', store=True)
     category = fields.Selection(related='item_id.category', string='Category', store=True)
-    size_id = fields.Many2one('uniform.size', string='Size', required=True, tracking=True)
+    size_id = fields.Many2one('uniform.size', string='Size', tracking=True)
     assignment_date = fields.Date('Assignment Date', default=fields.Date.today, required=True, tracking=True)
-    expected_return_date = fields.Date('Expected Return Date', compute='_compute_expected_return_date', store=True)
-    quantity = fields.Integer('Quantity', default=1, required=True)
+    return_date = fields.Date('Return Date', tracking=True)
+    quantity = fields.Integer('Quantity', default=1)
     state = fields.Selection([
         ('draft', 'Draft'),
         ('assigned', 'Assigned'),
@@ -35,14 +53,6 @@ class UniformAssignment(models.Model):
         for record in self:
             record.returned_qty = sum(return_ids.quantity for return_ids in record.return_ids)
     
-    @api.depends('item_id', 'item_id.replacement_period', 'assignment_date')
-    def _compute_expected_return_date(self):
-        for record in self:
-            if record.assignment_date and record.item_id.replacement_period:
-                record.expected_return_date = record.assignment_date + timedelta(days=record.item_id.replacement_period * 30)
-            else:
-                record.expected_return_date = False
-    
     @api.model
     def create(self, vals):
         if vals.get('name', 'New') == 'New':
@@ -52,12 +62,15 @@ class UniformAssignment(models.Model):
     def action_assign(self):
         for record in self:
             if record.state == 'draft':
-                # Check if item is available in stock
-                if record.item_id.qty_available < record.quantity:
-                    raise ValidationError(_('Not enough quantity available for %s') % record.item_id.name)
+                # Process uniform lines
+                for line in record.uniform_line_ids:
+                    # Check if item is available in stock
+                    if line.item_id.qty_available < line.quantity:
+                        raise ValidationError(_('Not enough quantity available for %s') % line.item_id.name)
+                    
+                    # Update stock
+                    line.item_id.qty_available -= line.quantity
                 
-                # Update stock
-                record.item_id.qty_available -= record.quantity
                 record.state = 'assigned'
     
     def action_return(self):
@@ -93,4 +106,6 @@ class UniformAssignment(models.Model):
                 record.state = 'cancelled'
                 # Return items to stock if they've been assigned
                 if record.state == 'assigned':
-                    record.item_id.qty_available += (record.quantity - record.returned_qty)
+                    # Process all lines
+                    for line in record.uniform_line_ids:
+                        line.item_id.qty_available += line.quantity

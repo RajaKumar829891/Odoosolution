@@ -1,14 +1,12 @@
 # -*- coding: utf-8 -*-
-
 from odoo import models, fields, tools, api
-
 
 class UniformAssignmentReport(models.Model):
     _name = 'uniform.assignment.report'
     _description = 'Uniform Assignment Analysis Report'
     _auto = False
     _order = 'assignment_date desc'
-
+    
     name = fields.Char('Reference', readonly=True)
     employee_id = fields.Many2one('hr.employee', string='Employee', readonly=True)
     department_id = fields.Many2one('hr.department', string='Department', readonly=True)
@@ -26,7 +24,7 @@ class UniformAssignmentReport(models.Model):
     ], string='Category', readonly=True)
     size_id = fields.Many2one('uniform.size', string='Size', readonly=True)
     assignment_date = fields.Date('Assignment Date', readonly=True)
-    expected_return_date = fields.Date('Expected Return Date', readonly=True)
+    return_date = fields.Date('Return Date', readonly=True)
     quantity = fields.Integer('Assigned Quantity', readonly=True)
     returned_qty = fields.Integer('Returned Quantity', readonly=True)
     state = fields.Selection([
@@ -50,7 +48,7 @@ class UniformAssignmentReport(models.Model):
                 a.category,
                 a.size_id,
                 a.assignment_date,
-                a.expected_return_date,
+                a.return_date,
                 a.quantity,
                 a.returned_qty,
                 a.state
@@ -77,7 +75,7 @@ class UniformAssignmentReport(models.Model):
                 a.category,
                 a.size_id,
                 a.assignment_date,
-                a.expected_return_date,
+                a.return_date,
                 a.quantity,
                 a.returned_qty,
                 a.state

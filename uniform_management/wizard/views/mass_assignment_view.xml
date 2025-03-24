@@ -8,11 +8,6 @@
             <form string="Mass Uniform Assignment">
                 <sheet>
                     <group>
-                        <p class="alert alert-info" role="alert">
-                            This wizard allows you to assign uniform items to multiple employees at once.
-                        </p>
-                    </group>
-                    <group>
                         <group string="Selection Criteria">
                             <field name="department_id"/>
                             <field name="job_id"/>
