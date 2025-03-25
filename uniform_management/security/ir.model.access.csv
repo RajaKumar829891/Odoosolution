@@ -12,3 +12,5 @@ access_uniform_return_manager,uniform.return.manager,model_uniform_return,hr.gro
 access_uniform_return_wizard_user,uniform.return.wizard.user,model_uniform_return_wizard,hr.group_hr_user,1,1,1,1
 access_mass_uniform_assignment_manager,mass.uniform.assignment.manager,model_mass_uniform_assignment,hr.group_hr_manager,1,1,1,1
 access_mass_uniform_assignment_line_manager,mass.uniform.assignment.line.manager,model_mass_uniform_assignment_line,hr.group_hr_manager,1,1,1,1
+access_hr_uniform_assignment_line_user,hr.uniform.assignment.line.user,model_hr_uniform_assignment_line,hr.group_hr_user,1,1,1,0
+access_hr_uniform_assignment_line_manager,hr.uniform.assignment.line.manager,model_hr_uniform_assignment_line,hr.group_hr_manager,1,1,1,1

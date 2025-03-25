@@ -35,11 +35,23 @@
             <field name="name">Department Manager Uniform Rule</field>
             <field name="model_id" ref="model_uniform_assignment"/>
             <field name="groups" eval="[(4, ref('hr.group_hr_user'))]"/>
-            <field name="domain_force">['|', ('employee_id.department_id.manager_id', '=', user.id), ('employee_id.user_id', '=', user.id)]</field>
+            <field name="domain_force">['|', '|', ('employee_id.department_id.manager_id', '=', user.id), ('employee_id.user_id', '=', user.id), (user.has_group('hr.group_hr_manager'), '=', True)]</field>
             <field name="perm_read" eval="True"/>
             <field name="perm_write" eval="False"/>
             <field name="perm_create" eval="False"/>
             <field name="perm_unlink" eval="False"/>
+        </record>
+        
+        <!-- Allow Uniform Managers to see all uniform assignments -->
+        <record id="uniform_assignment_manager_rule" model="ir.rule">
+            <field name="name">Uniform Manager Rule</field>
+            <field name="model_id" ref="model_uniform_assignment"/>
+            <field name="groups" eval="[(4, ref('group_uniform_manager'))]"/>
+            <field name="domain_force">[(1, '=', 1)]</field>
+            <field name="perm_read" eval="True"/>
+            <field name="perm_write" eval="True"/>
+            <field name="perm_create" eval="True"/>
+            <field name="perm_unlink" eval="True"/>
         </record>
     </data>
 </odoo>
