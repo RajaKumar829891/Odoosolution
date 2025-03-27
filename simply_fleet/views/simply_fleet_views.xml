@@ -377,8 +377,7 @@
         </field>
     </record>
 
-<!-- Fuel Log Views -->
-  <!-- Updated Fuel Log Tree View with datetime -->
+<!-- Fuel Log Tree View -->
     <record id="view_simply_fleet_fuel_log_tree" model="ir.ui.view">
         <field name="name">simply.fleet.fuel.log.tree</field>
         <field name="model">simply.fleet.fuel.log</field>
@@ -402,6 +401,7 @@
         </field>
     </record>
 
+    <!-- Fuel Log Form View -->
 <record id="view_simply_fleet_fuel_log_form" model="ir.ui.view">
     <field name="name">simply.fleet.fuel.log.form</field>
     <field name="model">simply.fleet.fuel.log</field>
@@ -420,7 +420,7 @@
                         <field name="datetime" string="Date &amp; Time" options="{'step': 1}" widget="datetime"/>
                         <field name="station_type"/>
                         <field name="show_transaction_type" invisible="1"/>
-                        <field name="transaction_type_id" 
+                        <field name="transaction_type_id"
                                invisible="not show_transaction_type"
                                required="show_transaction_type"
                                options="{'no_create': True}"/>
@@ -459,58 +459,89 @@
                         <field name="created_by" options="{'no_create': True}"/>
                     </group>
                 </group>
-                
                 <notebook>
-                    <page name="notes" string="Notes">
-                        <field name="notes" placeholder="Add notes here..."/>
-                    </page>
                     <page name="images" string="Images">
-                        <!-- Direct attachment field using your existing attachment_ids field -->
-                        <field name="attachment_ids" widget="many2many_binary" 
+                        <field name="attachment_ids" 
+                               widget="many2many_binary"
                                string="Images"
                                domain="[('mimetype', 'ilike', 'image')]"
-                               options="{'accepted_file_extensions': 'image/*'}" />
-                               
-                        <!-- CSS to style the attachments display -->
+                               options="{
+                                   'accepted_file_extensions': 'image/*',
+                                   'upload_text': '+'
+                               }"/>
+                        
                         <style>
-                            /* Make attachment list display horizontally */
+                            /* Layout the attachments in a horizontal row */
                             .o_field_widget.o_field_many2many[name="attachment_ids"] .o_attachments {
                                 display: flex;
-                                flex-wrap: wrap;
-                                gap: 10px;
+                                flex-wrap: nowrap;
+                                overflow-x: auto;
+                                padding: 10px 0;
+                                gap: 12px;
+                                scroll-behavior: smooth;
                             }
                             
                             /* Style for each attachment item */
-                            .o_field_widget.o_field_many2many[name="attachment_ids"] .o_attachment {
+                            .o_field_widget.o_field_many2many[name="attachment_ids"] .o_attachments .o_attachment {
                                 flex: 0 0 auto;
-                                margin-bottom: 10px;
+                                position: relative;
+                                margin-bottom: 5px;
+                                border-radius: 8px;
+                                overflow: hidden;
+                                box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+                                transition: transform 0.2s;
+                            }
+                            
+                            /* Hover effect */
+                            .o_field_widget.o_field_many2many[name="attachment_ids"] .o_attachments .o_attachment:hover {
+                                transform: translateY(-3px);
+                                box-shadow: 0 4px 8px rgba(0,0,0,0.15);
                             }
                             
                             /* Enlarge preview images */
-                            .o_field_widget.o_field_many2many[name="attachment_ids"] .o_image {
-                                width: 100px;
-                                height: 100px;
-                                object-fit: cover;
+                            .o_field_widget.o_field_many2many[name="attachment_ids"] .o_attachments .o_attachment .o_image {
+                                width: 120px !important;
+                                height: 120px !important;
+                                object-fit: cover !important;
                             }
                             
                             /* Hide the filename text */
-                            .o_field_widget.o_field_many2many[name="attachment_ids"] .o_attachment_name {
-                                display: none;
+                            .o_field_widget.o_field_many2many[name="attachment_ids"] .o_attachments .o_attachment .o_attachment_name {
+                                display: none !important;
+                            }
+                            
+                            /* Style the upload button to show as a "+" */
+                            .o_field_widget.o_field_many2many[name="attachment_ids"] .o_attach {
+                                display: inline-flex;
+                                justify-content: center;
+                                align-items: center;
+                                width: 120px;
+                                height: 120px;
+                                background-color: #f2f2f2;
+                                border: 2px dashed #aaa;
+                                border-radius: 8px;
+                                color: #555;
+                                font-size: 32px;
+                                cursor: pointer;
+                            }
+                            
+                            /* Ensure image container has proper size */
+                            .o_field_widget.o_field_many2many[name="attachment_ids"] .o_image_container {
+                                width: 120px !important;
+                                height: 120px !important;
                             }
                         </style>
                     </page>
+                    <page name="notes" string="Notes">
+                        <field name="notes"/>
+                    </page>
                 </notebook>
             </sheet>
-            
-            <!-- Simplified Chatter -->
-            <div class="oe_chatter">
-                <field name="message_ids" widget="mail_thread"/>
-            </div>
         </form>
     </field>
 </record>
 
-    <!-- Desktop Search View -->
+    <!-- Fuel Log Search View -->
     <record id="view_simply_fleet_fuel_log_search" model="ir.ui.view">
         <field name="name">simply.fleet.fuel.log.search</field>
         <field name="model">simply.fleet.fuel.log</field>
@@ -537,7 +568,36 @@
         </field>
     </record>
 
-    <!-- Desktop Action -->
+    <!-- Graph View for Fuel Log -->
+    <record id="view_simply_fleet_fuel_log_graph" model="ir.ui.view">
+        <field name="name">simply.fleet.fuel.log.graph</field>
+        <field name="model">simply.fleet.fuel.log</field>
+        <field name="arch" type="xml">
+            <graph string="Fuel Consumption Analysis">
+                <field name="vehicle_id"/>
+                <field name="datetime" interval="month"/>
+                <field name="liters" type="measure"/>
+                <field name="total_amount" type="measure"/>
+            </graph>
+        </field>
+    </record>
+
+    <!-- Pivot View for Fuel Log -->
+    <record id="view_simply_fleet_fuel_log_pivot" model="ir.ui.view">
+        <field name="name">simply.fleet.fuel.log.pivot</field>
+        <field name="model">simply.fleet.fuel.log</field>
+        <field name="arch" type="xml">
+            <pivot string="Fuel Analysis" display_quantity="true">
+                <field name="vehicle_id" type="row"/>
+                <field name="datetime" type="col" interval="month"/>
+                <field name="liters" type="measure"/>
+                <field name="total_amount" type="measure"/>
+                <field name="distance_travelled" type="measure"/>
+            </pivot>
+        </field>
+    </record>
+
+    <!-- Action for Fuel Log -->
     <record id="action_simply_fleet_fuel_log" model="ir.actions.act_window">
         <field name="name">Fuel Logs</field>
         <field name="res_model">simply.fleet.fuel.log</field>
