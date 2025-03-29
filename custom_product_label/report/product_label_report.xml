@@ -1,0 +1,38 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <template id="report_product_label_custom">
+        <t t-call="web.basic_layout">
+            <div class="page">
+                <t t-foreach="docs" t-as="product">
+                    <div style="padding: 20px; text-align: center;">
+                        <h2 t-field="product.name" style="margin-bottom: 20px;"/>
+                        
+                        <!-- Try direct barcode tag -->
+                        <div style="margin: 20px 0;">
+                            <span t-field="product.barcode" t-options="{'widget': 'barcode', 'width': 400, 'height': 100, 'quiet': 0, 'ratio': 3, 'type': 'Code128'}"/>
+                        </div>
+                        
+                        <!-- Fallback with manual barcode URL construction -->
+                        <div t-if="product.barcode" style="margin: 20px 0;">
+                            <img t-att-src="'/report/barcode/Code128/%s?width=%s&amp;height=%s' % (product.barcode, 400, 100)" style="max-width: 100%; height: auto;"/>
+                        </div>
+                        
+                        <h3 t-esc="product.barcode" style="margin: 20px 0;"/>
+                        
+                        <div style="margin-top: 30px; display: flex; justify-content: space-between;">
+                            <div><strong>Default Location:</strong></div>
+                            <div>
+                                <t t-if="product.product_variant_ids and product.product_variant_ids[0].property_stock_inventory">
+                                    <span t-field="product.product_variant_ids[0].property_stock_inventory.complete_name"/>
+                                </t>
+                                <t t-else="">
+                                    <span>Inventory</span>
+                                </t>
+                            </div>
+                        </div>
+                    </div>
+                </t>
+            </div>
+        </t>
+    </template>
+</odoo>
