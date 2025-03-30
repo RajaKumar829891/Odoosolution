@@ -1,0 +1,39 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <template id="report_product_label_custom">
+        <t t-call="web.html_container">
+            <t t-call="web.basic_layout">
+                <div class="page">
+                    <t t-foreach="docs" t-as="product">
+                        <div class="text-center" style="margin-top: -10px;">
+                            <!-- Product Name with Label -->
+                            <div style="margin-bottom: 15px; padding-top: 30px;">
+                                <span style="font-size: 16pt; font-weight: bold;">Product Name: </span>
+                                <span style="font-size: 16pt;"><t t-esc="product.name"/></span>
+                            </div>
+                            
+                            <!-- Barcode container -->
+                            <div class="border border-dark mx-auto" style="width: 80%; padding: 10px; margin: 10px auto;">
+                                <img t-if="product.barcode" class="img-fluid" t-att-src="'/report/barcode/Code128/%s' % (product.barcode)" style="margin: 0;"/>
+                                <div style="margin-top: 0;">
+                                    <span t-esc="product.barcode"/>
+                                </div>
+                            </div>
+                            
+                            <!-- Default Location with same font size -->
+                            <div style="margin-top: 10px; text-align: center;">
+                                <span style="font-size: 16pt; font-weight: bold;">Default Location: </span>
+                                <t t-if="product.default_location_id">
+                                    <span style="font-size: 16pt;" t-field="product.default_location_id.complete_name"/>
+                                </t>
+                                <t t-else="">
+                                    <span style="font-size: 16pt;">Not Set</span>
+                                </t>
+                            </div>
+                        </div>
+                    </t>
+                </div>
+            </t>
+        </t>
+    </template>
+</odoo>

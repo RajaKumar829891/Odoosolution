@@ -1,0 +1,33 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<odoo>
+    <section class="oe_container">
+        <div class="oe_row oe_spaced">
+            <h2 class="oe_slogan" style="color:#875A7B;">Custom Product Label</h2>
+            <h3 class="oe_slogan">Enhanced barcode labels for warehouse management</h3>
+            <div class="oe_demo oe_picture oe_screenshot">
+                <!-- Image placeholder -->
+            </div>
+        </div>
+    </section>
+
+    <section class="oe_container oe_dark">
+        <div class="oe_row oe_spaced">
+            <h2 class="oe_slogan" style="color:#875A7B;">Features</h2>
+            <div class="oe_span6">
+                <p class="oe_mt32">This module customizes the product label format to include:</p>
+                <ul>
+                    <li>Product name</li>
+                    <li>Barcode image</li>
+                    <li>Barcode number</li>
+                    <li>Default location</li>
+                </ul>
+                <p>Perfect for inventory management and warehouse operations.</p>
+            </div>
+            <div class="oe_span6">
+                <div class="oe_row_img oe_centered">
+                    <!-- Image placeholder -->
+                </div>
+            </div>
+        </div>
+    </section>
+</odoo>
