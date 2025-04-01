@@ -1,39 +1,60 @@
 <?xml version="1.0" encoding="utf-8"?>
 <odoo>
+    <!-- Paper format with minimal margins optimized for scanner readability -->
+    <record id="paperformat_label_50x25" model="report.paperformat">
+        <field name="name">50x25mm Label</field>
+        <field name="default" eval="False" />
+        <field name="format">custom</field>
+        <field name="page_height">25</field>
+        <field name="page_width">50</field>
+        <field name="orientation">Portrait</field>
+        <field name="margin_top">0</field>
+        <field name="margin_bottom">0</field>
+        <field name="margin_left">0</field>
+        <field name="margin_right">0</field>
+        <field name="header_line" eval="False" />
+        <field name="header_spacing">0</field>
+        <field name="dpi">203</field> <!-- Increased DPI for better scanner compatibility -->
+    </record>
+    
+    <!-- Template optimized for HT20 Honelett scanner compatibility -->
     <template id="report_product_label_custom">
-        <t t-call="web.html_container">
-            <t t-call="web.basic_layout">
-                <div class="page">
-                    <t t-foreach="docs" t-as="product">
-                        <div class="text-center" style="margin-top: -10px;">
-                            <!-- Product Name with Label -->
-                            <div style="margin-bottom: 15px; padding-top: 30px;">
-                                <span style="font-size: 16pt; font-weight: bold;">Product Name: </span>
-                                <span style="font-size: 16pt;"><t t-esc="product.name"/></span>
-                            </div>
-                            
-                            <!-- Barcode container -->
-                            <div class="border border-dark mx-auto" style="width: 80%; padding: 10px; margin: 10px auto;">
-                                <img t-if="product.barcode" class="img-fluid" t-att-src="'/report/barcode/Code128/%s' % (product.barcode)" style="margin: 0;"/>
-                                <div style="margin-top: 0;">
-                                    <span t-esc="product.barcode"/>
-                                </div>
-                            </div>
-                            
-                            <!-- Default Location with same font size -->
-                            <div style="margin-top: 10px; text-align: center;">
-                                <span style="font-size: 16pt; font-weight: bold;">Default Location: </span>
+        <t t-call="web.basic_layout">
+            <div class="page" style="padding: 0; margin: 0;">
+                <t t-foreach="docs" t-as="product">
+                    <div style="width: 50mm; height: 25mm; padding: 1mm; text-align: center; page-break-inside: avoid;">
+                        <!-- Product Name at top -->
+                        <div style="margin-bottom: 1mm; white-space: nowrap;">
+                            <span style="font-size: 30pt; font-weight: bold;">Product Name: </span>
+                            <span style="font-size: 30pt;" t-esc="product.name"/>
+                        </div>
+                        
+                        <!-- Barcode optimized for HT20 scanner -->
+                        <div style="margin: 1mm 0; padding: 0 2mm;">
+                            <!-- Adding quiet zones (2mm padding) for better scanning -->
+                            <img t-if="product.barcode" 
+                                 t-att-src="'/report/barcode/Code128/%s?width=%s&amp;height=%s&amp;humanreadable=%s&amp;quiet=%s' % (product.barcode, 500, 150, 0, 1)" 
+                                 style="width: 180mm; height: 24mm; margin: 0 0 0 -30mm"/>
+                        </div>
+                        
+                        <!-- Barcode number in scanner-friendly font -->
+                        <div style="margin: 1mm 0;">
+                            <span style="font-size: 12pt; font-family: monospace;" t-esc="product.barcode"/>
+                        </div>
+                        
+                        <!-- Default Location -->
+                            <div style="margin: 0.5mm 0 0 0; padding: 0; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; line-height: 1.2;">
+                                <span style="font-size: 30pt; font-weight: bold;">Default Location: </span>
                                 <t t-if="product.default_location_id">
-                                    <span style="font-size: 16pt;" t-field="product.default_location_id.complete_name"/>
+                                    <span style="font-size: 30pt;" t-field="product.default_location_id.complete_name"/>
                                 </t>
                                 <t t-else="">
-                                    <span style="font-size: 16pt;">Not Set</span>
+                                    <span style="font-size: 30pt;">Rac A1</span>
                                 </t>
-                            </div>
                         </div>
-                    </t>
-                </div>
-            </t>
+                    </div>
+                </t>
+            </div>
         </t>
     </template>
 </odoo>

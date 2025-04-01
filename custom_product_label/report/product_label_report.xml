@@ -1,34 +1,59 @@
 <?xml version="1.0" encoding="utf-8"?>
 <odoo>
+    <!-- Paper format with minimal margins optimized for scanner readability -->
+    <record id="paperformat_label_50x25" model="report.paperformat">
+        <field name="name">50x25mm Label</field>
+        <field name="default" eval="False" />
+        <field name="format">custom</field>
+        <field name="page_height">25</field>
+        <field name="page_width">50</field>
+        <field name="orientation">Portrait</field>
+        <field name="margin_top">0</field>
+        <field name="margin_bottom">0</field>
+        <field name="margin_left">0</field>
+        <field name="margin_right">0</field>
+        <field name="header_line" eval="False" />
+        <field name="header_spacing">0</field>
+        <field name="dpi">203</field> <!-- Increased DPI for better scanner compatibility -->
+    </record>
+    
+    <!-- Template optimized for HT20 Honelett scanner compatibility -->
     <template id="report_product_label_custom">
         <t t-call="web.basic_layout">
-            <div class="page">
+            <div class="page" style="padding: 0; margin: 0;">
                 <t t-foreach="docs" t-as="product">
-                    <div style="padding: 20px; text-align: center;">
-                        <h2 t-field="product.name" style="margin-bottom: 20px;"/>
-                        
-                        <!-- Try direct barcode tag -->
-                        <div style="margin: 20px 0;">
-                            <span t-field="product.barcode" t-options="{'widget': 'barcode', 'width': 400, 'height': 100, 'quiet': 0, 'ratio': 3, 'type': 'Code128'}"/>
+                    <div style="width: 50mm; height: 25mm; padding: 1mm; text-align: center; page-break-inside: avoid;">
+                        <!-- Product Name at top -->
+                        <div style="margin-bottom: 1mm;">
+                            <span style="font-size: 12pt; font-weight: bold;">Product Name: </span>
+                            <span style="font-size: 12pt;" t-esc="product.name"/>
                         </div>
                         
-                        <!-- Fallback with manual barcode URL construction -->
-                        <div t-if="product.barcode" style="margin: 20px 0;">
-                            <img t-att-src="'/report/barcode/Code128/%s?width=%s&amp;height=%s' % (product.barcode, 400, 100)" style="max-width: 100%; height: auto;"/>
+                        <!-- Barcode optimized for HT20 scanner -->
+                        <div style="margin: 1mm 0; padding: 0 2mm;">
+                            <!-- Adding quiet zones (2mm padding) for better scanning -->
+                            <img t-if="product.barcode" 
+                                 t-att-src="'/report/barcode/Code128/%s?width=%s&amp;height=%s&amp;humanreadable=%s&amp;quiet=%s' % (product.barcode, 500, 150, 0, 1)" 
+                                 style="width: 45mm; height: 12mm;"/>
                         </div>
                         
-                        <h3 t-esc="product.barcode" style="margin: 20px 0;"/>
+                        <!-- Barcode number in scanner-friendly font -->
+                        <div style="margin: 1mm 0;">
+                            <span style="font-size: 12pt; font-family: monospace;" t-esc="product.barcode"/>
+                        </div>
                         
-                        <div style="margin-top: 30px; display: flex; justify-content: space-between;">
-                            <div><strong>Default Location:</strong></div>
-                            <div>
-                                <t t-if="product.product_variant_ids and product.product_variant_ids[0].property_stock_inventory">
-                                    <span t-field="product.product_variant_ids[0].property_stock_inventory.complete_name"/>
-                                </t>
-                                <t t-else="">
-                                    <span>Inventory</span>
-                                </t>
-                            </div>
+                        <!-- Default Location at bottom -->
+                        <div style="margin-top: 1mm;">
+                            <span style="font-size: 12pt; font-weight: bold;">Default Location: </span>
+                            <t t-if="product.product_variant_ids and product.product_variant_ids[0].property_stock_inventory">
+                                <span style="font-size: 12pt;" t-field="product.product_variant_ids[0].property_stock_inventory.complete_name"/>
+                            </t>
+                            <t t-elif="product.default_location_id">
+                                <span style="font-size: 12pt;" t-field="product.default_location_id.complete_name"/>
+                            </t>
+                            <t t-else="">
+                                <span style="font-size: 12pt;">Rac A1</span>
+                            </t>
                         </div>
                     </div>
                 </t>
