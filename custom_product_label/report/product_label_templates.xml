@@ -42,15 +42,15 @@
                             <span style="font-size: 12pt; font-family: monospace;" t-esc="product.barcode"/>
                         </div>
                         
-                        <!-- Default Location -->
-                            <div style="margin: 0.5mm 0 0 0; padding: 0; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; line-height: 1.2;">
-                                <span style="font-size: 30pt; font-weight: bold;">Default Location: </span>
-                                <t t-if="product.default_location_id">
-                                    <span style="font-size: 30pt;" t-field="product.default_location_id.complete_name"/>
-                                </t>
-                                <t t-else="">
-                                    <span style="font-size: 30pt;">Rac A1</span>
-                                </t>
+                        <!-- Default Location - moved earlier in the document flow -->
+                        <div style="margin: 0.5mm 0 0 0; padding: 0; white-space: nowrap; overflow: visible; text-overflow: clip;">
+                            <span style="font-size: 20pt; font-weight: bold;">Default Location: </span>
+                            <t t-if="product.default_location_id">
+                                <span style="font-size: 20pt;" t-field="product.default_location_id.complete_name"/>
+                            </t>
+                            <t t-else="">
+                                <span style="font-size: 20pt;">Rac A1</span>
+                            </t>
                         </div>
                     </div>
                 </t>
