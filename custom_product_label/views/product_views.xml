@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <odoo>
-    <!-- Define our custom report -->
+    <!-- Update your existing report record -->
     <record id="action_report_custom_product_label" model="ir.actions.report">
         <field name="name">Custom Product Label</field>
         <field name="model">product.product</field>
@@ -8,9 +8,11 @@
         <field name="report_name">custom_product_label.report_product_label_custom</field>
         <field name="report_file">custom_product_label.report_product_label_custom</field>
         <field name="print_report_name">'Product Label - %s' % object.name</field>
+        <!-- Add this line to connect to the paperformat -->
+        <field name="paperformat_id" ref="custom_product_label.paperformat_label_50x25"/>
     </record>
     
-    <!-- Add a button in the Product template form view -->
+    <!-- Keep your button unchanged -->
     <record id="product_template_form_view_custom_label" model="ir.ui.view">
         <field name="name">product.template.form.custom.label</field>
         <field name="model">product.template</field>
