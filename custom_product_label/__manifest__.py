@@ -11,14 +11,17 @@ This module customizes the product label format to include:
 - Barcode image
 - Barcode number
 - Default location
+- Support for 50*25mm label format
 """,
     'author': 'Your Company',
     'website': 'https://www.yourcompany.com',
     'depends': ['stock', 'product'],
     'data': [
-        'security/ir.model.access.csv',
+        # Start with just the template file
         'report/product_label_templates.xml',
-        'views/product_views.xml',
+        # Then add this back after a successful update
+        # 'views/product_views.xml',
+        # 'views/product_label_layout_views.xml',
     ],
     'installable': True,
     'application': False,

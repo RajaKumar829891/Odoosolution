@@ -1,27 +1,49 @@
 <?xml version="1.0" encoding="utf-8"?>
 <odoo>
-    <!-- Update your existing report record -->
-    <record id="action_report_custom_product_label" model="ir.actions.report">
-        <field name="name">Custom Product Label</field>
-        <field name="model">product.product</field>
-        <field name="report_type">qweb-pdf</field>
-        <field name="report_name">custom_product_label.report_product_label_custom</field>
-        <field name="report_file">custom_product_label.report_product_label_custom</field>
-        <field name="print_report_name">'Product Label - %s' % object.name</field>
-        <!-- Add this line to connect to the paperformat -->
-        <field name="paperformat_id" ref="custom_product_label.paperformat_label_50x25"/>
+    <!-- Add default location field to product template -->
+    <record id="view_template_property_form_location" model="ir.ui.view">
+        <field name="name">product.template.location.form.inherit</field>
+        <field name="model">product.template</field>
+        <field name="inherit_id" ref="product.product_template_form_view"/>
+        <field name="arch" type="xml">
+            <xpath expr="//group[@name='inventory']" position="inside">
+                <field name="default_location_id"/>
+            </xpath>
+        </field>
     </record>
-    
-    <!-- Keep your button unchanged -->
-    <record id="product_template_form_view_custom_label" model="ir.ui.view">
-        <field name="name">product.template.form.custom.label</field>
+
+    <!-- Add print button to product template form -->
+    <record id="view_template_button_custom_label" model="ir.ui.view">
+        <field name="name">product.template.button.custom.label</field>
         <field name="model">product.template</field>
         <field name="inherit_id" ref="product.product_template_form_view"/>
         <field name="arch" type="xml">
             <div name="button_box" position="inside">
-                <button class="oe_stat_button" type="object" name="action_print_custom_label" icon="fa-print">
-                    <div class="o_field_widget o_stat_info">
-                        <span class="o_stat_text">Print Custom Label</span>
+                <button class="oe_stat_button" 
+                        name="action_print_custom_label" 
+                        type="object" 
+                        icon="fa-print">
+                    <div class="o_stat_info">
+                        <span class="o_stat_text">50*25mm Label</span>
+                    </div>
+                </button>
+            </div>
+        </field>
+    </record>
+
+    <!-- Add print button to product variant form -->
+    <record id="view_product_variant_button_custom_label" model="ir.ui.view">
+        <field name="name">product.product.button.custom.label</field>
+        <field name="model">product.product</field>
+        <field name="inherit_id" ref="product.product_normal_form_view"/>
+        <field name="arch" type="xml">
+            <div name="button_box" position="inside">
+                <button class="oe_stat_button" 
+                        name="action_print_custom_label" 
+                        type="object" 
+                        icon="fa-print">
+                    <div class="o_stat_info">
+                        <span class="o_stat_text">50*25mm Label</span>
                     </div>
                 </button>
             </div>
