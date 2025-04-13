@@ -471,65 +471,36 @@
                                }"/>
                         
                         <style>
-                            /* Layout the attachments in a horizontal row */
-                            .o_field_widget.o_field_many2many[name="attachment_ids"] .o_attachments {
-                                display: flex;
-                                flex-wrap: nowrap;
-                                overflow-x: auto;
-                                padding: 10px 0;
-                                gap: 12px;
-                                scroll-behavior: smooth;
-                            }
-                            
-                            /* Style for each attachment item */
-                            .o_field_widget.o_field_many2many[name="attachment_ids"] .o_attachments .o_attachment {
-                                flex: 0 0 auto;
-                                position: relative;
-                                margin-bottom: 5px;
-                                border-radius: 8px;
-                                overflow: hidden;
-                                box-shadow: 0 2px 4px rgba(0,0,0,0.1);
-                                transition: transform 0.2s;
-                            }
-                            
-                            /* Hover effect */
-                            .o_field_widget.o_field_many2many[name="attachment_ids"] .o_attachments .o_attachment:hover {
-                                transform: translateY(-3px);
-                                box-shadow: 0 4px 8px rgba(0,0,0,0.15);
-                            }
-                            
-                            /* Enlarge preview images */
-                            .o_field_widget.o_field_many2many[name="attachment_ids"] .o_attachments .o_attachment .o_image {
-                                width: 120px !important;
-                                height: 120px !important;
-                                object-fit: cover !important;
-                            }
-                            
-                            /* Hide the filename text */
-                            .o_field_widget.o_field_many2many[name="attachment_ids"] .o_attachments .o_attachment .o_attachment_name {
-                                display: none !important;
-                            }
-                            
-                            /* Style the upload button to show as a "+" */
-                            .o_field_widget.o_field_many2many[name="attachment_ids"] .o_attach {
-                                display: inline-flex;
-                                justify-content: center;
-                                align-items: center;
-                                width: 120px;
-                                height: 120px;
-                                background-color: #f2f2f2;
-                                border: 2px dashed #aaa;
-                                border-radius: 8px;
-                                color: #555;
-                                font-size: 32px;
-                                cursor: pointer;
-                            }
-                            
-                            /* Ensure image container has proper size */
-                            .o_field_widget.o_field_many2many[name="attachment_ids"] .o_image_container {
-                                width: 120px !important;
-                                height: 120px !important;
-                            }
+                        .o_attachments {
+                            display: flex; !important;
+                            flex-direction: row; !important;
+                            flex-wrap: nowrap; !important;
+                            overflow-x: auto; !important;
+                            gap: 10px; !important;
+                            padding: 5px; !important;
+                        }
+                        .o_attachment.o_attachment_many2many.o_attachment_editable{
+                            height: 70px !important;
+                            width: 60px !important;          
+                        }
+                        .o_attachment_wrap {
+                            height: 60px !important;
+                            width: 50px !important;
+                        }
+                        .caption {
+                            display: none !important;
+                        }
+                        .o_attachment_uploaded {
+                            display: none !important;
+                        }
+                        .o_attachment_delete {
+                            height: 20px !important;
+                            width: 20px !important;
+                        }
+                        .o_image.o_hover {
+                            height: 60px !important;
+                            width: 50px !important;
+                        }
                         </style>
                     </page>
                     <page name="notes" string="Notes">

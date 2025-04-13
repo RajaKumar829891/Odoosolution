@@ -29,7 +29,7 @@ class SimplyFleetFuelLog(models.Model):
         'simply_fleet_fuel_log_attachment_rel',
         'fuel_log_id',
         'attachment_id',
-        string='Attachments'
+        string='Add image'
     )
     
     # Add new field to get vehicle type code
