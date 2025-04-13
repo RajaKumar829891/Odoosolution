@@ -83,58 +83,63 @@
                                 </tree>
                             </field>
                         </page>
-                        <page string="Parts Required" name="parts">
-                            <div class="row mb-2">
-                                <div class="col-12">
-                                    <button name="action_scan_part" 
-                                            string="Scan Part" 
-                                            type="object" 
-                                            class="btn btn-primary"
-                                            invisible="state in ('done', 'cancelled')"/>
-                                    <button name="action_manual_barcode_entry" 
-                                            string="Enter Barcode" 
-                                            type="object" 
-                                            class="btn btn-secondary ml-2"
-                                            invisible="state in ('done', 'cancelled')"/>
-                                    <button name="action_scan_barcode" 
-                                            string="Advanced Barcode Scanner" 
-                                            type="object" 
-                                            class="btn btn-primary ml-2"
-                                            invisible="state in ('done', 'cancelled')"/>
-                                    <span class="ml-2 text-muted" 
-                                          title="You can search products by entering the last 4 digits of a barcode">
-                                        (Tip: You can enter just the last 4 digits of a barcode)
-                                    </span>
-                                </div>
-                            </div>
-                            <field name="part_line_ids" readonly="state in ('done', 'cancelled')" 
-                                   context="{'display_default_code': True}">
-                                <tree editable="bottom">
-                                    <field name="barcode" widget="barcode_handler" placeholder="Scan or enter barcode (last 4 digits OK)"/>
-                                    <field name="product_id" 
-                                           options="{
-                                               'no_create': True,
-                                               'no_open': True
-                                           }"
-                                           context="{
-                                               'display_default_code': True
-                                           }"/>
-                                    <field name="description"/>
-                                    <field name="quantity"/>
-                                    <field name="product_uom"/>
-                                    <field name="unit_price"/>
-                                    <field name="subtotal" sum="Total"/>
-                                </tree>
-                            </field>
-                            <group class="oe_subtotal_footer oe_right">
-                                <field name="parts_cost" widget="monetary"/>
-                                <field name="labor_cost" widget="monetary"/>
-                                <div class="oe_subtotal_footer_separator oe_inline">
-                                    <label for="total_cost"/>
-                                </div>
-                                <field name="total_cost" nolabel="1" class="oe_subtotal_footer_separator" widget="monetary"/>
-                            </group>
-                        </page>
+                        <!-- Updated view_vehicle_work_order_form in simply_fleet_work_order_views.xml -->
+
+<page string="Parts Required" name="parts">
+    <div class="row mb-2">
+        <div class="col-12">
+            <button name="action_scan_part" 
+                    string="Scan Part" 
+                    type="object" 
+                    class="btn btn-primary"
+                    invisible="state in ('done', 'cancelled')"/>
+            <button name="action_manual_barcode_entry" 
+                    string="Enter Barcode" 
+                    type="object" 
+                    class="btn btn-secondary ml-2"
+                    invisible="state in ('done', 'cancelled')"/>
+            <button name="action_scan_barcode" 
+                    string="Advanced Barcode Scanner" 
+                    type="object" 
+                    class="btn btn-primary ml-2"
+                    invisible="state in ('done', 'cancelled')"/>
+            <span class="ml-2 text-muted" 
+                  title="You can search products by entering the last 4 digits of a barcode">
+                (Tip: You can enter just the last 4 digits of a barcode)
+            </span>
+        </div>
+    </div>
+    <field name="part_line_ids" readonly="state in ('done', 'cancelled')" 
+           context="{'display_default_code': True}">
+        <tree editable="bottom">
+            <field name="barcode" widget="barcode_handler_nextline"/>
+            <field name="product_id" 
+                   options="{
+                       'no_create': True,
+                       'no_open': True
+                   }"
+                   context="{
+                       'display_default_code': True
+                   }"/>
+            <field name="description"/>
+            <field name="quantity"/>
+            <field name="product_uom"/>
+            <field name="unit_price"/>
+            <field name="subtotal" sum="Total"/>
+            <control>
+                <create string="Add a line"/>
+            </control>
+        </tree>
+    </field>
+    <group class="oe_subtotal_footer oe_right">
+        <field name="parts_cost" widget="monetary"/>
+        <field name="labor_cost" widget="monetary"/>
+        <div class="oe_subtotal_footer_separator oe_inline">
+            <label for="total_cost"/>
+        </div>
+        <field name="total_cost" nolabel="1" class="oe_subtotal_footer_separator" widget="monetary"/>
+    </group>
+</page>
                         <page string="Notes" name="notes">
                             <field name="notes"/>
                         </page>

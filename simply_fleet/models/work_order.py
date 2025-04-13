@@ -529,36 +529,58 @@ class VehicleWorkOrderPartLine(models.Model):
                 
         return product
 
+# work_orders.py update for the VehicleWorkOrderPartLine class
+
     @api.onchange('barcode')
     def _onchange_barcode(self):
-        if self.barcode:
-            product = self._find_product_by_barcode(self.barcode)
-            
-            if not product:
-                return {
-                    'warning': {
-                        'title': _('Warning'),
-                        'message': _('No product found with this barcode/number: %s') % self.barcode
-                    }
-                }
-            
-            # Check if product is already in the work order
-            existing_line = self.work_order_id.part_line_ids.filtered(
-                lambda l: l.product_id.id == product.id and l.id != self._origin.id
-            )
-            
-            if existing_line:
-                # Increment quantity of existing line
-                existing_line.quantity += 1
-                # Clear the current line if it's new
-                if not self._origin:
-                    self.product_id = False
-                    self.quantity = 1.0
-            else:
-                self.product_id = product.id
-            
-            # Clear barcode field for next scan/entry
+        if not self.barcode:
+            return
+        
+        product = self._find_product_by_barcode(self.barcode)
+    
+        if not product:
             self.barcode = False
+            return {
+                'warning': {
+                    'title': _('Warning'),
+                    'message': _('No product found with this barcode/number: %s') % self.barcode
+                }
+            }
+    
+    # Check if product is already in the work order
+        existing_line = self.work_order_id.part_line_ids.filtered(
+            lambda l: l.product_id.id == product.id and l.id != self._origin.id
+        )
+    
+        if existing_line:
+        # Increment quantity of existing line
+            existing_line.quantity += 1
+        # Clear current line for the next scan
+            self.product_id = False
+        else:
+        # Set product in this line
+            self.product_id = product.id
+        
+        # If this is a new entry (not editing an existing one),
+        # we'll try to add another line to the parent work order
+            if not self._origin.id and self.env.context.get('scan_mode', False):
+            # Try to add a new line to the parent work order
+                try:
+                    self.work_order_id.write({
+                        'part_line_ids': [(0, 0, {
+                        'work_order_id': self.work_order_id.id,
+                        })]
+                    })
+                except Exception as e:
+                    _logger.error("Error creating new line: %s", e)
+    
+    # Clear barcode field for next scan
+        self.barcode = False
+    
+    # Return a context to the client indicating we need to refresh the view
+        return {
+            'context': {'scan_mode': True}
+        }
             
     @api.model
     def create(self, vals):

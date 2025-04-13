@@ -84,6 +84,24 @@ class VehicleWorkOrderBarcodeWizard(models.TransientModel):
             },
         }
 
+    
+    def action_done(self):
+        """Close wizard and return to work order"""
+        return {'type': 'ir.actions.act_window_close'}
+    
+    def action_scan_more(self):
+        """Refresh the wizard to scan more items"""
+        return {
+            'name': _('Scan Barcode'),
+            'type': 'ir.actions.act_window',
+            'res_model': 'simply.vehicle.work.order.barcode.wizard',
+            'view_mode': 'form',
+            'target': 'new',
+            'context': {
+                'default_work_order_id': self.work_order_id.id,
+            },
+        }
+
 
 class VehicleWorkOrderBarcodeWizardLine(models.TransientModel):
     _name = 'simply.vehicle.work.order.barcode.wizard.line'
