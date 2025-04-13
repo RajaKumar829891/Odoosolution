@@ -1,9 +1,0 @@
-/* Hide image names and types for all attachment widgets */
-.o_field_widget.o_field_many2many_binary .o_image_caption {
-    display: none !important;
-}
-
-/* Target specifically your field */
-.o_field_widget[name="attachment_ids"] .o_image_caption {
-    display: none !important;
-}

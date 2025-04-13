@@ -67,46 +67,19 @@
                         </group>
                     </group>
                     <notebook>
-                        <page string="Tasks" name="tasks">
-                            <field name="work_order_line_ids" readonly="state in ('done', 'cancelled')">
-                                <tree editable="bottom">
-                                    <field name="sequence" widget="handle"/>
-                                    <field name="name"/>
-                                    <field name="description"/>
-                                    <field name="recommended_action"/>
-                                    <field name="priority" widget="priority"/>
-                                    <field name="estimated_cost"/>
-                                    <field name="actual_cost"/>
-                                    <field name="state"/>
-                                    <field name="completion_date"/>
-                                    <field name="technician_notes"/>
-                                </tree>
-                            </field>
-                        </page>
-                        <!-- Updated view_vehicle_work_order_form in simply_fleet_work_order_views.xml -->
-
+                    <!-- Updated view_vehicle_work_order_form in simply_fleet_work_order_views.xml -->
 <page string="Parts Required" name="parts">
     <div class="row mb-2">
         <div class="col-12">
-            <button name="action_scan_part" 
-                    string="Scan Part" 
-                    type="object" 
-                    class="btn btn-primary"
-                    invisible="state in ('done', 'cancelled')"/>
-            <button name="action_manual_barcode_entry" 
-                    string="Enter Barcode" 
-                    type="object" 
-                    class="btn btn-secondary ml-2"
-                    invisible="state in ('done', 'cancelled')"/>
-            <button name="action_scan_barcode" 
-                    string="Advanced Barcode Scanner" 
+            <button name="action_scan_barcode"
                     type="object" 
                     class="btn btn-primary ml-2"
                     invisible="state in ('done', 'cancelled')"/>
-            <span class="ml-2 text-muted" 
-                  title="You can search products by entering the last 4 digits of a barcode">
-                (Tip: You can enter just the last 4 digits of a barcode)
-            </span>
+            <style>
+                button[name="action_scan_barcode"] {
+                    display: none !important;
+                }
+            </style>
         </div>
     </div>
     <field name="part_line_ids" readonly="state in ('done', 'cancelled')" 
@@ -140,6 +113,22 @@
         <field name="total_cost" nolabel="1" class="oe_subtotal_footer_separator" widget="monetary"/>
     </group>
 </page>
+                        <page string="Tasks" name="tasks">
+                            <field name="work_order_line_ids" readonly="state in ('done', 'cancelled')">
+                                <tree editable="bottom">
+                                    <field name="sequence" widget="handle"/>
+                                    <field name="name"/>
+                                    <field name="description"/>
+                                    <field name="recommended_action"/>
+                                    <field name="priority" widget="priority"/>
+                                    <field name="estimated_cost"/>
+                                    <field name="actual_cost"/>
+                                    <field name="state"/>
+                                    <field name="completion_date"/>
+                                    <field name="technician_notes"/>
+                                </tree>
+                            </field>
+                        </page>
                         <page string="Notes" name="notes">
                             <field name="notes"/>
                         </page>

@@ -1,0 +1,56 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <data>
+        <!-- JS Assets -->
+        <record id="my_barcode_scanner_js" model="ir.asset">
+            <field name="name">My Barcode Scanner JS</field>
+            <field name="bundle">web.assets_backend</field>
+            <field name="directive">append</field>
+            <field name="path">/my_barcode_scanner/static/src/js/barcode_scanner.js</field>
+        </record>
+        
+        <record id="my_barcode_widget_js" model="ir.asset">
+            <field name="name">My Barcode Widget JS</field>
+            <field name="bundle">web.assets_backend</field>
+            <field name="directive">append</field>
+            <field name="path">/my_barcode_scanner/static/src/js/barcode_widget.js</field>
+        </record>
+        
+        <record id="barcode_handler_nextline_js" model="ir.asset">
+            <field name="name">Barcode Handler Nextline JS</field>
+            <field name="bundle">web.assets_backend</field>
+            <field name="directive">append</field>
+            <field name="path">/my_barcode_scanner/static/src/js/barcode_handler_nextline.js</field>
+        </record>
+        
+        <record id="work_order_form_js" model="ir.asset">
+            <field name="name">Work Order Form JS</field>
+            <field name="bundle">web.assets_backend</field>
+            <field name="directive">append</field>
+            <field name="path">/my_barcode_scanner/static/src/js/work_order_form.js</field>
+        </record>
+        
+        <!-- XML Templates -->
+        <record id="barcode_templates_xml" model="ir.asset">
+            <field name="name">Barcode Templates XML</field>
+            <field name="bundle">web.assets_qweb</field>
+            <field name="directive">append</field>
+            <field name="path">/my_barcode_scanner/static/src/xml/barcode_templates.xml</field>
+        </record>
+        
+        <record id="mobile_scanner_templates_xml" model="ir.asset">
+            <field name="name">Mobile Scanner Templates XML</field>
+            <field name="bundle">web.assets_qweb</field>
+            <field name="directive">append</field>
+            <field name="path">/my_barcode_scanner/static/src/xml/mobile_scanner_templates.xml</field>
+        </record>
+        
+        <!-- CSS Assets -->
+        <record id="my_barcode_scanner_scss" model="ir.asset">
+            <field name="name">My Barcode Scanner SCSS</field>
+            <field name="bundle">web.assets_backend</field>
+            <field name="directive">append</field>
+            <field name="path">/my_barcode_scanner/static/src/scss/barcode_scanner.scss</field>
+        </record>
+    </data>
+</odoo>

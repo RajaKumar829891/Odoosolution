@@ -1,0 +1,84 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <!-- Barcode Scanner Form View -->
+    <record id="view_barcode_scanner_form" model="ir.ui.view">
+        <field name="name">barcode.scanner.form</field>
+        <field name="model">barcode.scanner</field>
+        <field name="arch" type="xml">
+            <form string="Barcode Scanner">
+                <sheet>
+                    <group>
+                        <field name="name"/>
+                        <field name="barcode"/>
+                        <field name="product_id"/>
+                        <field name="timestamp"/>
+                        <field name="user_id"/>
+                    </group>
+                </sheet>
+            </form>
+        </field>
+    </record>
+    
+    <!-- Barcode Scanner Tree View -->
+    <record id="view_barcode_scanner_tree" model="ir.ui.view">
+        <field name="name">barcode.scanner.tree</field>
+        <field name="model">barcode.scanner</field>
+        <field name="arch" type="xml">
+            <tree string="Barcode Scans">
+                <field name="name"/>
+                <field name="barcode"/>
+                <field name="product_id"/>
+                <field name="timestamp"/>
+                <field name="user_id"/>
+            </tree>
+        </field>
+    </record>
+    
+    <!-- Barcode Scanner Search View -->
+    <record id="view_barcode_scanner_search" model="ir.ui.view">
+        <field name="name">barcode.scanner.search</field>
+        <field name="model">barcode.scanner</field>
+        <field name="arch" type="xml">
+            <search string="Barcode Scans">
+                <field name="name"/>
+                <field name="barcode"/>
+                <field name="product_id"/>
+                <field name="user_id"/>
+                <group expand="0" string="Group By">
+                    <filter name="group_by_product" string="Product" domain="[]" context="{'group_by': 'product_id'}"/>
+                    <filter name="group_by_user" string="User" domain="[]" context="{'group_by': 'user_id'}"/>
+                    <filter name="group_by_day" string="Day" domain="[]" context="{'group_by': 'timestamp:day'}"/>
+                </group>
+            </search>
+        </field>
+    </record>
+    
+    <!-- Barcode Scanner Action -->
+    <record id="action_barcode_scanner" model="ir.actions.act_window">
+        <field name="name">Barcode Scans</field>
+        <field name="res_model">barcode.scanner</field>
+        <field name="view_mode">tree,form</field>
+        <field name="help" type="html">
+            <p class="o_view_nocontent_smiling_face">
+                No barcode scans found.
+            </p>
+            <p>
+                Use the mobile barcode scanner to scan product barcodes.
+            </p>
+        </field>
+    </record>
+    
+    <!-- Barcode Scanner Menu -->
+    <menuitem id="menu_barcode_scanner_root" name="Barcode Scanner" sequence="100"/>
+    <menuitem id="menu_barcode_scanner" name="Barcode Scans" parent="menu_barcode_scanner_root" action="action_barcode_scanner" sequence="10"/>
+    
+<!-- Mobile Scanner Menu Action - URL approach -->
+<record id="action_mobile_scanner_url" model="ir.actions.act_url">
+    <field name="name">Scan Barcode</field>
+    <field name="url">/barcode/scanner</field>
+    <field name="target">self</field>
+</record>
+    
+    <!-- Update the menu to use the new action -->
+<menuitem id="menu_mobile_scanner" name="Scan Barcode" parent="menu_barcode_scanner_root" action="action_mobile_scanner_url" sequence="5"/>
+</odoo>

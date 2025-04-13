@@ -1,0 +1,80 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <!-- Extend Work Order Form View to add mobile scanner button -->
+    <record id="view_vehicle_work_order_form_inherit_barcode" model="ir.ui.view">
+        <field name="name">simply.vehicle.work.order.form.inherit.barcode</field>
+        <field name="model">simply.vehicle.work.order</field>
+        <field name="inherit_id" ref="simply_fleet.view_vehicle_work_order_form"/>
+        <field name="arch" type="xml">
+            <!-- Find the Parts Required page header and add our button -->
+            <xpath expr="//page[@name='parts']//button[@name='action_scan_barcode']" position="after">
+                <button name="action_open_mobile_scanner" 
+                        string="Mobile Camera Scanner" 
+                        type="object" 
+                        class="btn btn-primary ml-2"
+                        icon="fa-camera"
+                        invisible="state in ('done', 'cancelled')"/>
+            </xpath>
+            
+            <!-- Swap the labels for quantity and price_unit -->
+            <xpath expr="//page[@name='parts']//field[@name='part_line_ids']" position="replace">
+                <field name="part_line_ids" widget="section_and_note_one2many">
+                    <tree editable="bottom" string="Parts Required">
+                        <field name="barcode" string="Barcode/Number"/>
+                        <field name="product_id" string="Part"/>
+                        <field name="name" string="Description"/>
+                        <!-- Swap the field labels while keeping field names the same -->
+                        <field name="quantity" string="total price"/>
+                        <field name="uom_id" string="Unit of Measure" optional="show"/>
+                        <field name="price_unit" string="total quantity"/>
+                        <field name="subtotal" string="Subtotal" sum="Total"/>
+                    </tree>
+                </field>
+            </xpath>
+        </field>
+    </record>
+    
+    <!-- Part Line Form View -->
+    <record id="view_vehicle_work_order_part_line_form" model="ir.ui.view">
+        <field name="name">simply.vehicle.work.order.part.line.form</field>
+        <field name="model">simply.vehicle.work.order.part.line</field>
+        <field name="arch" type="xml">
+            <form string="Work Order Part Line">
+                <sheet>
+                    <group>
+                        <group>
+                            <field name="product_id"/>
+                            <field name="name"/>
+                            <field name="barcode"/>
+                        </group>
+                        <group>
+                            <!-- Swap the field labels here too -->
+                            <field name="quantity" string="Unit Price"/>
+                            <field name="price_unit" string="Quantity"/>
+                            <field name="uom_id"/>
+                            <field name="subtotal"/>
+                        </group>
+                    </group>
+                </sheet>
+            </form>
+        </field>
+    </record>
+    
+    <!-- Part Line Tree View -->
+    <record id="view_vehicle_work_order_part_line_tree" model="ir.ui.view">
+        <field name="name">simply.vehicle.work.order.part.line.tree</field>
+        <field name="model">simply.vehicle.work.order.part.line</field>
+        <field name="arch" type="xml">
+            <tree string="Work Order Part Lines">
+                <field name="barcode"/>
+                <field name="product_id"/>
+                <field name="name"/>
+                <!-- Swap the field labels here too -->
+                <field name="quantity" string="Unit Price"/>
+                <field name="price_unit" string="Quantity"/>
+                <field name="uom_id"/>
+                <field name="subtotal"/>
+            </tree>
+        </field>
+    </record>
+</odoo>

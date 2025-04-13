@@ -1,0 +1,91 @@
+<?xml version="1.0" encoding="utf-8"?>
+<templates xml:space="preserve">
+    <t t-name="my_barcode_scanner.MobileBarcodeScannerTemplate" owl="1">
+        <div class="o_mobile_barcode_scanner container-fluid p-3">
+            <div class="row">
+                <div class="col-12">
+                    <div class="scanner-header text-center mb-4">
+                        <h1 class="h3">Mobile Barcode Scanner</h1>
+                        <t t-if="state.workOrderId">
+                            <p class="text-muted">
+                                Work Order ID: <t t-esc="state.workOrderId"/>
+                            </p>
+                        </t>
+                    </div>
+                    
+                    <div class="scanner-controls d-flex justify-content-center mb-3">
+                        <div class="btn-group" role="group">
+                            <button t-on-click="startScanner" class="btn btn-primary">
+                                <i class="fa fa-play mr-2"></i>Start Scanning
+                            </button>
+                            <button t-on-click="stopScanner" class="btn btn-secondary">
+                                <i class="fa fa-stop mr-2"></i>Stop Scanning
+                            </button>
+                            <button t-on-click="returnToWorkOrder" class="btn btn-info">
+                                <i class="fa fa-arrow-left mr-2"></i>Return to Work Order
+                            </button>
+                        </div>
+                    </div>
+                    
+                    <div class="scanner-video-container mb-3">
+                        <video 
+                            t-ref="video" 
+                            autoplay="autoplay"
+                            playsinline="playsinline" 
+                            muted="muted" 
+                            class="scanner-video w-100 rounded shadow-sm"
+                        ></video>
+                    </div>
+                    
+                    <div class="scanner-messages mb-3">
+                        <t t-if="state.errorMessage">
+                            <div class="alert alert-danger d-flex align-items-center">
+                                <i class="fa fa-exclamation-triangle mr-2"></i>
+                                <t t-esc="state.errorMessage"/>
+                            </div>
+                        </t>
+                        <t t-if="state.successMessage">
+                            <div class="alert alert-success d-flex align-items-center">
+                                <i class="fa fa-check-circle mr-2"></i>
+                                <t t-esc="state.successMessage"/>
+                            </div>
+                        </t>
+                    </div>
+                    
+                    <div class="scanner-history card">
+                        <div class="card-header d-flex justify-content-between align-items-center">
+                            <h2 class="h5 mb-0">Scan History</h2>
+                            <button 
+                                t-on-click="clearHistory" 
+                                t-if="state.scanHistory.length > 0"
+                                class="btn btn-sm btn-outline-danger"
+                            >
+                                <i class="fa fa-trash mr-2"></i>Clear
+                            </button>
+                        </div>
+                        <div class="card-body p-0">
+                            <ul class="list-group list-group-flush">
+                                <t t-if="state.scanHistory.length === 0">
+                                    <li class="list-group-item text-muted text-center py-3">
+                                        No scan history
+                                    </li>
+                                </t>
+                                <t t-foreach="state.scanHistory" t-as="scan">
+                                    <li class="list-group-item d-flex justify-content-between align-items-center">
+                                        <div>
+                                            <strong class="mr-2">Barcode:</strong>
+                                            <span><t t-esc="scan.barcode"/></span>
+                                        </div>
+                                        <small class="text-muted">
+                                            <t t-esc="scan.timestamp"/>
+                                        </small>
+                                    </li>
+                                </t>
+                            </ul>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </t>
+</templates>
