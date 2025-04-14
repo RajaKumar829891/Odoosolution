@@ -68,17 +68,17 @@
         </field>
     </record>
     
-    <!-- Barcode Scanner Menu -->
+    <!-- Mobile Scanner Menu Action - URL approach -->
+    <record id="action_mobile_scanner_url" model="ir.actions.act_url">
+        <field name="name">Scan Barcode</field>
+        <field name="url">/barcode/scanner</field>
+        <field name="target">self</field>
+    </record>
+    
+    <!-- Comment out all menu items to hide them completely -->
+    <!--
     <menuitem id="menu_barcode_scanner_root" name="Barcode Scanner" sequence="100"/>
     <menuitem id="menu_barcode_scanner" name="Barcode Scans" parent="menu_barcode_scanner_root" action="action_barcode_scanner" sequence="10"/>
-    
-<!-- Mobile Scanner Menu Action - URL approach -->
-<record id="action_mobile_scanner_url" model="ir.actions.act_url">
-    <field name="name">Scan Barcode</field>
-    <field name="url">/barcode/scanner</field>
-    <field name="target">self</field>
-</record>
-    
-    <!-- Update the menu to use the new action -->
-<menuitem id="menu_mobile_scanner" name="Scan Barcode" parent="menu_barcode_scanner_root" action="action_mobile_scanner_url" sequence="5"/>
+    <menuitem id="menu_mobile_scanner" name="Scan Barcode" parent="menu_barcode_scanner_root" action="action_mobile_scanner_url" sequence="5"/>
+    -->
 </odoo>
