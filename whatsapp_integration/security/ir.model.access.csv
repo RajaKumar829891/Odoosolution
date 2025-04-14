@@ -1,7 +1,0 @@
-id,name,model_id:id,group_id:id,perm_read,perm_write,perm_create,perm_unlink
-access_whatsapp_config_admin,whatsapp.config admin,model_whatsapp_config,base.group_system,1,1,1,1
-access_whatsapp_config_user,whatsapp.config user,model_whatsapp_config,base.group_user,1,0,0,0
-access_whatsapp_template_admin,whatsapp.template admin,model_whatsapp_template,base.group_system,1,1,1,1
-access_whatsapp_template_user,whatsapp.template user,model_whatsapp_template,base.group_user,1,0,0,0
-access_whatsapp_message_admin,whatsapp.message admin,model_whatsapp_message,base.group_system,1,1,1,1
-access_whatsapp_message_user,whatsapp.message user,model_whatsapp_message,base.group_user,1,1,1,0
