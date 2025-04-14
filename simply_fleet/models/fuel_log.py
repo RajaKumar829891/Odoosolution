@@ -238,25 +238,26 @@ class SimplyFleetFuelLog(models.Model):
         }
     
     def _sync_ir_attachments(self):
-        """Synchronize mail attachments with custom attachment field"""
         for record in self:
-            # Find all attachments linked to this record via mail.thread
+            # Find the related attachments
             mail_attachments = self.env['ir.attachment'].search([
-                ('res_model', '=', self._name),
-                ('res_id', '=', record.id)
+                # your existing search criteria
             ])
             
-            # Link them to our custom field if not already linked
-            if mail_attachments:
-                record.attachment_ids = mail_attachments
-    
-    # Override write to sync attachments
+            # Use a context flag to prevent recursion
+            # Get current attachments and compare to avoid unnecessary updates
+            current_attachments = record.attachment_ids
+            if current_attachments != mail_attachments:
+                # Use with_context to set a flag that will prevent further recursion
+                record.with_context(skip_attachment_sync=True).write({
+                    'attachment_ids': [(6, 0, mail_attachments.ids)]
+                })
     def write(self, vals):
-        result = super().write(vals)
-        # If attachment_ids was updated, sync back to ir.attachment
-        if 'attachment_ids' in vals:
+        res = super(YourModel, self).write(vals)
+        # Check if we need to skip attachment sync
+        if not self._context.get('skip_attachment_sync'):
             self._sync_ir_attachments()
-        return result
+        return res
     
     # Handle data migration during module upgrade
     @api.model
