@@ -69,6 +69,8 @@
        'web.assets_backend': [
            '/simply_fleet/static/src/css/mobile_styles.css',
            '/simply_fleet/static/src/js/barcode_handler.js',
+           '/simply_fleet/static/src/css/vehicle_kanban.css',
+           '/simply_fleet/static/src/css/vehicle_kanban.css',
        ],
    },
    'demo': [],
