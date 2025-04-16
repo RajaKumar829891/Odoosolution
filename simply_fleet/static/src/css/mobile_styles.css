@@ -1,55 +1,73 @@
-/* Mobile Styles */
+/* Vehicle Kanban Styles */
+.o_simply_fleet_vehicle_kanban .oe_kanban_global_click {
+    margin-bottom: 8px;
+    border-radius: 8px;
+    box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+    background-color: #ffffff;
+    padding: 12px;
+}
+
+/* Vehicle icon with colorful background */
+.o_simply_fleet_vehicle_kanban .vehicle-icon {
+    position: relative;
+    width: 50px;
+    height: 50px;
+    border-radius: 50%;
+    background-color: #FFD166;
+    margin-right: 12px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+/* Bus icon from FontAwesome */
+.o_simply_fleet_vehicle_kanban .vehicle-icon .fa-bus {
+    font-size: 24px;
+    color: #333333;
+}
+
+/* Title and content spacing */
+.o_simply_fleet_vehicle_kanban .o_kanban_record_title {
+    font-size: 16px;
+    color: #2b2b2b;
+    margin-bottom: 12px !important; /* Increased spacing between title and status */
+    display: block;
+}
+
+.o_simply_fleet_vehicle_kanban .badge {
+    font-size: 12px;
+    padding: 4px 10px;
+    border-radius: 12px;
+}
+
+/* Selection circle styling */
+.o_simply_fleet_vehicle_kanban .fa-circle-o {
+    color: #6c757d;
+    font-size: 20px;
+}
+
+/* For custom image approach */
+.o_simply_fleet_vehicle_kanban .custom-bus-icon {
+    width: 30px;
+    height: 30px;
+    background-image: url('/simply_fleet/static/src/img/bus_icon.png');
+    background-size: contain;
+    background-repeat: no-repeat;
+    background-position: center;
+}
+
+/* Mobile-specific styles */
 @media (max-width: 767px) {
-    /* Kanban Card Styles */
-    .o_kanban_mobile .oe_kanban_global_click {
-        margin-bottom: 0 !important;
-        border-radius: 8px !important;
-        box-shadow: 0 2px 4px rgba(0,0,0,0.1) !important;
-        background-color: #ffffff !important;
-        padding: 0 !important;
+    .o_simply_fleet_vehicle_kanban .oe_kanban_global_click {
+        margin-bottom: 6px;
     }
-    /* Title Styles */
-    .o_kanban_mobile .o_kanban_record_title {
-        font-size: 1.2em !important;
-        color: #2b2b2b !important;
-        font-weight: bold !important;
-        margin-bottom: 0 !important;
+    
+    .o_simply_fleet_vehicle_kanban .oe_kanban_details {
+        padding: 10px;
     }
-    /* Subtitle Styles */
-    .o_kanban_mobile .o_kanban_record_subtitle {
-        font-size: 1.1em !important;
-        color: #666666 !important;
-        margin-bottom: 0 !important;
-    }
-    /* Body Content Styles */
-    .o_kanban_mobile .o_kanban_record_body {
-        font-size: 1.1em !important;
-        line-height: 1 !important;
-    }
-    /* Row Styles */
-    .o_kanban_mobile .row {
-        padding: 0 !important;
-        border-bottom: 1px solid #f0f0f0 !important;
-        margin: 0 !important;
-    }
-    .o_kanban_mobile .row:last-child {
-        border-bottom: none !important;
-    }
-    /* Column Labels */
-    .o_kanban_mobile .row .col-6:first-child {
-        color: #666666 !important;
-        font-weight: normal !important;
-    }
-    /* Column Values */
-    .o_kanban_mobile .row .col-6:last-child {
-        color: #2b2b2b !important;
-        font-weight: 500 !important;
-        text-align: right !important;
-    }
-    /* Badge Styles */
-    .o_kanban_mobile .badge {
-        padding: 0 !important;
-        font-size: 0.9em !important;
-        border-radius: 16px !important;
+    
+    .o_simply_fleet_vehicle_kanban .o_kanban_record_title {
+        font-size: 16px;
+        margin-bottom: 14px !important; /* Even more spacing on mobile */
     }
 }

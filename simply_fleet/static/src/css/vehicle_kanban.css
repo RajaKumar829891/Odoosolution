@@ -1,0 +1,153 @@
+/* Vehicle Kanban Styles - Enhanced for highly detailed truck */
+
+/* Card styling */
+.o_simply_fleet_vehicle_kanban .oe_kanban_global_click {
+    margin-bottom: 8px;
+    border-radius: 8px;
+    box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+    background-color: #ffffff;
+    padding: 12px;
+}
+
+/* Vehicle icon with colorful background */
+.o_simply_fleet_vehicle_kanban .vehicle-icon {
+    position: relative;
+    width: 50px;
+    height: 50px;
+    border-radius: 50%;
+    background-color: #FFCF4B; /* Exact shade from reference */
+    margin-right: 12px;
+    overflow: hidden;
+}
+
+/* Truck body - main red part */
+.o_simply_fleet_vehicle_kanban .truck-body {
+    position: absolute;
+    top: 17px;
+    left: 6px;
+    width: 28px;
+    height: 16px;
+    background-color: #FF473D; /* Exact red from reference */
+    border-radius: 3px 3px 0 0;
+}
+
+/* Truck cabin - blue part */
+.o_simply_fleet_vehicle_kanban .truck-cabin {
+    position: absolute;
+    top: 15px;
+    left: 34px;
+    width: 10px;
+    height: 16px;
+    background-color: #4DB8FF; /* Light blue */
+    border-radius: 3px 3px 1px 1px;
+}
+
+/* Truck window - white part in cabin */
+.o_simply_fleet_vehicle_kanban .truck-window {
+    position: absolute;
+    top: 18px;
+    left: 36px;
+    width: 6px;
+    height: 6px;
+    background-color: white;
+    border-radius: 1px;
+    z-index: 1;
+}
+
+/* Truck bumper - light red accent */
+.o_simply_fleet_vehicle_kanban .truck-bumper {
+    position: absolute;
+    top: 27px;
+    left: 6px;
+    width: 9px;
+    height: 4px;
+    background-color: #FF9999;
+    border-radius: 1px;
+}
+
+/* Bottom accent - pink part below truck */
+.o_simply_fleet_vehicle_kanban .truck-bottom {
+    position: absolute;
+    top: 33px;
+    left: 10px;
+    width: 30px;
+    height: 3px;
+    background-color: #FF7373;
+    border-radius: 1px;
+}
+
+/* Wheel - left wheel with border and hubcap */
+.o_simply_fleet_vehicle_kanban .truck-wheel-left {
+    position: absolute;
+    bottom: 11px;
+    left: 11px;
+    width: 10px;
+    height: 10px;
+    background-color: #298A9E; /* Turquoise blue from reference */
+    border-radius: 50%;
+    border: 1px solid #dddddd;
+}
+
+/* Wheel - right wheel with border and hubcap */
+.o_simply_fleet_vehicle_kanban .truck-wheel-right {
+    position: absolute;
+    bottom: 11px;
+    left: 29px;
+    width: 10px;
+    height: 10px;
+    background-color: #298A9E; /* Turquoise blue from reference */
+    border-radius: 50%;
+    border: 1px solid #dddddd;
+}
+
+/* Wheel hub - left wheel center */
+.o_simply_fleet_vehicle_kanban .truck-wheel-left::after {
+    content: "";
+    position: absolute;
+    top: 3px;
+    left: 3px;
+    width: 2px;
+    height: 2px;
+    background-color: white;
+    border-radius: 50%;
+}
+
+/* Wheel hub - right wheel center */
+.o_simply_fleet_vehicle_kanban .truck-wheel-right::after {
+    content: "";
+    position: absolute;
+    top: 3px;
+    left: 3px;
+    width: 2px;
+    height: 2px;
+    background-color: white;
+    border-radius: 50%;
+}
+
+/* Title and content spacing - increased */
+.o_simply_fleet_vehicle_kanban .o_kanban_record_title {
+    font-size: 16px;
+    color: #2b2b2b;
+    margin-bottom: 20px !important; /* Increased for more space */
+    display: block;
+}
+
+/* Status badge styling */
+.o_simply_fleet_vehicle_kanban .badge {
+    font-size: 12px;
+    padding: 4px 10px;
+    border-radius: 12px;
+}
+
+/* Selection circle styling */
+.o_simply_fleet_vehicle_kanban .fa-circle-o {
+    color: #6c757d;
+    font-size: 20px;
+}
+
+/* Mobile-specific styles */
+@media (max-width: 767px) {
+    .o_simply_fleet_vehicle_kanban .o_kanban_record_title {
+        margin-bottom: 24px !important; /* Even more spacing on mobile */
+    }
+}
