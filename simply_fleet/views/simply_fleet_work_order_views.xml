@@ -67,52 +67,7 @@
                         </group>
                     </group>
                     <notebook>
-                    <!-- Updated view_vehicle_work_order_form in simply_fleet_work_order_views.xml -->
-<page string="Parts Required" name="parts">
-    <div class="row mb-2">
-        <div class="col-12">
-            <button name="action_scan_barcode"
-                    type="object" 
-                    class="btn btn-primary ml-2"
-                    invisible="state in ('done', 'cancelled')"/>
-            <style>
-                button[name="action_scan_barcode"] {
-                    display: none !important;
-                }
-            </style>
-        </div>
-    </div>
-    <field name="part_line_ids" readonly="state in ('done', 'cancelled')" 
-           context="{'display_default_code': True}">
-        <tree editable="bottom">
-            <field name="barcode" widget="barcode_handler_nextline"/>
-            <field name="product_id" 
-                   options="{
-                       'no_create': True,
-                       'no_open': True
-                   }"
-                   context="{
-                       'display_default_code': True
-                   }"/>
-            <field name="description"/>
-            <field name="quantity"/>
-            <field name="product_uom"/>
-            <field name="unit_price"/>
-            <field name="subtotal" sum="Total"/>
-            <control>
-                <create string="Add a line"/>
-            </control>
-        </tree>
-    </field>
-    <group class="oe_subtotal_footer oe_right">
-        <field name="parts_cost" widget="monetary"/>
-        <field name="labor_cost" widget="monetary"/>
-        <div class="oe_subtotal_footer_separator oe_inline">
-            <label for="total_cost"/>
-        </div>
-        <field name="total_cost" nolabel="1" class="oe_subtotal_footer_separator" widget="monetary"/>
-    </group>
-</page>
+                        <!-- Tasks page now comes first -->
                         <page string="Tasks" name="tasks">
                             <field name="work_order_line_ids" readonly="state in ('done', 'cancelled')">
                                 <tree editable="bottom">
@@ -129,9 +84,60 @@
                                 </tree>
                             </field>
                         </page>
+                        
+                        <!-- Parts Required page now comes second -->
+                        <page string="Parts Required" name="parts">
+                            <div class="row mb-2">
+                                <div class="col-12">
+                                    <button name="action_scan_barcode"
+                                            type="object" 
+                                            class="btn btn-primary ml-2"
+                                            invisible="state in ('done', 'cancelled')"/>
+                                    <style>
+                                        button[name="action_scan_barcode"] {
+                                            display: none !important;
+                                        }
+                                    </style>
+                                </div>
+                            </div>
+                            <field name="part_line_ids" readonly="state in ('done', 'cancelled')" 
+                                context="{'display_default_code': True}">
+                                <tree editable="bottom">
+                                    <!-- Barcode field hidden -->
+                                    <!-- Description field hidden -->
+                                    <field name="product_id" 
+                                        options="{
+                                            'no_create': True,
+                                            'no_open': True
+                                        }"
+                                        context="{
+                                            'display_default_code': True
+                                        }"/>
+                                    <field name="quantity"/>
+                                    <field name="product_uom" force_save="1" readonly="1"/>
+                                    <field name="unit_price"/>
+                                    <field name="subtotal" sum="Total"/>
+                                    <control>
+                                        <create string="Add a line"/>
+                                    </control>
+                                </tree>
+                            </field>
+                            <group class="oe_subtotal_footer oe_right">
+                                <field name="parts_cost" widget="monetary"/>
+                                <field name="labor_cost" widget="monetary"/>
+                                <div class="oe_subtotal_footer_separator oe_inline">
+                                    <label for="total_cost"/>
+                                </div>
+                                <field name="total_cost" nolabel="1" class="oe_subtotal_footer_separator" widget="monetary"/>
+                            </group>
+                        </page>
+                        
+                        <!-- Notes page now comes third -->
                         <page string="Notes" name="notes">
                             <field name="notes"/>
                         </page>
+                        
+                        <!-- Documents page now comes fourth -->
                         <page string="Documents" name="documents">
                             <field name="document_ids" widget="many2many_binary"/>
                         </page>
@@ -173,41 +179,41 @@
         </field>
     </record>
 
-<!-- Fixed Part Line Form View for Odoo 17 -->
-<record id="view_vehicle_work_order_part_line_form" model="ir.ui.view">
-    <field name="name">simply.vehicle.work.order.part.line.form</field>
-    <field name="model">simply.vehicle.work.order.part.line</field>
-    <field name="arch" type="xml">
-        <form>
-            <sheet>
-                <group>
-                    <field name="work_order_id" invisible="1"/>
-                    <field name="barcode" widget="barcode_handler" placeholder="Scan or enter barcode (last 4 digits OK)"/>
-                    <div class="text-muted" invisible="not barcode">
-                        <small>You can enter just the last 4 digits of a barcode</small>
-                    </div>
-                    <field name="product_id" 
-                           options="{
-                               'no_create': True,
-                               'no_open': True
-                           }"
-                           context="{
-                               'display_default_code': True
-                           }"/>
-                    <field name="description"/>
-                    <field name="quantity"/>
-                    <field name="product_uom"/>
-                    <field name="unit_price"/>
-                    <field name="subtotal"/>
-                </group>
-            </sheet>
-            <footer>
-                <button string="Save" name="create" type="object" class="btn-primary"/>
-                <button string="Discard" class="btn-secondary" special="cancel"/>
-            </footer>
-        </form>
-    </field>
-</record>
+    <!-- Fixed Part Line Form View for Odoo 17 -->
+    <record id="view_vehicle_work_order_part_line_form" model="ir.ui.view">
+        <field name="name">simply.vehicle.work.order.part.line.form</field>
+        <field name="model">simply.vehicle.work.order.part.line</field>
+        <field name="arch" type="xml">
+            <form>
+                <sheet>
+                    <group>
+                        <field name="work_order_id" invisible="1"/>
+                        <field name="barcode" widget="barcode_handler" placeholder="Scan or enter barcode (last 4 digits OK)"/>
+                        <div class="text-muted" invisible="not barcode">
+                            <small>You can enter just the last 4 digits of a barcode</small>
+                        </div>
+                        <field name="product_id" 
+                               options="{
+                                   'no_create': True,
+                                   'no_open': True
+                               }"
+                               context="{
+                                   'display_default_code': True
+                               }"/>
+                        <field name="description"/>
+                        <field name="quantity"/>
+                        <field name="product_uom"/>
+                        <field name="unit_price"/>
+                        <field name="subtotal"/>
+                    </group>
+                </sheet>
+                <footer>
+                    <button string="Save" name="create" type="object" class="btn-primary"/>
+                    <button string="Discard" class="btn-secondary" special="cancel"/>
+                </footer>
+            </form>
+        </field>
+    </record>
 
     <!-- Search View -->
     <record id="view_vehicle_work_order_search" model="ir.ui.view">

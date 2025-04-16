@@ -189,7 +189,6 @@ class VehicleWorkOrder(models.Model):
             'location_id': self.location_id.id,
             'location_dest_id': destination_location.id,
             'origin': f'{self.name} - {self.vehicle_id.name}',
-            'immediate_transfer': True,
         }
         
         picking = self.env['stock.picking'].create(picking_vals)
@@ -211,30 +210,65 @@ class VehicleWorkOrder(models.Model):
                 'location_id': self.location_id.id,
                 'location_dest_id': destination_location.id,
                 'picking_id': picking.id,
-                'state': 'draft',
             }
             
-            move = self.env['stock.move'].create(move_vals)
-            
-            move_line_vals = {
-                'move_id': move.id,
-                'product_id': part.product_id.id,
-                'product_uom_id': part.product_uom.id,
-                'qty_done': part.quantity,
-                'location_id': self.location_id.id,
-                'location_dest_id': destination_location.id,
-                'picking_id': picking.id,
-            }
-            
-            self.env['stock.move.line'].create(move_line_vals)
+            self.env['stock.move'].create(move_vals)
         
+        # First confirm the picking
         picking.action_confirm()
-        picking.action_assign()
         
-        picking.with_context(skip_backorder=True).button_validate()
+        # Assign available quantities
+        if hasattr(picking, 'action_assign'):
+            picking.action_assign()
+            
+        # Set all moves to done with the requested quantity
+        for move in picking.move_ids:
+            # Get the move lines created during reservation
+            if move.move_line_ids:
+                for move_line in move.move_line_ids:
+                    # Try different field names that might exist in Odoo 17
+                    if hasattr(move_line, 'qty_done'):
+                        move_line.qty_done = move.product_uom_qty
+                    elif hasattr(move_line, 'quantity_done'):
+                        move_line.quantity_done = move.product_uom_qty
+                    elif hasattr(move_line, 'quantity'):
+                        move_line.quantity = move.product_uom_qty
+                    elif hasattr(move_line, 'product_uom_qty'):
+                        move_line.product_uom_qty = move.product_uom_qty
+            else:
+                # If no move lines were created, we need to force create one
+                vals = {
+                    'move_id': move.id,
+                    'product_id': move.product_id.id,
+                    'product_uom_id': move.product_uom.id,
+                    'location_id': move.location_id.id,
+                    'location_dest_id': move.location_dest_id.id,
+                    'picking_id': picking.id,
+                }
+                
+                # Try to set quantity with different possible field names
+                for qty_field in ['qty_done', 'quantity_done', 'quantity', 'product_uom_qty']:
+                    try:
+                        vals[qty_field] = move.product_uom_qty
+                        self.env['stock.move.line'].create(vals)
+                        _logger.info(f"Successfully created move line using field: {qty_field}")
+                        break
+                    except ValueError:
+                        _logger.info(f"Field {qty_field} doesn't exist, trying next one")
+                        continue
         
-        self.env['stock.quant']._merge_quants()
-        self.env['stock.quant']._unlink_zero_quants()
+        # Now validate the picking - let's wrap this in a try-except in case it fails
+        try:
+            if hasattr(picking, 'button_validate'):
+                picking.button_validate()
+            elif hasattr(picking, 'action_done'):
+                picking.action_done()
+            else:
+                _logger.error("Could not find appropriate method to validate picking")
+                raise UserError(_("Could not validate picking. Please check your Odoo version compatibility."))
+        except Exception as e:
+            _logger.error(f"Error validating picking: {e}")
+            raise UserError(_(f"Error validating stock transfer: {e}"))
         
         self.parts_transfer_picking_ids = [(4, picking.id)]
         
@@ -246,7 +280,7 @@ class VehicleWorkOrder(models.Model):
             if not order.parts_transferred or not order.parts_transfer_picking_ids:
                 continue
             
-            picking_type = self._get_internal_picking_type()
+            picking_type = order._get_internal_picking_type()
             
             if not picking_type:
                 raise UserError(_('No internal transfer operation type found.'))
@@ -257,42 +291,42 @@ class VehicleWorkOrder(models.Model):
                 return_picking_vals = {
                     'picking_type_id': picking_type.id,
                     'location_id': vehicle_location.id,
-                    'location_dest_id': self.location_id.id,
-                    'origin': f'{self.name} - {self.vehicle_id.name} - Parts Return',
-                    'immediate_transfer': True,
+                    'location_dest_id': order.location_id.id,
+                    'origin': f'{order.name} - {order.vehicle_id.name} - Parts Return',
                 }
                 
                 return_picking = self.env['stock.picking'].create(return_picking_vals)
                 
-                for move in original_picking.move_lines:
+                for move in original_picking.move_ids:
                     return_move_vals = {
-                        'name': f'Return {move.product_id.name} from {self.vehicle_id.name}',
+                        'name': f'Return {move.product_id.name} from {order.vehicle_id.name}',
                         'product_id': move.product_id.id,
                         'product_uom': move.product_uom.id,
                         'product_uom_qty': move.product_uom_qty,
                         'location_id': vehicle_location.id,
-                        'location_dest_id': self.location_id.id,
+                        'location_dest_id': order.location_id.id,
                         'picking_id': return_picking.id,
-                        'state': 'draft',
                     }
                     
-                    return_move = self.env['stock.move'].create(return_move_vals)
-                    
-                    move_line_vals = {
-                        'move_id': return_move.id,
+                    self.env['stock.move'].create(return_move_vals)
+                
+                # First confirm the picking
+                return_picking.action_confirm()
+                
+                # Create move lines with quantity set
+                for move in return_picking.move_ids:
+                    self.env['stock.move.line'].create({
+                        'move_id': move.id,
                         'product_id': move.product_id.id,
                         'product_uom_id': move.product_uom.id,
-                        'qty_done': move.product_uom_qty,
-                        'location_id': vehicle_location.id,
-                        'location_dest_id': self.location_id.id,
+                        'location_id': move.location_id.id,
+                        'location_dest_id': move.location_dest_id.id,
                         'picking_id': return_picking.id,
-                    }
-                    
-                    self.env['stock.move.line'].create(move_line_vals)
+                        'quantity': move.product_uom_qty,
+                    })
                 
-                return_picking.action_confirm()
-                return_picking.action_assign()
-                return_picking.with_context(skip_backorder=True).button_validate()
+                # Now validate
+                return_picking.button_validate()
 
     def action_cancel(self):
         """Cancel work order and return parts to inventory"""
@@ -529,8 +563,6 @@ class VehicleWorkOrderPartLine(models.Model):
                 
         return product
 
-# work_orders.py update for the VehicleWorkOrderPartLine class
-
     @api.onchange('barcode')
     def _onchange_barcode(self):
         if not self.barcode:
@@ -547,37 +579,37 @@ class VehicleWorkOrderPartLine(models.Model):
                 }
             }
     
-    # Check if product is already in the work order
+        # Check if product is already in the work order
         existing_line = self.work_order_id.part_line_ids.filtered(
             lambda l: l.product_id.id == product.id and l.id != self._origin.id
         )
     
         if existing_line:
-        # Increment quantity of existing line
+            # Increment quantity of existing line
             existing_line.quantity += 1
-        # Clear current line for the next scan
+            # Clear current line for the next scan
             self.product_id = False
         else:
-        # Set product in this line
+            # Set product in this line
             self.product_id = product.id
         
-        # If this is a new entry (not editing an existing one),
-        # we'll try to add another line to the parent work order
+            # If this is a new entry (not editing an existing one),
+            # we'll try to add another line to the parent work order
             if not self._origin.id and self.env.context.get('scan_mode', False):
-            # Try to add a new line to the parent work order
+                # Try to add a new line to the parent work order
                 try:
                     self.work_order_id.write({
                         'part_line_ids': [(0, 0, {
-                        'work_order_id': self.work_order_id.id,
+                            'work_order_id': self.work_order_id.id,
                         })]
                     })
                 except Exception as e:
                     _logger.error("Error creating new line: %s", e)
     
-    # Clear barcode field for next scan
+        # Clear barcode field for next scan
         self.barcode = False
     
-    # Return a context to the client indicating we need to refresh the view
+        # Return a context to the client indicating we need to refresh the view
         return {
             'context': {'scan_mode': True}
         }
