@@ -1,0 +1,108 @@
+/* simply_fleet/static/src/css/inspection_kanban.css */
+/* General styling for all inspection kanban views */
+.o_simply_fleet_inspection_kanban .oe_kanban_global_click,
+.o_simply_fleet_inspection_template_kanban .oe_kanban_global_click,
+.o_simply_fleet_inspection_schedule_kanban .oe_kanban_global_click {
+    border-radius: 5px;
+    box-shadow: 0 1px 2px rgba(0,0,0,0.08);
+    transition: all 0.2s ease;
+    height: 100%;
+}
+
+.o_simply_fleet_inspection_kanban .oe_kanban_global_click:hover,
+.o_simply_fleet_inspection_template_kanban .oe_kanban_global_click:hover,
+.o_simply_fleet_inspection_schedule_kanban .oe_kanban_global_click:hover {
+    box-shadow: 0 3px 10px rgba(0,0,0,0.1);
+    transform: translateY(-2px);
+}
+
+/* Vehicle Inspection Kanban specific styling */
+.o_simply_fleet_inspection_kanban .o_kanban_record_title {
+    font-size: 1.1em;
+    font-weight: 600;
+}
+
+.o_simply_fleet_inspection_kanban .o_kanban_record_subtitle {
+    display: block;
+    margin-top: 4px;
+}
+
+.o_simply_fleet_inspection_kanban .o_kanban_record {
+    min-height: 120px;
+}
+
+/* Template Kanban specific styling */
+.o_simply_fleet_inspection_template_kanban .o_kanban_record_title {
+    font-size: 1.1em;
+    font-weight: 600;
+}
+
+.o_simply_fleet_inspection_template_kanban .o_kanban_record_body {
+    max-height: 80px;
+    overflow: hidden;
+    text-overflow: ellipsis;
+}
+
+.o_simply_fleet_inspection_template_kanban .o_kanban_record {
+    min-height: 100px;
+}
+
+/* Schedule Kanban specific styling */
+.o_simply_fleet_inspection_schedule_kanban .o_kanban_record_title {
+    font-size: 1.1em;
+    font-weight: 600;
+}
+
+.o_simply_fleet_inspection_schedule_kanban .o_kanban_record_subtitle {
+    display: block;
+    margin-top: 4px;
+}
+
+.o_simply_fleet_inspection_schedule_kanban .oe_kanban_bottom_right button {
+    padding: 0;
+    margin: 0;
+}
+
+.o_simply_fleet_inspection_schedule_kanban .o_kanban_record {
+    min-height: 110px;
+}
+
+/* Status badge styling for all kanban views */
+.o_simply_fleet_inspection_kanban .badge,
+.o_simply_fleet_inspection_template_kanban .badge,
+.o_simply_fleet_inspection_schedule_kanban .badge {
+    font-size: 0.85em;
+    padding: 0.25em 0.5em;
+}
+
+/* Record details spacing */
+.o_simply_fleet_inspection_kanban .oe_kanban_details,
+.o_simply_fleet_inspection_template_kanban .oe_kanban_details,
+.o_simply_fleet_inspection_schedule_kanban .oe_kanban_details {
+    display: flex;
+    flex-direction: column;
+    gap: 0.5rem;
+    padding: 0.75rem;
+}
+
+/* Improved layout for record information rows */
+.o_simply_fleet_inspection_kanban .row,
+.o_simply_fleet_inspection_template_kanban .row,
+.o_simply_fleet_inspection_schedule_kanban .row {
+    margin-bottom: 0.25rem;
+}
+
+/* Responsive adjustments for mobile */
+@media (max-width: 767px) {
+    .o_simply_fleet_inspection_kanban .o_kanban_record,
+    .o_simply_fleet_inspection_template_kanban .o_kanban_record,
+    .o_simply_fleet_inspection_schedule_kanban .o_kanban_record {
+        min-height: auto;
+    }
+    
+    .o_simply_fleet_inspection_kanban .o_kanban_record_title,
+    .o_simply_fleet_inspection_template_kanban .o_kanban_record_title,
+    .o_simply_fleet_inspection_schedule_kanban .o_kanban_record_title {
+        font-size: 1em;
+    }
+}

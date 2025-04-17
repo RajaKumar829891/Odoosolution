@@ -1,5 +1,8 @@
 from odoo import models, fields, api
 from datetime import date
+import logging
+
+_logger = logging.getLogger(__name__)
 
 class VehicleType(models.Model):
     _name = 'simply.fleet.vehicle.type'
@@ -137,6 +140,55 @@ class Vehicle(models.Model):
         domain=[('job_title', 'ilike', 'driver')],
         help='Assigned driver for this vehicle'
     )
+    
+    # Helper field - NEW ADDITION
+    helper_id = fields.Many2one(
+        'hr.employee',
+        string='Helper',
+        tracking=True,
+        domain=[('job_title', 'ilike', 'helper')],
+        help='Helper assigned to this vehicle'
+    )
+    
+    # Show helper field - NEW ADDITION
+    show_helper = fields.Boolean(
+        string='Show Helper',
+        compute='_compute_show_helper',
+        store=True,
+    )
+    
+    # Compute method for show_helper - NEW ADDITION
+    @api.depends('vehicle_type_id')
+    def _compute_show_helper(self):
+        """Determine whether to show the helper field based on vehicle type"""
+        for record in self:
+            # Check if vehicle type has 'bus' in name or code (case insensitive)
+            if record.vehicle_type_id and (
+                (record.vehicle_type_id.code and 'bus' in record.vehicle_type_id.code.lower()) or
+                (record.vehicle_type_id.name and 'bus' in record.vehicle_type_id.name.lower())
+            ):
+                record.show_helper = True
+                _logger.info("Setting show_helper to True for vehicle %s with type %s", 
+                            record.name, record.vehicle_type_id.name)
+            else:
+                record.show_helper = False
+                _logger.info("Setting show_helper to False for vehicle %s with type %s", 
+                            record.name, record.vehicle_type_id.name)
+                # Clear the helper when vehicle type is not bus
+                if record.helper_id:
+                    record.helper_id = False
+    
+    # Debug onchange method - NEW ADDITION
+    @api.onchange('vehicle_type_id')
+    def _onchange_vehicle_type(self):
+        """Debug helper to see what's happening with vehicle type"""
+        if self.vehicle_type_id:
+            # Log the vehicle type information for debugging
+            _logger.info("Vehicle Type Selected: %s (code: %s)", 
+                        self.vehicle_type_id.name, 
+                        self.vehicle_type_id.code)
+            # Force recompute of show_helper
+            self._compute_show_helper()
 
     # Odometer and Fuel Information
     initial_odometer = fields.Float(
@@ -214,6 +266,7 @@ class Vehicle(models.Model):
     active_tyre_count = fields.Integer(compute='_compute_tyre_count', string='Active Tyres')
     camera_count = fields.Integer(compute='_compute_camera_count', string='Cameras')
     asset_count = fields.Integer(compute='_compute_asset_count', string='Assets')
+    image_count = fields.Integer(compute='_compute_image_count', string='Images')
 
     # Related Models
     asset_ids = fields.One2many(
@@ -320,6 +373,12 @@ class Vehicle(models.Model):
             record.asset_count = self.env['simply.fleet.vehicle.asset'].search_count([
                 ('vehicle_id', '=', record.id)
             ])
+            
+    def _compute_image_count(self):
+        for record in self:
+            record.image_count = self.env['simply.fleet.vehicle.image'].search_count([
+                ('vehicle_id', '=', record.id)
+            ])
 
     @api.depends('battery_count')
     def _compute_current_battery(self):
@@ -394,7 +453,7 @@ class Vehicle(models.Model):
             'type': 'ir.actions.act_window',
             'view_mode': 'tree,form',
             'res_model': 'simply.fleet.camera',
-'domain': [('vehicle_id', '=', self.id)],
+            'domain': [('vehicle_id', '=', self.id)],
             'context': {'default_vehicle_id': self.id},
         }
 
@@ -405,6 +464,17 @@ class Vehicle(models.Model):
             'type': 'ir.actions.act_window',
             'view_mode': 'tree,form',
             'res_model': 'simply.fleet.vehicle.asset',
+            'domain': [('vehicle_id', '=', self.id)],
+            'context': {'default_vehicle_id': self.id},
+        }
+        
+    def action_view_images(self):
+        self.ensure_one()
+        return {
+            'name': 'Vehicle Images',
+            'type': 'ir.actions.act_window',
+            'view_mode': 'kanban,tree,form',
+            'res_model': 'simply.fleet.vehicle.image',
             'domain': [('vehicle_id', '=', self.id)],
             'context': {'default_vehicle_id': self.id},
         }
@@ -501,4 +571,3 @@ class Vehicle(models.Model):
             )
 
         return True
-            
