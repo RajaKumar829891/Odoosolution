@@ -1,0 +1,264 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <!-- Vehicle Inspection Kanban View -->
+    <record id="view_simply_fleet_vehicle_inspection_kanban" model="ir.ui.view">
+        <field name="name">simply.fleet.vehicle.inspection.kanban</field>
+        <field name="model">simply.fleet.vehicle.inspection</field>
+        <field name="arch" type="xml">
+            <kanban default_group_by="state" quick_create="false" class="o_simply_fleet_inspection_kanban">
+                <field name="id"/>
+                <field name="name"/>
+                <field name="vehicle_id"/>
+                <field name="inspection_date"/>
+                <field name="inspector_id"/>
+                <field name="total_issues"/>
+                <field name="critical_issues"/>
+                <field name="state"/>
+                <field name="inspection_template_id"/>
+                <templates>
+                    <t t-name="kanban-box">
+                        <div t-attf-class="oe_kanban_global_click">
+                            <div class="oe_kanban_details p-2">
+                                <div class="o_kanban_record_top mb-2">
+                                    <div class="o_kanban_record_headings">
+                                        <strong class="o_kanban_record_title">
+                                            <field name="name"/>
+                                        </strong>
+                                        <small class="o_kanban_record_subtitle text-muted">
+                                            <field name="vehicle_id"/>
+                                        </small>
+                                    </div>
+                                    <div class="o_dropdown_kanban dropdown">
+                                        <a class="dropdown-toggle o-no-caret btn" data-bs-toggle="dropdown" href="#" role="button">
+                                            <span class="fa fa-ellipsis-v"/>
+                                        </a>
+                                        <div class="dropdown-menu" role="menu">
+                                            <t t-if="widget.editable">
+                                                <a role="menuitem" type="edit" class="dropdown-item">Edit</a>
+                                            </t>
+                                            <t t-if="widget.deletable">
+                                                <a role="menuitem" type="delete" class="dropdown-item">Delete</a>
+                                            </t>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="o_kanban_record_body">
+                                    <div class="row g-1">
+                                        <div class="col-6">
+                                            <strong>Template:</strong>
+                                        </div>
+                                        <div class="col-6">
+                                            <field name="inspection_template_id"/>
+                                        </div>
+                                    </div>
+                                    <div class="row g-1">
+                                        <div class="col-6">
+                                            <strong>Date:</strong>
+                                        </div>
+                                        <div class="col-6">
+                                            <field name="inspection_date" widget="datetime"/>
+                                        </div>
+                                    </div>
+                                    <div class="row g-1">
+                                        <div class="col-6">
+                                            <strong>Inspector:</strong>
+                                        </div>
+                                        <div class="col-6">
+                                            <field name="inspector_id"/>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="o_kanban_record_bottom mt-2">
+                                    <div class="oe_kanban_bottom_left">
+                                        <span t-attf-class="badge #{record.state.raw_value == 'completed' ? 'bg-success' : (record.state.raw_value == 'in_progress' ? 'bg-info' : 'bg-secondary')}">
+                                            <field name="state"/>
+                                        </span>
+                                    </div>
+                                    <div class="oe_kanban_bottom_right">
+                                        <div class="row g-1">
+                                            <div class="col-auto" t-if="record.total_issues.raw_value > 0">
+                                                <span class="badge bg-warning">
+                                                    <i class="fa fa-exclamation-triangle"/> <field name="total_issues"/> Issues
+                                                </span>
+                                            </div>
+                                            <div class="col-auto" t-if="record.critical_issues.raw_value > 0">
+                                                <span class="badge bg-danger">
+                                                    <i class="fa fa-exclamation-circle"/> <field name="critical_issues"/> Critical
+                                                </span>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </t>
+                </templates>
+            </kanban>
+        </field>
+    </record>
+
+    <!-- Inspection Template Kanban View -->
+    <record id="view_simply_fleet_inspection_template_kanban" model="ir.ui.view">
+        <field name="name">simply.fleet.inspection.template.kanban</field>
+        <field name="model">simply.fleet.inspection.template</field>
+        <field name="arch" type="xml">
+            <kanban class="o_simply_fleet_inspection_template_kanban">
+                <field name="id"/>
+                <field name="name"/>
+                <field name="description"/>
+                <field name="active"/>
+                <templates>
+                    <t t-name="kanban-box">
+                        <div t-attf-class="oe_kanban_global_click">
+                            <div class="oe_kanban_details p-2">
+                                <div class="o_kanban_record_top mb-2">
+                                    <div class="o_kanban_record_headings">
+                                        <strong class="o_kanban_record_title">
+                                            <field name="name"/>
+                                        </strong>
+                                    </div>
+                                    <div class="o_dropdown_kanban dropdown">
+                                        <a class="dropdown-toggle o-no-caret btn" data-bs-toggle="dropdown" href="#" role="button">
+                                            <span class="fa fa-ellipsis-v"/>
+                                        </a>
+                                        <div class="dropdown-menu" role="menu">
+                                            <t t-if="widget.editable">
+                                                <a role="menuitem" type="edit" class="dropdown-item">Edit</a>
+                                            </t>
+                                            <t t-if="widget.deletable">
+                                                <a role="menuitem" type="delete" class="dropdown-item">Delete</a>
+                                            </t>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="o_kanban_record_body">
+                                    <p t-if="record.description.raw_value">
+                                        <field name="description"/>
+                                    </p>
+                                    <p t-else="">
+                                        <em>No description</em>
+                                    </p>
+                                </div>
+                                <div class="o_kanban_record_bottom mt-2">
+                                    <div class="oe_kanban_bottom_left">
+                                        <span t-attf-class="badge #{record.active.raw_value ? 'bg-success' : 'bg-secondary'}">
+                                            <t t-if="record.active.raw_value">Active</t>
+                                            <t t-else="">Archived</t>
+                                        </span>
+                                    </div>
+                                    <div class="oe_kanban_bottom_right">
+                                        <button name="toggle_active" type="object" class="btn btn-sm btn-link">
+                                            <i t-attf-class="fa #{record.active.raw_value ? 'fa-archive' : 'fa-undo'}"/>
+                                        </button>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </t>
+                </templates>
+            </kanban>
+        </field>
+    </record>
+
+    <!-- Inspection Schedule Kanban View -->
+    <!-- Inspection Schedule Kanban View -->
+<record id="view_simply_fleet_inspection_schedule_kanban" model="ir.ui.view">
+    <field name="name">simply.fleet.inspection.schedule.kanban</field>
+    <field name="model">simply.fleet.inspection.schedule</field>
+    <field name="arch" type="xml">
+        <kanban default_group_by="schedule_type" class="o_simply_fleet_inspection_schedule_kanban">
+            <field name="id"/>
+            <field name="name"/>
+            <field name="template_id"/>
+            <field name="schedule_type"/>
+            <field name="next_execution_date"/>
+            <field name="last_execution_date"/>
+            <field name="active"/>
+            <templates>
+                <t t-name="kanban-box">
+                    <div t-attf-class="oe_kanban_global_click">
+                        <div class="oe_kanban_details p-2">
+                            <div class="o_kanban_record_top mb-2">
+                                <div class="o_kanban_record_headings">
+                                    <strong class="o_kanban_record_title">
+                                        <field name="name"/>
+                                    </strong>
+                                    <small class="o_kanban_record_subtitle text-muted">
+                                        Template: <field name="template_id"/>
+                                    </small>
+                                </div>
+                                <div class="o_dropdown_kanban dropdown">
+                                    <a class="dropdown-toggle o-no-caret btn" data-bs-toggle="dropdown" href="#" role="button">
+                                        <span class="fa fa-ellipsis-v"/>
+                                    </a>
+                                    <div class="dropdown-menu" role="menu">
+                                        <t t-if="widget.editable">
+                                            <a role="menuitem" type="edit" class="dropdown-item">Edit</a>
+                                        </t>
+                                        <t t-if="widget.deletable">
+                                            <a role="menuitem" type="delete" class="dropdown-item">Delete</a>
+                                        </t>
+                                        <a name="action_schedule_inspections" type="object" role="menuitem" class="dropdown-item">Generate Inspections</a>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="o_kanban_record_body">
+                                <div class="row g-1">
+                                    <div class="col-6">
+                                        <strong>Type:</strong>
+                                    </div>
+                                    <div class="col-6">
+                                        <field name="schedule_type"/>
+                                    </div>
+                                </div>
+                                <div class="row g-1" t-if="record.next_execution_date.raw_value">
+                                    <div class="col-6">
+                                        <strong>Next Date:</strong>
+                                    </div>
+                                    <div class="col-6">
+                                        <field name="next_execution_date"/>
+                                    </div>
+                                </div>
+                                <div class="row g-1" t-if="record.last_execution_date.raw_value">
+                                    <div class="col-6">
+                                        <strong>Last Date:</strong>
+                                    </div>
+                                    <div class="col-6">
+                                        <field name="last_execution_date"/>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="o_kanban_record_bottom mt-2">
+                                <div class="oe_kanban_bottom_left">
+                                    <span t-attf-class="badge #{record.active.raw_value ? 'bg-success' : 'bg-secondary'}">
+                                        <t t-if="record.active.raw_value">Active</t>
+                                        <t t-else="">Inactive</t>
+                                    </span>
+                                </div>
+                                <div class="oe_kanban_bottom_right">
+                                    <button name="toggle_active" type="object" class="btn btn-sm btn-link">
+                                        <i t-attf-class="fa #{record.active.raw_value ? 'fa-archive' : 'fa-undo'}"/>
+                                    </button>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </t>
+            </templates>
+        </kanban>
+    </field>
+</record>
+
+    <!-- Update the action windows to include kanban view -->
+    <record id="action_simply_fleet_vehicle_inspection" model="ir.actions.act_window">
+        <field name="view_mode">kanban,tree,form</field>
+    </record>
+
+    <record id="action_simply_fleet_inspection_template" model="ir.actions.act_window">
+        <field name="view_mode">kanban,tree,form</field>
+    </record>
+
+    <record id="action_simply_fleet_inspection_schedule" model="ir.actions.act_window">
+        <field name="view_mode">kanban,tree,form</field>
+    </record>
+</odoo>

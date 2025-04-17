@@ -46,7 +46,10 @@
        'data/document_cron.xml',
        'data/battery_sequence.xml',
        'data/work_order_sequence.xml',  # New sequence for work orders
-       
+       'views/vehicle_helper_views.xml',  
+       'views/simply_fleet_inspection_kanban_views.xml',
+       'views/simply_fleet_inspection_template_views.xml',
+       'views/simply_fleet_inspection_schedule_views.xml',
        # Views
        'views/simply_fleet_views.xml',
        'views/simply_fleet_menus.xml',
@@ -71,6 +74,7 @@
            '/simply_fleet/static/src/js/barcode_handler.js',
            '/simply_fleet/static/src/css/vehicle_kanban.css',
            '/simply_fleet/static/src/css/vehicle_kanban.css',
+           '/simply_fleet/static/src/css/inspection_kanban.css',  
        ],
    },
    'demo': [],
