@@ -1,0 +1,31 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <data noupdate="1">
+        <!-- Sequence for Diesel Tanker -->
+        <record id="sequence_simply_fleet_diesel_tanker" model="ir.sequence">
+            <field name="name">Diesel Tanker Sequence</field>
+            <field name="code">simply.fleet.diesel.tanker</field>
+            <field name="prefix">TNK/</field>
+            <field name="padding">5</field>
+            <field name="company_id" eval="False"/>
+        </record>
+        
+        <!-- Sequence for Tanker Refill -->
+        <record id="sequence_simply_fleet_tanker_refill" model="ir.sequence">
+            <field name="name">Tanker Refill Sequence</field>
+            <field name="code">simply.fleet.tanker.refill</field>
+            <field name="prefix">REF/</field>
+            <field name="padding">5</field>
+            <field name="company_id" eval="False"/>
+        </record>
+        
+        <!-- Sequence for Tanker Dispensing -->
+        <record id="sequence_simply_fleet_tanker_dispensing" model="ir.sequence">
+            <field name="name">Tanker Dispensing Sequence</field>
+            <field name="code">simply.fleet.tanker.dispensing</field>
+            <field name="prefix">DSP/</field>
+            <field name="padding">5</field>
+            <field name="company_id" eval="False"/>
+        </record>
+    </data>
+</odoo>

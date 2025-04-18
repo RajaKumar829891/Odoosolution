@@ -1,0 +1,29 @@
+simply_fleet_diesel_tanker/
+│
+├── __init__.py
+├── __manifest__.py
+├── README.md
+│
+├── data/
+│   └── diesel_tanker_sequence.xml
+│
+├── models/
+│   ├── __init__.py
+│   ├── diesel_tanker.py
+│   ├── fuel_log.py
+│   └── tanker_logs.py
+│
+├── security/
+│   └── ir.model.access.csv
+│
+├── static/
+│   └── description/
+│       └── icon.png
+│
+├── views/
+│   ├── diesel_tanker_views.xml
+│   └── fuel_log_views.xml
+│
+└── wizards/
+    ├── __init__.py
+    └── tanker_refill_wizard.py

@@ -1,0 +1,39 @@
+/* Diesel Tanker Module CSS */
+
+/* Diesel tanker progress button in breadcrumbs */
+#diesel_tanker_progress_button {
+    transition: all 0.2s ease;
+    border-radius: 3px;
+}
+
+#diesel_tanker_progress_button:hover {
+    background-color: rgba(0, 0, 0, 0.05);
+}
+
+#diesel_tanker_progress_button .o_progressbar {
+    height: 20px;
+}
+
+/* Color indicators for fuel levels */
+.bg-success.h-100 {
+    background-color: #28a745 !important;
+}
+
+.bg-warning.h-100 {
+    background-color: #ffc107 !important;
+}
+
+.bg-danger.h-100 {
+    background-color: #dc3545 !important;
+}
+
+/* Diesel tanker button in the control panel */
+.o_diesel_tanker_button {
+    margin-left: 10px;
+    font-weight: bold;
+}
+
+/* Additional styles for the diesel tanker progress bar */
+#diesel_tanker_progress_button .o_progressbar_value {
+    font-weight: bold;
+}

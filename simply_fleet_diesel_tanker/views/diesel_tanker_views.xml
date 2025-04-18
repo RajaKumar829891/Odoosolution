@@ -1,0 +1,359 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <!-- Diesel Tanker Views -->
+    <record id="view_simply_fleet_diesel_tanker_tree" model="ir.ui.view">
+        <field name="name">simply.fleet.diesel.tanker.tree</field>
+        <field name="model">simply.fleet.diesel.tanker</field>
+        <field name="arch" type="xml">
+            <tree decoration-danger="state=='empty' or state=='low'" decoration-warning="state=='medium'" decoration-success="state=='full'">
+                <field name="name"/>
+                <field name="capacity"/>
+                <field name="current_fuel_level"/>
+                <field name="fuel_percentage" widget="progressbar"/>
+                <field name="state"/>
+                <field name="last_refill_date"/>
+                <field name="color" invisible="1"/>
+            </tree>
+        </field>
+    </record>
+
+    <record id="view_simply_fleet_diesel_tanker_form" model="ir.ui.view">
+        <field name="name">simply.fleet.diesel.tanker.form</field>
+        <field name="model">simply.fleet.diesel.tanker</field>
+        <field name="arch" type="xml">
+            <form>
+                <header>
+                    <button name="action_refill_tanker" string="Refill Tanker" type="object" class="oe_highlight"/>
+                    <field name="state" widget="statusbar"/>
+                </header>
+                <sheet>
+                    <div class="oe_button_box" name="button_box">
+                        <button name="action_view_refill_logs" type="object" 
+                                class="oe_stat_button" icon="fa-history">
+                            <div class="o_stat_info">
+                                <field name="total_refills" widget="statinfo" string="Total Refills"/>
+                                <span class="o_stat_text">Liters</span>
+                            </div>
+                        </button>
+                        <button name="action_view_dispensing_logs" type="object" 
+                                class="oe_stat_button" icon="fa-tint">
+                            <div class="o_stat_info">
+                                <field name="total_fuel_dispensed" widget="statinfo" string="Dispensed"/>
+                                <span class="o_stat_text">Liters</span>
+                            </div>
+                        </button>
+                    </div>
+                    <widget name="web_ribbon" title="Archived" bg_color="bg-danger" invisible="active"/>
+                    <div class="oe_title">
+                        <h1>
+                            <field name="name"/>
+                        </h1>
+                    </div>
+                    <group>
+                        <group>
+                            <field name="capacity"/>
+                            <field name="current_fuel_level"/>
+                            <field name="fuel_percentage" widget="progressbar"/>
+                            <field name="active" invisible="1"/>
+                        </group>
+                        <group>
+                            <field name="last_refill_date" readonly="1"/>
+                            <field name="color" invisible="1"/>
+                        </group>
+                    </group>
+                    <notebook>
+                        <page string="Refill Logs" name="refill_logs">
+                            <field name="refill_log_ids">
+                                <tree>
+                                    <field name="name"/>
+                                    <field name="date"/>
+                                    <field name="quantity"/>
+                                    <field name="vendor"/>
+                                    <field name="cost"/>
+                                    <field name="created_by"/>
+                                </tree>
+                            </field>
+                        </page>
+                        <page string="Dispensing Logs" name="dispensing_logs">
+                            <field name="dispensing_log_ids">
+                                <tree>
+                                    <field name="name"/>
+                                    <field name="date"/>
+                                    <field name="vehicle_id"/>
+                                    <field name="quantity"/>
+                                    <field name="odometer"/>
+                                    <field name="created_by"/>
+                                    <field name="fuel_log_id"/>
+                                </tree>
+                            </field>
+                        </page>
+                    </notebook>
+                </sheet>
+                <div class="oe_chatter">
+                    <field name="message_follower_ids" widget="mail_followers"/>
+                    <field name="activity_ids" widget="mail_activity"/>
+                    <field name="message_ids" widget="mail_thread"/>
+                </div>
+            </form>
+        </field>
+    </record>
+
+    <record id="view_simply_fleet_diesel_tanker_search" model="ir.ui.view">
+        <field name="name">simply.fleet.diesel.tanker.search</field>
+        <field name="model">simply.fleet.diesel.tanker</field>
+        <field name="arch" type="xml">
+            <search>
+                <field name="name"/>
+                <separator/>
+                <filter string="Empty" name="empty" domain="[('state', '=', 'empty')]"/>
+                <filter string="Low Fuel" name="low" domain="[('state', '=', 'low')]"/>
+                <filter string="Medium Fuel" name="medium" domain="[('state', '=', 'medium')]"/>
+                <filter string="Full" name="full" domain="[('state', '=', 'full')]"/>
+                <filter string="Archived" name="inactive" domain="[('active', '=', False)]"/>
+                <group expand="0" string="Group By">
+                    <filter string="Status" name="group_by_state" context="{'group_by': 'state'}"/>
+                </group>
+            </search>
+        </field>
+    </record>
+
+    <!-- Refill Form View -->
+    <record id="view_simply_fleet_tanker_refill_form" model="ir.ui.view">
+        <field name="name">simply.fleet.tanker.refill.form</field>
+        <field name="model">simply.fleet.tanker.refill</field>
+        <field name="arch" type="xml">
+            <form>
+                <sheet>
+                    <div class="oe_title">
+                        <h1>
+                            <field name="name"/>
+                        </h1>
+                    </div>
+                    <group>
+                        <group>
+                            <field name="tanker_id"/>
+                            <field name="date"/>
+                            <field name="quantity"/>
+                        </group>
+                        <group>
+                            <field name="vendor"/>
+                            <field name="cost"/>
+                            <field name="created_by"/>
+                        </group>
+                    </group>
+                    <notebook>
+                        <page string="Notes" name="notes">
+                            <field name="notes"/>
+                        </page>
+                    </notebook>
+                </sheet>
+            </form>
+        </field>
+    </record>
+
+    <!-- Refill Tree View -->
+    <record id="view_simply_fleet_tanker_refill_tree" model="ir.ui.view">
+        <field name="name">simply.fleet.tanker.refill.tree</field>
+        <field name="model">simply.fleet.tanker.refill</field>
+        <field name="arch" type="xml">
+            <tree>
+                <field name="name"/>
+                <field name="tanker_id"/>
+                <field name="date"/>
+                <field name="quantity"/>
+                <field name="vendor"/>
+                <field name="cost"/>
+                <field name="created_by"/>
+            </tree>
+        </field>
+    </record>
+
+    <!-- Dispensing Form View -->
+    <record id="view_simply_fleet_tanker_dispensing_form" model="ir.ui.view">
+        <field name="name">simply.fleet.tanker.dispensing.form</field>
+        <field name="model">simply.fleet.tanker.dispensing</field>
+        <field name="arch" type="xml">
+            <form>
+                <sheet>
+                    <div class="oe_title">
+                        <h1>
+                            <field name="name"/>
+                        </h1>
+                    </div>
+                    <group>
+                        <group>
+                            <field name="tanker_id"/>
+                            <field name="date"/>
+                            <field name="vehicle_id"/>
+                        </group>
+                        <group>
+                            <field name="quantity"/>
+                            <field name="odometer"/>
+                            <field name="created_by"/>
+                            <field name="fuel_log_id"/>
+                        </group>
+                    </group>
+                    <notebook>
+                        <page string="Notes" name="notes">
+                            <field name="notes"/>
+                        </page>
+                    </notebook>
+                </sheet>
+            </form>
+        </field>
+    </record>
+
+    <!-- Dispensing Tree View -->
+    <record id="view_simply_fleet_tanker_dispensing_tree" model="ir.ui.view">
+        <field name="name">simply.fleet.tanker.dispensing.tree</field>
+        <field name="model">simply.fleet.tanker.dispensing</field>
+        <field name="arch" type="xml">
+            <tree>
+                <field name="name"/>
+                <field name="tanker_id"/>
+                <field name="date"/>
+                <field name="vehicle_id"/>
+                <field name="quantity"/>
+                <field name="odometer"/>
+                <field name="created_by"/>
+                <field name="fuel_log_id"/>
+            </tree>
+        </field>
+    </record>
+
+    <!-- Refill Wizard Form -->
+    <record id="view_simply_fleet_tanker_refill_wizard_form" model="ir.ui.view">
+        <field name="name">simply.fleet.tanker.refill.wizard.form</field>
+        <field name="model">simply.fleet.tanker.refill.wizard</field>
+        <field name="arch" type="xml">
+            <form>
+                <sheet>
+                    <group>
+                        <group>
+                            <field name="tanker_id"/>
+                            <field name="date"/>
+                            <field name="quantity"/>
+                            <field name="vendor"/>
+                        </group>
+                        <group>
+                            <field name="current_level" readonly="1"/>
+                            <field name="new_level" readonly="1"/>
+                            <field name="capacity" readonly="1"/>
+                            <field name="cost"/>
+                        </group>
+                    </group>
+                    <notebook>
+                        <page string="Notes" name="notes">
+                            <field name="notes"/>
+                        </page>
+                    </notebook>
+                </sheet>
+                <footer>
+                    <button name="action_refill" string="Refill" type="object" class="btn-primary"/>
+                    <button string="Cancel" class="btn-secondary" special="cancel"/>
+                </footer>
+            </form>
+        </field>
+    </record>
+
+    <!-- Dispensing Wizard Form -->
+    <record id="view_simply_fleet_tanker_dispensing_wizard_form" model="ir.ui.view">
+        <field name="name">simply.fleet.tanker.dispensing.wizard.form</field>
+        <field name="model">simply.fleet.tanker.dispensing.wizard</field>
+        <field name="arch" type="xml">
+            <form>
+                <sheet>
+                    <group>
+                        <group>
+                            <field name="tanker_id"/>
+                            <field name="date"/>
+                            <field name="vehicle_id"/>
+                            <field name="quantity"/>
+                        </group>
+                        <group>
+                            <field name="current_level" readonly="1"/>
+                            <field name="vehicle_last_odometer" readonly="1"/>
+                            <field name="odometer"/>
+                        </group>
+                    </group>
+                    <notebook>
+                        <page string="Notes" name="notes">
+                            <field name="notes"/>
+                        </page>
+                    </notebook>
+                </sheet>
+                <footer>
+                    <button name="action_dispense" string="Dispense Fuel" type="object" class="btn-primary"/>
+                    <button string="Cancel" class="btn-secondary" special="cancel"/>
+                </footer>
+            </form>
+        </field>
+    </record>
+
+    <!-- Actions -->
+    <record id="action_simply_fleet_diesel_tanker" model="ir.actions.act_window">
+        <field name="name">Diesel Tankers</field>
+        <field name="res_model">simply.fleet.diesel.tanker</field>
+        <field name="view_mode">tree,form</field>
+        <field name="help" type="html">
+            <p class="o_view_nocontent_smiling_face">
+                Create your first diesel tanker!
+            </p>
+            <p>
+                Track and manage your diesel tankers.
+            </p>
+        </field>
+    </record>
+
+    <record id="action_simply_fleet_tanker_refill" model="ir.actions.act_window">
+        <field name="name">Tanker Refills</field>
+        <field name="res_model">simply.fleet.tanker.refill</field>
+        <field name="view_mode">tree,form</field>
+        <field name="help" type="html">
+            <p class="o_view_nocontent_smiling_face">
+                No refill logs yet!
+            </p>
+            <p>
+                Track tanker refill operations.
+            </p>
+        </field>
+    </record>
+
+    <record id="action_simply_fleet_tanker_dispensing" model="ir.actions.act_window">
+        <field name="name">Fuel Dispensing</field>
+        <field name="res_model">simply.fleet.tanker.dispensing</field>
+        <field name="view_mode">tree,form</field>
+        <field name="help" type="html">
+            <p class="o_view_nocontent_smiling_face">
+                No dispensing logs yet!
+            </p>
+            <p>
+                Track fuel dispensing operations.
+            </p>
+        </field>
+    </record>
+
+    <!-- Menus -->
+    <menuitem id="menu_simply_fleet_diesel_tanker_root" 
+              name="Diesel Tankers" 
+              parent="simply_fleet.menu_simply_fleet_root"
+              sequence="40"/>
+              
+    <menuitem id="menu_simply_fleet_diesel_tankers"
+              name="Tankers"
+              parent="menu_simply_fleet_diesel_tanker_root"
+              action="action_simply_fleet_diesel_tanker"
+              sequence="10"/>
+              
+    <menuitem id="menu_simply_fleet_diesel_tanker_refills"
+              name="Refill Logs"
+              parent="menu_simply_fleet_diesel_tanker_root"
+              action="action_simply_fleet_tanker_refill"
+              sequence="20"/>
+              
+    <menuitem id="menu_simply_fleet_diesel_tanker_dispensings"
+              name="Dispensing Logs"
+              parent="menu_simply_fleet_diesel_tanker_root"
+              action="action_simply_fleet_tanker_dispensing"
+              sequence="30"/>
+</odoo>

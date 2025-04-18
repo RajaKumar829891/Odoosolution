@@ -1,0 +1,59 @@
+/* Diesel Tanker Module CSS */
+
+/* Color indicators for fuel levels */
+.o_diesel_tanker_full {
+    background-color: #28a745 !important;
+    color: white !important;
+}
+
+.o_diesel_tanker_medium {
+    background-color: #ffc107 !important;
+    color: #212529 !important;
+}
+
+.o_diesel_tanker_low {
+    background-color: #dc3545 !important;
+    color: white !important;
+}
+
+/* Diesel tanker button in fuel logs */
+.o_diesel_tanker_button {
+    margin-left: 10px;
+    font-weight: bold;
+}
+
+/* Style improvements for kanban view */
+.o_kanban_view .o_diesel_tanker_card {
+    border-top: 3px solid;
+}
+
+.o_kanban_view .o_diesel_tanker_card.o_diesel_tanker_full {
+    border-top-color: #28a745;
+}
+
+.o_kanban_view .o_diesel_tanker_card.o_diesel_tanker_medium {
+    border-top-color: #ffc107;
+}
+
+.o_kanban_view .o_diesel_tanker_card.o_diesel_tanker_low {
+    border-top-color: #dc3545;
+}
+
+/* Style for fuel level display */
+.o_fuel_level_display {
+    display: flex;
+    align-items: center;
+    margin-top: 8px;
+}
+
+.o_fuel_level_bar {
+    height: 10px;
+    border-radius: 5px;
+    flex-grow: 1;
+    margin-left: 8px;
+}
+
+.o_fuel_level_label {
+    font-weight: bold;
+    min-width: 50px;
+}

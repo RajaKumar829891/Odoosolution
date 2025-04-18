@@ -1,0 +1,99 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <!-- Add Diesel Tanker button to Fuel Logs header and the diesel_tanker_id field -->
+    <record id="view_simply_fleet_fuel_log_form_inherit" model="ir.ui.view">
+        <field name="name">simply.fleet.fuel.log.form.inherit.diesel.tanker</field>
+        <field name="model">simply.fleet.fuel.log</field>
+        <field name="inherit_id" ref="simply_fleet.view_simply_fleet_fuel_log_form"/>
+        <field name="arch" type="xml">
+            <xpath expr="//header" position="inside">
+                <button name="action_open_tanker_dispensing" 
+                        string="Diesel Tanker" 
+                        type="object" 
+                        class="btn-primary" 
+                        invisible="station_type != 'diesel_tanker'"/>
+            </xpath>
+            
+            <xpath expr="//field[@name='fuel_type']" position="after">
+                <field name="diesel_tanker_id" 
+                       invisible="station_type != 'diesel_tanker' or fuel_type != 'diesel'"
+                       options="{'no_create': True, 'no_open': False}"
+                       required="station_type == 'diesel_tanker' and fuel_type == 'diesel'"/>
+            </xpath>
+        </field>
+    </record>
+
+    <!-- Add the field to kanban view as well -->
+    <record id="view_simply_fleet_fuel_log_kanban_inherit" model="ir.ui.view">
+        <field name="name">simply.fleet.fuel.log.kanban.inherit.diesel.tanker</field>
+        <field name="model">simply.fleet.fuel.log</field>
+        <field name="inherit_id" ref="simply_fleet.simply_fleet_fuel_log_kanban"/>
+        <field name="arch" type="xml">
+            <xpath expr="//field[@name='station_type']" position="after">
+                <field name="diesel_tanker_id"/>
+                <field name="tanker_dispensing_id"/>
+            </xpath>
+        </field>
+    </record>
+
+    <!-- Kanban view with color-coded diesel tanker status -->
+    <record id="view_simply_fleet_diesel_tanker_kanban" model="ir.ui.view">
+        <field name="name">simply.fleet.diesel.tanker.kanban</field>
+        <field name="model">simply.fleet.diesel.tanker</field>
+        <field name="arch" type="xml">
+            <kanban default_group_by="state" class="o_kanban_small_column" create="true">
+                <field name="name"/>
+                <field name="state"/>
+                <field name="capacity"/>
+                <field name="current_fuel_level"/>
+                <field name="fuel_percentage"/>
+                <field name="color"/>
+                <templates>
+                    <t t-name="kanban-box">
+                        <div t-attf-class="oe_kanban_card oe_kanban_global_click">
+                            <div t-attf-class="o_kanban_card_header">
+                                <div class="o_kanban_card_header_title">
+                                    <div class="o_primary" t-if="record.name.value">
+                                        <span><t t-esc="record.name.value"/></span>
+                                    </div>
+                                </div>
+                                <div class="o_kanban_manage_button_section">
+                                    <a class="o_kanban_manage_toggle_button" href="#"><i class="fa fa-ellipsis-v" /></a>
+                                </div>
+                            </div>
+                            <div class="container o_kanban_card_content">
+                                <div class="row">
+                                    <div class="col-12">
+                                        <strong>Capacity: </strong><span><t t-esc="record.capacity.value"/> L</span>
+                                    </div>
+                                </div>
+                                <div class="row">
+                                    <div class="col-12">
+                                        <strong>Current Level: </strong><span><t t-esc="record.current_fuel_level.value"/> L</span>
+                                    </div>
+                                </div>
+                                <div class="row">
+                                    <div class="col-12 mt-2">
+                                        <div class="o_progressbar" t-attf-style="background-color: #{
+                                            record.current_fuel_level.raw_value >= 800 ? '#28a745' : 
+                                            record.current_fuel_level.raw_value >= 400 ? '#ffc107' : '#dc3545'}">
+                                            <div class="o_progressbar_value" t-attf-style="width: #{record.fuel_percentage.raw_value}%;" />
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </t>
+                </templates>
+            </kanban>
+        </field>
+    </record>
+
+    <!-- Action to open Diesel Tanker page from Fuel Logs -->
+    <record id="action_open_diesel_tanker" model="ir.actions.act_window">
+        <field name="name">Diesel Tanker</field>
+        <field name="res_model">simply.fleet.diesel.tanker</field>
+        <field name="view_mode">tree,form</field>
+        <field name="target">current</field>
+    </record>
+</odoo>

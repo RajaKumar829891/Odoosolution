@@ -1,6 +1,9 @@
-from odoo import models, fields, api
+from odoo import models, fields, api, _
 from odoo.exceptions import UserError
 from datetime import datetime
+import logging
+
+_logger = logging.getLogger(__name__)
 
 class SimplyFleetFuelLog(models.Model):
     _name = 'simply.fleet.fuel.log'
@@ -252,8 +255,9 @@ class SimplyFleetFuelLog(models.Model):
                 record.with_context(skip_attachment_sync=True).write({
                     'attachment_ids': [(6, 0, mail_attachments.ids)]
                 })
+                
     def write(self, vals):
-        res = super(YourModel, self).write(vals)
+        res = super(SimplyFleetFuelLog, self).write(vals)
         # Check if we need to skip attachment sync
         if not self._context.get('skip_attachment_sync'):
             self._sync_ir_attachments()
@@ -284,14 +288,15 @@ class SimplyFleetFuelLog(models.Model):
                 record.date = record.datetime.date()
             else:
                 record.date = False
+                
     @api.depends('datetime')
     def _compute_time_display(self):
         for record in self:
             if record.datetime:
-            # Format the time as HH:MM:SS
-                record.time_display = record.datetime.strftime('%H:%M:%S:%')
+                # Format the time as HH:MM:SS (fixed: removed extra colon)
+                record.time_display = record.datetime.strftime('%H:%M:%S')
             else:
-                record.time_display = Falsee
+                record.time_display = False  # Fixed spelling of False
 
     # Compute method for display fields with units
     @api.depends('liters', 'odometer', 'previous_odometer', 'distance_travelled', 'mileage')
@@ -322,10 +327,10 @@ class SimplyFleetFuelLog(models.Model):
     def _compute_display_date(self):
         for record in self:
             if record.datetime:
-            # Include both date and formatted time
+                # Include both date and formatted time
                 record.display_date = record.datetime.date()
-            # Create a new field for the formatted datetime
-                record.datetime_display = record.datetime.strftime('%I:%M:%S %p')
+                # Create a new field for the formatted datetime - using consistent format
+                record.datetime_display = record.datetime.strftime('%I:%M %p')  # Removed seconds for consistency
             else:
                 record.display_date = False
                 record.datetime_display = False
@@ -354,7 +359,7 @@ class SimplyFleetFuelLog(models.Model):
     @api.depends('distance_travelled', 'liters', 'fill_type')
     def _compute_mileage(self):
         for record in self:
-            if record.fill_type == 'full' and record.liters and record.liters > 0 and record.distance_travelled:
+            if record.fill_type == 'full' and record.liters and record.liters > 0 and record.distance_travelled and record.distance_travelled > 0:
                 record.mileage = record.distance_travelled / record.liters
             else:
                 record.mileage = 0.0
@@ -364,7 +369,7 @@ class SimplyFleetFuelLog(models.Model):
         for record in self:
             record.total_amount = (record.liters or 0.0) * (record.price_per_liter or 0.0)
 
-    @api.depends('vehicle_id', 'date')
+    @api.depends('vehicle_id', 'datetime')
     def _compute_previous_odometer(self):
         for record in self:
             if not record.vehicle_id or not record.vehicle_id.exists():
@@ -372,28 +377,30 @@ class SimplyFleetFuelLog(models.Model):
                 continue
             
             try:
-                if record.date:
-                    previous_log = self.env['simply.fleet.fuel.log'].search([
-                        ('vehicle_id', '=', record.vehicle_id.id),
-                        ('date', '<', record.date),
-                        ('id', '!=', record._origin.id or False),
-                        ('odometer', '!=', False)
-                    ], order='datetime desc, id desc', limit=1)
-                    
-                    if previous_log and previous_log.exists():
-                        record.previous_odometer = previous_log.odometer
-                    else:
-                        record.previous_odometer = record.vehicle_id.initial_odometer if record.vehicle_id.initial_odometer else 0.0
+                # Find the most recent fuel log for this vehicle with a valid odometer reading
+                previous_log = self.env['simply.fleet.fuel.log'].search([
+                    ('vehicle_id', '=', record.vehicle_id.id),
+                    ('datetime', '<', record.datetime or fields.Datetime.now()),  # Use datetime instead of date
+                    ('id', '!=', record._origin.id or False),
+                    ('odometer', '>', 0)  # Only consider logs with positive odometer values
+                ], order='datetime desc, id desc', limit=1)
+                
+                if previous_log and previous_log.exists():
+                    record.previous_odometer = previous_log.odometer
                 else:
-                    record.previous_odometer = 0.0
-            except Exception:
+                    # If no previous log exists, use the vehicle's initial odometer or 0
+                    record.previous_odometer = record.vehicle_id.initial_odometer if record.vehicle_id.initial_odometer else 0.0
+            except Exception as e:
+                _logger.error(f"Error computing previous odometer: {e}")
                 record.previous_odometer = 0.0
 
     @api.depends('odometer', 'previous_odometer')
     def _compute_distance_travelled(self):
         for record in self:
-            if record.odometer and record.previous_odometer:
-                record.distance_travelled = record.odometer - record.previous_odometer
+            if record.odometer and record.odometer > 0 and record.previous_odometer is not False:
+                # Calculate the distance traveled (always non-negative)
+                distance = record.odometer - record.previous_odometer
+                record.distance_travelled = max(0, distance)  # Ensure non-negative
             else:
                 record.distance_travelled = 0.0
 
@@ -402,11 +409,12 @@ class SimplyFleetFuelLog(models.Model):
         if not self.vehicle_id or not self.vehicle_id.exists():
             return
             
-        if self.date:  # Using computed date from datetime
+        # Update the code to use datetime instead of date
+        if self.datetime:
             previous_log = self.env['simply.fleet.fuel.log'].search([
                 ('vehicle_id', '=', self.vehicle_id.id),
-                ('date', '<', self.date),
-                ('odometer', '!=', False)
+                ('datetime', '<', self.datetime),
+                ('odometer', '>', 0)
             ], order='datetime desc, id desc', limit=1)
             
             if previous_log and previous_log.exists():
@@ -420,14 +428,30 @@ class SimplyFleetFuelLog(models.Model):
     @api.constrains('odometer', 'previous_odometer')
     def _check_odometer(self):
         for record in self:
-            if record.odometer and record.previous_odometer and record.odometer < record.previous_odometer:
-                raise UserError('New odometer reading cannot be less than previous reading')
+            # Check that odometer is provided
+            if not record.odometer or record.odometer <= 0:
+                raise UserError(_('New odometer reading is required and must be greater than zero'))
+                
+            # Check the relationship between new and previous odometer
+            if record.previous_odometer and record.odometer <= record.previous_odometer:
+                raise UserError(_('New odometer reading must be greater than previous reading'))
+                
+            # Check if previous odometer is zero (except for first entry)
+            if record.previous_odometer == 0:
+                # Check if this is really the first log for this vehicle
+                previous_logs_count = self.env['simply.fleet.fuel.log'].search_count([
+                    ('vehicle_id', '=', record.vehicle_id.id),
+                    ('id', '!=', record._origin.id or False),
+                ])
+                
+                if previous_logs_count > 0:
+                    raise UserError(_('Previous odometer cannot be zero except for the first fuel log entry'))
 
     @api.constrains('liters')
     def _check_fuel_amount(self):
         for record in self:
             if record.liters and record.liters <= 0:
-                raise UserError('Fuel amount must be greater than zero')
+                raise UserError(_('Fuel amount must be greater than zero'))
 
     @api.model_create_multi
     def create(self, vals_list):

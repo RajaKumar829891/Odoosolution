@@ -6,7 +6,7 @@
       <field name="model">simply.fleet.fuel.log</field>
       <field name="priority">16</field>
       <field name="arch" type="xml">
-          <kanban class="o_kanban_mobile" js_class="fuel_log_kanban" default_order="date desc" create="true" delete="true">
+          <kanban class="o_kanban_mobile" js_class="fuel_log_kanban" default_order="datetime desc" create="true" delete="true">
               <field name="name"/>
               <field name="vehicle_id"/>
               <!-- Add the computed vehicle type code field -->
@@ -14,6 +14,7 @@
               <field name="date"/>
               <field name="display_date"/>
               <field name="datetime"/>
+              <field name="datetime_display"/>
               <field name="liters"/>
               <field name="odometer"/>
               <field name="distance_travelled"/>
@@ -115,7 +116,7 @@
                                   </div>
                                   <div class="row">
                                       <div class="col-12">
-                                          <span class="text-black"><field name="date"/></span>
+                                          <span class="text-black"><field name="display_date"/></span>
                                       </div>
                                   </div>
                                   <div class="row">
