@@ -250,15 +250,36 @@
 </record>
 
     <!-- Update the action windows to include kanban view -->
-    <record id="action_simply_fleet_vehicle_inspection" model="ir.actions.act_window">
-        <field name="view_mode">kanban,tree,form</field>
-    </record>
+<record id="action_simply_fleet_vehicle_inspection" model="ir.actions.act_window">
+    <field name="name">Vehicle Inspections</field>
+    <field name="res_model">simply.fleet.vehicle.inspection</field>
+    <field name="view_mode">kanban,tree,form</field>
+    <field name="help" type="html">
+        <p class="o_view_nocontent_smiling_face">
+            Create your first vehicle inspection
+        </p>
+    </field>
+</record>
 
-    <record id="action_simply_fleet_inspection_template" model="ir.actions.act_window">
-        <field name="view_mode">kanban,tree,form</field>
-    </record>
+<record id="action_simply_fleet_inspection_template" model="ir.actions.act_window">
+    <field name="name">Inspection Templates</field>
+    <field name="res_model">simply.fleet.inspection.template</field>
+    <field name="view_mode">kanban,tree,form</field>
+    <field name="help" type="html">
+        <p class="o_view_nocontent_smiling_face">
+            Create your first inspection template
+        </p>
+    </field>
+</record>
 
-    <record id="action_simply_fleet_inspection_schedule" model="ir.actions.act_window">
-        <field name="view_mode">kanban,tree,form</field>
-    </record>
+<record id="action_simply_fleet_inspection_schedule" model="ir.actions.act_window">
+    <field name="name">Inspection Schedules</field>
+    <field name="res_model">simply.fleet.inspection.schedule</field>
+    <field name="view_mode">kanban,tree,form</field>
+    <field name="help" type="html">
+        <p class="o_view_nocontent_smiling_face">
+            Create your first inspection schedule
+        </p>
+    </field>
+</record>
 </odoo>

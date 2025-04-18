@@ -2,6 +2,8 @@
 <odoo>
     <!-- Hide the existing Diesel Tanker menu item from root menu -->
     <record id="menu_diesel_tanker_fuel_logs" model="ir.ui.menu">
+        <field name="name">Diesel Tanker</field>
+        <field name="parent_id" ref="base.menu_administration"/>
         <field name="active" eval="False"/>
     </record>
     
