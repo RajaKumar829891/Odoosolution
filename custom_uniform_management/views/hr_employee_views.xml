@@ -1,0 +1,33 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <!-- Add Uniform tab to Employee form -->
+    <record id="hr_employee_view_form_inherit_uniform" model="ir.ui.view">
+        <field name="name">hr.employee.view.form.inherit.uniform</field>
+        <field name="model">hr.employee</field>
+        <field name="inherit_id" ref="hr.view_employee_form"/>
+        <field name="arch" type="xml">
+            <notebook position="inside">
+                <page string="Uniforms" name="uniforms">
+                    <group>
+                        <group>
+                            <field name="uniform_assignment_count"/>
+                            <field name="uniform_return_count"/>
+                        </group>
+                    </group>
+                    <div>
+                        <button name="%(action_uniform_assignment_employee)d" 
+                                type="action" 
+                                string="View Assignments"
+                                class="oe_stat_button"
+                                context="{'default_employee_id': active_id}"/>
+                        <button name="%(action_uniform_return_employee)d" 
+                                type="action" 
+                                string="View Returns"
+                                class="oe_stat_button"
+                                context="{'default_employee_id': active_id}"/>
+                    </div>
+                </page>
+            </notebook>
+        </field>
+    </record>
+</odoo>

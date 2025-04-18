@@ -1,0 +1,42 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <!-- Add uniform-specific fields to product form -->
+    <record id="product_template_form_view_uniform" model="ir.ui.view">
+        <field name="name">product.template.form.uniform</field>
+        <field name="model">product.template</field>
+        <field name="inherit_id" ref="product.product_template_form_view"/>
+        <field name="arch" type="xml">
+            <xpath expr="//field[@name='detailed_type']" position="after">
+                <field name="is_uniform"/>
+                <field name="uniform_type" invisible="is_uniform == False" required="is_uniform == True"/>
+            </xpath>
+            
+            <notebook position="inside">
+                <page string="Uniform Sizes" invisible="is_uniform == False">
+                    <field name="available_sizes">
+                        <tree editable="bottom">
+                            <field name="name"/>
+                            <field name="quantity"/>
+                        </tree>
+                    </field>
+                </page>
+            </notebook>
+        </field>
+    </record>
+    
+    <!-- Add filter for uniform products -->
+    <record id="product_template_search_view_uniform" model="ir.ui.view">
+        <field name="name">product.template.search.uniform</field>
+        <field name="model">product.template</field>
+        <field name="inherit_id" ref="product.product_template_search_view"/>
+        <field name="arch" type="xml">
+            <filter name="consumable" position="after">
+                <filter string="Uniforms" name="uniform" domain="[('is_uniform', '=', True)]"/>
+            </filter>
+            <group position="inside">
+                <filter string="Uniform Type" name="groupby_uniform_type" 
+                        domain="[('is_uniform', '=', True)]" context="{'group_by': 'uniform_type'}"/>
+            </group>
+        </field>
+    </record>
+</odoo>

@@ -1,0 +1,29 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <!-- Change menus to appear under Employees instead of as a root menu -->
+    <menuitem id="menu_uniform_management" 
+              name="Uniforms" 
+              parent="hr.menu_hr_root" 
+              sequence="75"/>
+    
+    <!-- Uniform Assignment menu -->
+    <menuitem id="menu_uniform_assignment" 
+              name="Uniform Assignment" 
+              parent="menu_uniform_management" 
+              action="action_uniform_assignment" 
+              sequence="10"/>
+    
+    <!-- Uniform Return menu -->
+    <menuitem id="menu_uniform_return" 
+              name="Uniform Return" 
+              parent="menu_uniform_management" 
+              action="action_uniform_return" 
+              sequence="20"/>
+    
+    <!-- Mass Assignment menu -->
+    <menuitem id="menu_mass_uniform_assignment" 
+              name="Mass Assignment" 
+              parent="menu_uniform_management" 
+              action="action_mass_uniform_assignment_wizard" 
+              sequence="30"/>
+</odoo>

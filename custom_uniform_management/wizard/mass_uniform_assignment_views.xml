@@ -1,0 +1,52 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <!-- Mass Uniform Assignment Wizard Form -->
+    <record id="view_mass_uniform_assignment_form" model="ir.ui.view">
+        <field name="name">mass.uniform.assignment.form</field>
+        <field name="model">mass.uniform.assignment</field>
+        <field name="arch" type="xml">
+            <form string="Mass Uniform Assignment">
+                <sheet>
+                    <group>
+                        <group>
+                            <field name="uniform_item_id"/>
+                            <field name="uniform_type" invisible="1"/>
+                            <field name="size_id"/>
+                            <field name="quantity"/>
+                        </group>
+                        <group>
+                            <field name="assignment_date"/>
+                            <field name="expected_return_date"/>
+                        </group>
+                    </group>
+                    <notebook>
+                        <page string="Employees" name="employees">
+                            <field name="employee_ids">
+                                <tree>
+                                    <field name="name"/>
+                                    <field name="department_id"/>
+                                    <field name="job_id"/>
+                                </tree>
+                            </field>
+                        </page>
+                        <page string="Notes" name="notes">
+                            <field name="notes"/>
+                        </page>
+                    </notebook>
+                </sheet>
+                <footer>
+                    <button name="action_assign" string="Assign Uniforms" type="object" class="btn-primary"/>
+                    <button string="Cancel" class="btn-secondary" special="cancel"/>
+                </footer>
+            </form>
+        </field>
+    </record>
+    
+    <!-- Mass Uniform Assignment Wizard Action -->
+    <record id="action_mass_uniform_assignment_wizard" model="ir.actions.act_window">
+        <field name="name">Mass Uniform Assignment</field>
+        <field name="res_model">mass.uniform.assignment</field>
+        <field name="view_mode">form</field>
+        <field name="target">new</field>
+    </record>
+</odoo>

@@ -1,0 +1,20 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo noupdate="1">
+    <!-- Sequence for Uniform Assignment -->
+    <record id="seq_uniform_assignment" model="ir.sequence">
+        <field name="name">Uniform Assignment</field>
+        <field name="code">uniform.assignment</field>
+        <field name="prefix">UA</field>
+        <field name="padding">5</field>
+        <field name="company_id" eval="False"/>
+    </record>
+    
+    <!-- Sequence for Uniform Return -->
+    <record id="seq_uniform_return" model="ir.sequence">
+        <field name="name">Uniform Return</field>
+        <field name="code">uniform.return</field>
+        <field name="prefix">UR</field>
+        <field name="padding">5</field>
+        <field name="company_id" eval="False"/>
+    </record>
+</odoo>
