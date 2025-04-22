@@ -1,6 +1,7 @@
 from odoo import models, fields, api, _
 from odoo.exceptions import UserError
 from datetime import datetime
+import pytz
 import logging
 
 _logger = logging.getLogger(__name__)
@@ -327,10 +328,22 @@ class SimplyFleetFuelLog(models.Model):
     def _compute_display_date(self):
         for record in self:
             if record.datetime:
-                # Include both date and formatted time
-                record.display_date = record.datetime.date()
-                # Create a new field for the formatted datetime - using consistent format
-                record.datetime_display = record.datetime.strftime('%I:%M %p')  # Removed seconds for consistency
+                # Get the user's timezone
+                user_tz = self.env.user.tz or 'UTC'
+                try:
+                    # Convert to user's timezone for display purposes
+                    dt_as_utc = pytz.UTC.localize(record.datetime.replace(tzinfo=None)) if not record.datetime.tzinfo else record.datetime
+                    local_dt = dt_as_utc.astimezone(pytz.timezone(user_tz))
+                    
+                    # Set both date and time using the timezone-converted datetime
+                    # This ensures the date is correct in the user's timezone
+                    record.display_date = local_dt.date()
+                    record.datetime_display = local_dt.strftime('%I:%M %p')
+                except Exception as e:
+                    _logger.error(f"Timezone conversion error: {e}")
+                    # Fallback to UTC if conversion fails
+                    record.display_date = record.datetime.date()
+                    record.datetime_display = record.datetime.strftime('%I:%M %p')
             else:
                 record.display_date = False
                 record.datetime_display = False
@@ -349,12 +362,10 @@ class SimplyFleetFuelLog(models.Model):
     @api.depends('station_type')
     def _compute_show_transaction_type(self):
         for record in self:
-            record.show_transaction_type = bool(record.station_type == 'petrol_pump')
+            # Always hide the transaction type field regardless of station type
+            record.show_transaction_type = False
 
-    @api.onchange('station_type')
-    def _onchange_station_type(self):
-        if self.station_type == 'diesel_tanker':
-            self.transaction_type_id = False
+    # Removed the onchange_station_type method as it's no longer needed
 
     @api.depends('distance_travelled', 'liters', 'fill_type')
     def _compute_mileage(self):

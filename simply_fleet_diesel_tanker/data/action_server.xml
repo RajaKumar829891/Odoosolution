@@ -1,0 +1,14 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <record id="action_view_related_dispensing" model="ir.actions.server">
+        <field name="name">View Dispensing Logs</field>
+        <field name="model_id" ref="model_simply_fleet_tanker_refill"/>
+        <field name="binding_model_id" ref="model_simply_fleet_tanker_refill"/>
+        <field name="binding_view_types">form,list</field>
+        <field name="state">code</field>
+        <field name="code">
+if records:
+    action = records.action_view_related_dispensing()
+        </field>
+    </record>
+</odoo>

@@ -1,0 +1,57 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <!-- Extended Search View for Dispensing Logs -->
+    <record id="view_simply_fleet_tanker_dispensing_search" model="ir.ui.view">
+        <field name="name">simply.fleet.tanker.dispensing.search</field>
+        <field name="model">simply.fleet.tanker.dispensing</field>
+        <field name="arch" type="xml">
+            <search>
+                <field name="name"/>
+                <field name="tanker_id"/>
+                <field name="vehicle_id"/>
+                <field name="date"/>
+                <field name="related_refill_id"/>
+                <separator/>
+                <filter string="After Last Refill" name="after_last_refill" 
+                        domain="[('date', '>=', context_today().strftime('%Y-%m-%d 00:00:00'))]"
+                        help="Show dispensing logs after the last refill"/>
+                <group expand="0" string="Group By">
+                    <filter string="Tanker" name="group_by_tanker" context="{'group_by': 'tanker_id'}"/>
+                    <filter string="Vehicle" name="group_by_vehicle" context="{'group_by': 'vehicle_id'}"/>
+                    <filter string="Date" name="group_by_date" context="{'group_by': 'date:day'}"/>
+                    <filter string="Related Refill" name="group_by_refill" context="{'group_by': 'related_refill_id'}"/>
+                </group>
+            </search>
+        </field>
+    </record>
+
+    <!-- Add the search view and set default filter to Refill logs Action -->
+    <record id="action_simply_fleet_dispensing_after_refill" model="ir.actions.act_window">
+        <field name="name">Dispensing After Refill</field>
+        <field name="res_model">simply.fleet.tanker.dispensing</field>
+        <field name="view_mode">tree,form</field>
+        <field name="search_view_id" ref="view_simply_fleet_tanker_dispensing_search"/>
+        <field name="context">{'search_default_after_last_refill': 1}</field>
+        <field name="help" type="html">
+            <p class="o_view_nocontent_smiling_face">
+                No dispensing logs after the last refill!
+            </p>
+            <p>
+                This view shows dispensing logs that occurred after the latest refill.
+            </p>
+        </field>
+    </record>
+
+    <!-- Server action for viewing related dispensing logs -->
+    <record id="action_view_related_dispensing" model="ir.actions.server">
+        <field name="name">View Related Dispensing Logs</field>
+        <field name="model_id" ref="model_simply_fleet_tanker_refill"/>
+        <field name="binding_model_id" ref="model_simply_fleet_tanker_refill"/>
+        <field name="binding_view_types">form,list</field>
+        <field name="state">code</field>
+        <field name="code">
+if records:
+    action = records.action_view_related_dispensing()
+        </field>
+    </record>
+</odoo>

@@ -18,10 +18,12 @@
     'data': [
         'security/ir.model.access.csv',
         'data/diesel_tanker_sequence.xml',
+        'data/action_server.xml',
         'views/diesel_tanker_views.xml',
         'views/fuel_log_views.xml',
         'views/diesel_tanker_button.xml',
         'views/menu_views.xml',
+        'views/dispensing_logs_view.xml',
     ],
     'assets': {
         'web.assets_backend': [

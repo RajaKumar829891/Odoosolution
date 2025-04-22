@@ -1,0 +1,85 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <data>
+        
+        <template id="employee_classic_back_icard">
+            <t t-call="web.basic_layout">
+                <t t-foreach="docs" t-as="o">
+                    <div class="page">
+                        <div style="width:670px;height:998px; solid #14877d;background-image:url('jt_employee_icard/static/src/img/back.png')">
+                            
+                            
+                            <center>
+                                <img t-attf-src="data:image/png;base64,{{res_company.logo}}" style="text-align:center;width:120px;height:120px;margin-top:110px;"/>
+                            </center>
+
+                            <center>
+                                    <table style="font-size:30px; margin-top:50px;">
+                                        <tr>
+                                            <td valign="top">Resident Address: </td>
+                                            <td>
+                                                <span t-field="o.address_home_id.street"/><br/>
+                                                <span t-field="o.address_home_id.street2"/><br/>
+                                                <span t-field="o.address_home_id.city"/><br/>
+                                                <span t-field="o.address_home_id.state_id"/>  
+                                                <span t-field="o.address_home_id.zip"/><br/>
+                                            </td>
+                                        </tr>
+                                        <tr>
+                                            <td valign="top">Office Address: </td>
+                                            <td>
+                                                <span t-field="res_company.street"/><br/>
+                                                <span t-field="res_company.street2"/><br/>
+                                                <span t-field="res_company.city"/><br/>
+                                                <span t-field="res_company.state_id"/>  <span t-field="res_company.zip"/><br/>
+                                            </td>
+                                        </tr>
+                                    </table>
+                                    <div>
+                                        <p style="font-size:30px;font-weight:bold;margin-bottom:0px;margin-top:50px;">Contact Number</p>
+                                        <p style="font-size:30px;margin-bottom:0px;">Emergency: <span t-field="o.emergency_contact"/></p>
+                                        <p style="font-size:30px;margin-bottom:0px;">Official: <span t-field="o.work_phone"/></p>
+                                    </div>
+                                </center>
+                                        
+                                <div style="text-align:center;font-size:14px;color:white;margin-top:50px;">
+                                    <span t-field="res_company.website"/>
+                                </div>
+                            </div>
+                    </div>
+                </t>
+            </t>
+        </template>
+
+        <record id="employee_classic_back_icard_paperformat" model="report.paperformat">
+            <field name="name">Employee Back Icard</field>
+            <field name="default" eval="True"/>
+            <field name="format">custom</field>
+            <field name="page_height">143</field>
+            <field name="page_width">100</field>
+            <field name="orientation">Portrait</field>
+            <field name="margin_top">0</field>
+            <field name="margin_bottom">0</field>
+            <field name="margin_left">0</field>
+            <field name="margin_right">2</field>
+            <field name="header_line" eval="False"/>
+            <field name="header_spacing">40</field>
+            <field name="dpi">90</field>
+        </record>
+
+
+        <record id="employee_back_icard_report" model="ir.actions.report">
+            <field name="name">Employee classic Back ID Card</field>
+            <field name="model">hr.employee</field>
+            <field name="report_type">qweb-pdf</field>
+            <field name="report_name">jt_employee_icard.employee_classic_back_icard</field>
+            <field name="report_file">jt_employee_icard.employee_classic_back_icard</field>
+            <field name="binding_model_id" ref="model_hr_employee"/>
+            <field name="print_report_name">object.name</field>
+            <field name="binding_type">report</field>
+            <field name="paperformat_id" ref="jt_employee_icard.employee_classic_back_icard_paperformat"/>
+        </record>
+
+
+    </data>
+</odoo>

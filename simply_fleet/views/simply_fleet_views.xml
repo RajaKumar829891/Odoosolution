@@ -450,116 +450,73 @@
         </field>
     </record>
 
-    <!-- Fuel Log Form View -->
-<record id="view_simply_fleet_fuel_log_form" model="ir.ui.view">
-    <field name="name">simply.fleet.fuel.log.form</field>
-    <field name="model">simply.fleet.fuel.log</field>
-    <field name="arch" type="xml">
-        <form>
-            <header>
-                <field name="fill_type" widget="statusbar" options="{'clickable': '1'}"/>
-            </header>
-            <sheet>
-                <div class="oe_title">
-                    <h1><field name="name" readonly="1"/></h1>
+<!-- Fuel Log Form View -->
+    <record id="view_simply_fleet_fuel_log_form" model="ir.ui.view">
+        <field name="name">simply.fleet.fuel.log.form</field>
+        <field name="model">simply.fleet.fuel.log</field>
+        <field name="arch" type="xml">
+            <form>
+                <header>
+                    <field name="fill_type" widget="statusbar" options="{'clickable': '1'}"/>
+                </header>
+                <sheet>
+                    <div class="oe_title">
+                        <h1><field name="name" readonly="1"/></h1>
+                    </div>
+                    <group>
+                        <group>
+                            <field name="vehicle_id" options="{'no_create': True, 'no_open': False}"/>
+                            <field name="datetime" string="Date &amp; Time" options="{'step': 1}" widget="datetime"/>
+                            <field name="station_type"/>
+                            <field name="show_transaction_type" invisible="1"/>
+                            <field name="transaction_type_id"
+                                   invisible="not show_transaction_type"
+                                   required="show_transaction_type"
+                                   options="{'no_create': True}"/>
+                            <field name="fuel_type"/>
+                        </group>
+                        <group>
+                            <field name="fill_type"/>
+                            <label for="liters" string="Quantity"/>
+                            <div class="o_row">
+                                <field name="liters" class="oe_inline"/> <span>L</span>
+                            </div>
+                            <field name="currency_id" invisible="1"/>
+                            <field name="price_per_liter" widget="monetary" options="{'currency_field': 'currency_id'}"/>
+                            <field name="total_amount" widget="monetary" options="{'currency_field': 'currency_id'}"/>
+                        </group>
+                    </group>
+                    <group string="Odometer Information">
+                        <group>
+                            <label for="previous_odometer" string="Previous Odometer"/>
+                            <div class="o_row">
+                                <field name="previous_odometer" readonly="1" force_save="1" widget="integer" class="oe_inline"/> <span>km</span>
+                            </div>
+                            <label for="odometer" string="Current Odometer"/>
+                            <div class="o_row">
+                                <field name="odometer" widget="integer" class="oe_inline"/> <span>km</span>
+                            </div>
+                            <label for="distance_travelled" string="Distance Travelled"/>
+                            <div class="o_row">
+                                <field name="distance_travelled" widget="integer" class="oe_inline"/> <span>km</span>
+                            </div>
+                            <field name="show_mileage" invisible="1"/>
+                            <label for="mileage" invisible="not show_mileage"/>
+                            <div class="o_row" invisible="not show_mileage">
+                                <field name="mileage" class="oe_inline"/> <span>km/L</span>
+                            </div>
+                            <field name="created_by" options="{'no_create': True}"/>
+                        </group>
+                    </group>
+                </sheet>
+                <div class="oe_chatter">
+                    <field name="message_follower_ids" widget="mail_followers"/>
+                    <field name="activity_ids" widget="mail_activity"/>
+                    <field name="message_ids" widget="mail_thread"/>
                 </div>
-                <group>
-                    <group>
-                        <field name="vehicle_id" options="{'no_create': True, 'no_open': False}"/>
-                        <field name="datetime" string="Date &amp; Time" options="{'step': 1}" widget="datetime"/>
-                        <field name="station_type"/>
-                        <field name="show_transaction_type" invisible="1"/>
-                        <field name="transaction_type_id"
-                               invisible="not show_transaction_type"
-                               required="show_transaction_type"
-                               options="{'no_create': True}"/>
-                        <field name="fuel_type"/>
-                    </group>
-                    <group>
-                        <field name="fill_type"/>
-                        <label for="liters" string="Quantity"/>
-                        <div class="o_row">
-                            <field name="liters" class="oe_inline"/> <span>L</span>
-                        </div>
-                        <field name="currency_id" invisible="1"/>
-                        <field name="price_per_liter" widget="monetary" options="{'currency_field': 'currency_id'}"/>
-                        <field name="total_amount" widget="monetary" options="{'currency_field': 'currency_id'}"/>
-                    </group>
-                </group>
-                <group string="Odometer Information">
-                    <group>
-                        <label for="previous_odometer" string="Previous Odometer"/>
-                        <div class="o_row">
-                            <field name="previous_odometer" readonly="1" force_save="1" widget="integer" class="oe_inline"/> <span>km</span>
-                        </div>
-                        <label for="odometer" string="Current Odometer"/>
-                        <div class="o_row">
-                            <field name="odometer" widget="integer" class="oe_inline"/> <span>km</span>
-                        </div>
-                        <label for="distance_travelled" string="Distance Travelled"/>
-                        <div class="o_row">
-                            <field name="distance_travelled" widget="integer" class="oe_inline"/> <span>km</span>
-                        </div>
-                        <field name="show_mileage" invisible="1"/>
-                        <label for="mileage" invisible="not show_mileage"/>
-                        <div class="o_row" invisible="not show_mileage">
-                            <field name="mileage" class="oe_inline"/> <span>km/L</span>
-                        </div>
-                        <field name="created_by" options="{'no_create': True}"/>
-                    </group>
-                </group>
-                <notebook>
-                    <page name="images" string="Images">
-                        <field name="attachment_ids" 
-                               widget="many2many_binary"
-                               string="Images"
-                               domain="[('mimetype', 'ilike', 'image')]"
-                               options="{
-                                   'accepted_file_extensions': 'image/*',
-                                   'upload_text': '+'
-                               }"/>
-                        
-                        <style>
-                        .o_attachments {
-                            display: flex; !important;
-                            flex-direction: row; !important;
-                            flex-wrap: nowrap; !important;
-                            overflow-x: auto; !important;
-                            gap: 10px; !important;
-                            padding: 5px; !important;
-                        }
-                        .o_attachment.o_attachment_many2many.o_attachment_editable{
-                            height: 70px !important;
-                            width: 60px !important;          
-                        }
-                        .o_attachment_wrap {
-                            height: 60px !important;
-                            width: 50px !important;
-                        }
-                        .caption {
-                            display: none !important;
-                        }
-                        .o_attachment_uploaded {
-                            display: none !important;
-                        }
-                        .o_attachment_delete {
-                            height: 20px !important;
-                            width: 20px !important;
-                        }
-                        .o_image.o_hover {
-                            height: 60px !important;
-                            width: 50px !important;
-                        }
-                        </style>
-                    </page>
-                    <page name="notes" string="Notes">
-                        <field name="notes"/>
-                    </page>
-                </notebook>
-            </sheet>
-        </form>
-    </field>
-</record>
+            </form>
+        </field>
+    </record>
 
     <!-- Fuel Log Search View -->
     <record id="view_simply_fleet_fuel_log_search" model="ir.ui.view">

@@ -56,9 +56,12 @@ class SimplyFleetFuelLog(models.Model):
         return super(SimplyFleetFuelLog, self).create(vals_list)
     
     # Add diesel tanker field to form view when station type is diesel tanker
-    @api.onchange('station_type', 'fuel_type')
+    @api.onchange('station_type')
     def _onchange_station_type(self):
-        if self.station_type == 'diesel_tanker' and self.fuel_type == 'diesel':
+        # Set fuel type as diesel when station type is diesel tanker
+        if self.station_type == 'diesel_tanker':
+            self.fuel_type = 'diesel'
+            
             # Find tanker with highest fuel level
             tanker = self.env['simply.fleet.diesel.tanker'].search([
                 ('current_fuel_level', '>', 0)

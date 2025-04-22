@@ -1,0 +1,22 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <data>
+    <record id="employee_form_view" model="ir.ui.view">
+        <field name="name">employee.form.view</field>
+        <field name="model">hr.employee</field>
+        <field name="inherit_id" ref="hr.view_employee_form"/>
+        <field name="arch" type="xml">
+            <xpath expr="//field[@name='birthday']" position="after">
+                <field name="blood" string="Blood" placeholder="Blood Group...."/>
+            </xpath>
+            <xpath expr="//field[@name='work_location_id']" position="after">
+                <field name="joined_date" string="Joined Date"/>
+                
+            </xpath>
+            <xpath expr="//field[@name='parent_id']" position="after">
+                <field name="expired_date" string="Expired Date"/>            
+            </xpath>
+    </field>
+    </record>
+    </data>
+</odoo>

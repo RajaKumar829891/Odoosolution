@@ -1,0 +1,106 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <data>
+    <template id="square_classic_icard">
+            <t t-call="web.basic_layout">
+            <t t-foreach="docs" t-as="o">
+                <div class="page">
+                    <div style="width:670px;height:998px; solid #14877d;background-image:url('jt_employee_icard/static/src/img/square_front.png')">
+                        
+                        <div style="height:10%;color:black;margin-left:480px;">
+                            <div style="width:100%;float:right;margin-top:30px;">
+                                <img t-attf-src="data:image/png;base64,{{res_company.logo}}" style="width:100px;height:100px;"/>
+                                <p><span style="font-size:24px;" t-field="res_company.name"/></p>
+                            </div>
+                        </div>
+                        <div style="clear:both;"/>
+                        <div>
+                             
+
+                            <div style="margin-left:235px;">
+                              <img t-attf-src="data:image/png;base64,{{o.image_1920}}" style="height:205px;width:205px;margin-top:38px;"/>
+                            </div>
+                        </div>
+                                    
+                            <div style="text-align:center;">
+                                <p style="font-size:35px;margin-top:50px;color:black;font-weight:bold;text-transform:uppercase;"><span t-field="o.name"/></p>
+                            </div>
+                            <div style="text-align:center;">
+                                <p style="text-transform:uppercase;font-size:30px;margin-top:-25px;color:red;"><span t-field="o.job_id"/></p>
+                            </div>
+                            <div style="align:center;">
+                               
+                            <table clas="table table-borderless border border-right-0 border-left-0"  style="align:center;width:50%;height:50%;margin-left:12%;font-size:30px;padding:5px;">
+                                <tr>
+                                    <td style="font-weight:bold;">Emp. Id:</td>
+                                    <td><span t-field="o.emp_id" /></td>
+                                </tr>
+                                <tr>
+                                    <td style="font-weight:bold;">Blood:</td>
+                                    <td><span t-field="o.blood"/></td>
+                                </tr>
+                                <tr>
+                                    <td style="font-weight:bold;">Birthday:</td>
+                                    <td><span t-field="o.birthday"/></td>
+                                </tr>
+                                <tr>
+                                    <td style="font-weight:bold;">Email:</td>
+                                    <td><span t-field="o.work_email"/></td>
+                                </tr>
+                                <tr>
+                                    <td style="font-weight:bold;">Mobile:</td>
+                                    <td><span t-field="o.mobile_phone"/></td>
+                                </tr>
+                                
+                            </table>
+                            </div>
+                             
+                           
+                                
+                        </div>
+                </div>
+            </t>
+        </t>
+    </template>
+
+    <record id="square_front_idcard" model="report.paperformat">
+        <field name="name">Employee Front Icard</field>
+        <field name="default" eval="True"/>
+        <field name="format">custom</field>
+        <field name="page_height">143</field>
+        <field name="page_width">100</field>
+        <field name="orientation">Portrait</field>
+        <field name="margin_top">0</field>
+        <field name="margin_bottom">0</field>
+        <field name="margin_left">0</field>
+        <field name="margin_right">2</field>
+        <field name="header_line" eval="False"/>
+        <field name="header_spacing">40</field>
+        <field name="dpi">90</field>
+    </record>
+
+    <!-- <report 
+        id="employee_classic_front_icard_report"
+        model="hr.employee"
+        string="Square Id-Card Reprt FRONT"
+        report_type="qweb-pdf"
+        name="jt_employee_icard.square_classic_icard"
+        file="jt_employee_icard.square_classic_icard"
+        print_report_name="object.name"
+        paperformat="jt_employee_icard.square_front_idcard"
+    /> -->
+
+
+     <record id="employee_classic_front_icard_report" model="ir.actions.report">
+        <field name="name">Square Id-Card Reprt FRONT</field>
+        <field name="model">hr.employee</field>
+        <field name="report_type">qweb-pdf</field>
+        <field name="report_name">jt_employee_icard.square_classic_icard</field>
+        <field name="report_file">jt_employee_icard.square_classic_icard</field>
+        <field name="binding_model_id" ref="model_hr_employee"/>
+        <field name="print_report_name">object.name</field>
+        <field name="binding_type">report</field>
+        <field name="paperformat_id" ref="jt_employee_icard.square_front_idcard"/>
+    </record>
+    </data>
+</odoo>

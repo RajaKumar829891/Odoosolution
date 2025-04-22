@@ -35,6 +35,37 @@ class SimplyFleetTankerRefill(models.Model):
                 })
                 
         return super().create(vals_list)
+        
+    def action_view_related_dispensing(self):
+        """Show dispensing logs that occurred after this refill"""
+        self.ensure_one()
+        
+        # Find next refill (if any)
+        next_refill = self.env['simply.fleet.tanker.refill'].search([
+            ('tanker_id', '=', self.tanker_id.id),
+            ('date', '>', self.date)
+        ], order='date asc', limit=1)
+        
+        # Create domain for dispensing logs
+        domain = [
+            ('tanker_id', '=', self.tanker_id.id),
+            ('date', '>=', self.date)
+        ]
+        
+        # If there's a next refill, only show dispensing logs up to that refill
+        if next_refill:
+            domain.append(('date', '<', next_refill.date))
+            
+        # Return action to view dispensing logs
+        return {
+            'name': f'Dispensing Logs After {self.name}',
+            'type': 'ir.actions.act_window',
+            'res_model': 'simply.fleet.tanker.dispensing',
+            'view_mode': 'tree,form',
+            'domain': domain,
+            'context': {'create': False},
+            'target': 'current',
+        }
 
 
 class SimplyFleetTankerDispensing(models.Model):
@@ -51,6 +82,22 @@ class SimplyFleetTankerDispensing(models.Model):
     notes = fields.Text(string='Notes')
     created_by = fields.Many2one('res.users', string='Created By', default=lambda self: self.env.user.id, readonly=True)
     fuel_log_id = fields.Many2one('simply.fleet.fuel.log', string='Related Fuel Log', readonly=True)
+    
+    # Add related refill field to easily filter dispensing logs by refill
+    related_refill_id = fields.Many2one('simply.fleet.tanker.refill', string='Related Refill', 
+                                        compute='_compute_related_refill', store=True)
+    
+    @api.depends('tanker_id', 'date')
+    def _compute_related_refill(self):
+        """Determine which refill this dispensing is related to"""
+        for record in self:
+            # Find the most recent refill before this dispensing
+            refill = self.env['simply.fleet.tanker.refill'].search([
+                ('tanker_id', '=', record.tanker_id.id),
+                ('date', '<=', record.date)
+            ], order='date desc', limit=1)
+            
+            record.related_refill_id = refill.id if refill else False
     
     @api.model_create_multi
     def create(self, vals_list):

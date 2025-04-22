@@ -42,11 +42,5 @@
                   action="action_simply_fleet_part_finder"
                   sequence="25"/>
                   
-        <!-- Add to simply fleet menu as well -->
-        <menuitem id="menu_simply_fleet_part_finder_fleet"
-                  name="Find Compatible Parts"
-                  parent="simply_fleet.menu_simply_fleet_vehicles"
-                  action="action_simply_fleet_part_finder"
-                  sequence="40"/>
     </data>
 </odoo>

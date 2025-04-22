@@ -1,28 +1,5 @@
 <?xml version="1.0" encoding="utf-8"?>
 <odoo>
-    <!-- Add Diesel Tanker button to Fuel Logs header and the diesel_tanker_id field -->
-    <record id="view_simply_fleet_fuel_log_form_inherit" model="ir.ui.view">
-        <field name="name">simply.fleet.fuel.log.form.inherit.diesel.tanker</field>
-        <field name="model">simply.fleet.fuel.log</field>
-        <field name="inherit_id" ref="simply_fleet.view_simply_fleet_fuel_log_form"/>
-        <field name="arch" type="xml">
-            <xpath expr="//header" position="inside">
-                <button name="action_open_tanker_dispensing" 
-                        string="Diesel Tanker" 
-                        type="object" 
-                        class="btn-primary" 
-                        invisible="station_type != 'diesel_tanker'"/>
-            </xpath>
-            
-            <xpath expr="//field[@name='fuel_type']" position="after">
-                <field name="diesel_tanker_id" 
-                       invisible="station_type != 'diesel_tanker' or fuel_type != 'diesel'"
-                       options="{'no_create': True, 'no_open': False}"
-                       required="station_type == 'diesel_tanker' and fuel_type == 'diesel'"/>
-            </xpath>
-        </field>
-    </record>
-
     <!-- Add the field to kanban view as well -->
     <record id="view_simply_fleet_fuel_log_kanban_inherit" model="ir.ui.view">
         <field name="name">simply.fleet.fuel.log.kanban.inherit.diesel.tanker</field>

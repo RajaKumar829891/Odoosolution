@@ -71,10 +71,17 @@
                                     <field name="vendor"/>
                                     <field name="cost"/>
                                     <field name="created_by"/>
+                                    <button name="action_view_related_dispensing" string="View Dispensing" type="object" icon="fa-truck"/>
                                 </tree>
                             </field>
                         </page>
                         <page string="Dispensing Logs" name="dispensing_logs">
+                            <div class="alert alert-info" role="alert">
+                                <p class="mb-0 text-center">
+                                    <strong>Tip:</strong> Click on the "View Dispensing" button next to a refill
+                                    to see only the dispensing logs related to that refill.
+                                </p>
+                            </div>
                             <field name="dispensing_log_ids">
                                 <tree>
                                     <field name="name"/>
@@ -84,6 +91,7 @@
                                     <field name="odometer"/>
                                     <field name="created_by"/>
                                     <field name="fuel_log_id"/>
+                                    <field name="related_refill_id" optional="hide"/>
                                 </tree>
                             </field>
                         </page>
@@ -123,6 +131,9 @@
         <field name="model">simply.fleet.tanker.refill</field>
         <field name="arch" type="xml">
             <form>
+                <header>
+                    <button name="action_view_related_dispensing" string="View Dispensing Logs" type="object" class="oe_highlight"/>
+                </header>
                 <sheet>
                     <div class="oe_title">
                         <h1>
@@ -164,6 +175,7 @@
                 <field name="vendor"/>
                 <field name="cost"/>
                 <field name="created_by"/>
+                <button name="action_view_related_dispensing" string="View Dispensing" type="object" icon="fa-truck"/>
             </tree>
         </field>
     </record>
@@ -191,6 +203,7 @@
                             <field name="odometer"/>
                             <field name="created_by"/>
                             <field name="fuel_log_id"/>
+                            <field name="related_refill_id"/>
                         </group>
                     </group>
                     <notebook>
@@ -214,10 +227,35 @@
                 <field name="date"/>
                 <field name="vehicle_id"/>
                 <field name="quantity"/>
-                <field name="odometer"/>
                 <field name="created_by"/>
                 <field name="fuel_log_id"/>
+                <field name="related_refill_id" optional="hide"/>
             </tree>
+        </field>
+    </record>
+
+    <!-- Dispensing Search View -->
+    <record id="view_simply_fleet_tanker_dispensing_search" model="ir.ui.view">
+        <field name="name">simply.fleet.tanker.dispensing.search</field>
+        <field name="model">simply.fleet.tanker.dispensing</field>
+        <field name="arch" type="xml">
+            <search>
+                <field name="name"/>
+                <field name="tanker_id"/>
+                <field name="vehicle_id"/>
+                <field name="date"/>
+                <field name="related_refill_id"/>
+                <separator/>
+                <filter string="After Last Refill" name="after_last_refill" 
+                        domain="[('date', '>=', context_today().strftime('%Y-%m-%d 00:00:00'))]"
+                        help="Show dispensing logs after the last refill"/>
+                <group expand="0" string="Group By">
+                    <filter string="Tanker" name="group_by_tanker" context="{'group_by': 'tanker_id'}"/>
+                    <filter string="Vehicle" name="group_by_vehicle" context="{'group_by': 'vehicle_id'}"/>
+                    <filter string="Date" name="group_by_date" context="{'group_by': 'date:day'}"/>
+                    <filter string="Related Refill" name="group_by_refill" context="{'group_by': 'related_refill_id'}"/>
+                </group>
+            </search>
         </field>
     </record>
 
@@ -323,6 +361,7 @@
         <field name="name">Fuel Dispensing</field>
         <field name="res_model">simply.fleet.tanker.dispensing</field>
         <field name="view_mode">tree,form</field>
+        <field name="search_view_id" ref="view_simply_fleet_tanker_dispensing_search"/>
         <field name="help" type="html">
             <p class="o_view_nocontent_smiling_face">
                 No dispensing logs yet!

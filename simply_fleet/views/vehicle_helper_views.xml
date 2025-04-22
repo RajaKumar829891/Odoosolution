@@ -39,7 +39,6 @@
                 <field name="show_helper" invisible="0"/>  <!-- Temporarily visible for debugging -->
                 <field name="helper_id" 
                        invisible="not show_helper"
-                       required="show_helper"
                        options="{'no_create': True, 'no_open': False}"/>
             </xpath>
         </field>
