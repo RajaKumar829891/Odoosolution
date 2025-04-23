@@ -168,9 +168,10 @@ class SimplyFleetFuelLog(models.Model):
     ], string='Station Type', required=True, tracking=True)
     
     liters = fields.Float(
-        string='Liters', 
+        string='Quantity', 
         tracking=True,
-        required=True
+        required=True,
+        help='Fuel quantity in liters'
     )
 
     # Update to Monetary field
@@ -461,12 +462,18 @@ class SimplyFleetFuelLog(models.Model):
     @api.constrains('liters')
     def _check_fuel_amount(self):
         for record in self:
-            if record.liters and record.liters <= 0:
-                raise UserError(_('Fuel amount must be greater than zero'))
+            if not record.liters:
+                raise UserError(_('Quantity is required. Please enter a value.'))
+            elif record.liters <= 0:
+                raise UserError(_('Quantity must be greater than zero'))
 
     @api.model_create_multi
     def create(self, vals_list):
         for vals in vals_list:
+            # Ensure liters is provided in creation
+            if 'liters' not in vals or not vals.get('liters'):
+                raise UserError(_('Quantity (liters) is a required field.'))
+                
             if not vals.get('name'):
                 vals['name'] = self.env['ir.sequence'].next_by_code('simply.fleet.fuel.log')
         return super().create(vals_list)

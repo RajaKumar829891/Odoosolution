@@ -8,16 +8,18 @@
         <field name="arch" type="xml">
             <xpath expr="//field[@name='detailed_type']" position="after">
                 <field name="is_uniform"/>
-                <field name="uniform_type" attrs="{'invisible': [('is_uniform', '=', False)], 'required': [('is_uniform', '=', True)]}"/>
-                <button name="action_add_common_sizes" 
-                        string="Add Common Sizes" 
-                        type="object" 
-                        class="oe_highlight" 
-                        attrs="{'invisible': [('is_uniform', '=', False)]}"
-                        help="Add common sizes based on uniform type"/>
+                <field name="uniform_type" invisible="is_uniform == False" required="is_uniform == True"/>
             </xpath>
             
-            <!-- We've removed the custom sizes tab as we'll use variants instead -->
+            <!-- We won't be using the custom sizes anymore, as we'll use product variants instead -->
+            <notebook position="inside">
+                <page string="Uniform Variants" invisible="is_uniform == False">
+                    <p class="text-muted">
+                        Use the Attributes &amp; Variants tab to define different sizes and variants for this uniform item.
+                        Variants will be available for assignment to employees.
+                    </p>
+                </page>
+            </notebook>
         </field>
     </record>
     

@@ -11,7 +11,7 @@
                         <group>
                             <field name="uniform_item_id"/>
                             <field name="uniform_type" invisible="1"/>
-                            <field name="size_id"/>
+                            <field name="product_variant_id"/>
                             <field name="quantity"/>
                         </group>
                         <group>
