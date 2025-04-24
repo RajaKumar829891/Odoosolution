@@ -154,3 +154,30 @@ class SimplyFleetTankerDispensing(models.Model):
                     vals['fuel_log_id'] = fuel_log.id
                 
         return super().create(vals_list)
+    def write(self, vals):
+        for record in self:
+            # Handle quantity changes when not coming from fuel log
+            if 'quantity' in vals and not self.env.context.get('from_fuel_log'):
+                old_quantity = record.quantity
+                new_quantity = vals.get('quantity')
+                quantity_difference = new_quantity - old_quantity
+                
+                if quantity_difference != 0:
+                    tanker = record.tanker_id
+                    
+                    # If increasing the amount (taking more fuel from tanker)
+                    if quantity_difference > 0:
+                        if tanker.current_fuel_level < quantity_difference:
+                            raise UserError(f"Not enough fuel in tanker. Current level: {tanker.current_fuel_level} L, Additional needed: {quantity_difference} L")
+                        tanker.current_fuel_level -= quantity_difference
+                    # If decreasing the amount (returning fuel to tanker)
+                    else:
+                        tanker.current_fuel_level -= quantity_difference  # Negative difference means adding back
+                        
+                    # Update the related fuel log if it exists
+                    if record.fuel_log_id:
+                        record.fuel_log_id.with_context(from_dispensing=True).write({
+                            'liters': new_quantity
+                        })
+                        
+        return super().write(vals)
