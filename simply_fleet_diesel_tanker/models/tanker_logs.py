@@ -5,6 +5,7 @@ from datetime import datetime
 class SimplyFleetTankerRefill(models.Model):
     _name = 'simply.fleet.tanker.refill'
     _description = 'Diesel Tanker Refill'
+    _inherit = ['mail.thread', 'mail.activity.mixin']
     _order = 'date desc'
     
     name = fields.Char(string='Reference', readonly=True, copy=False, default='New')

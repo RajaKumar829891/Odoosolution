@@ -4,6 +4,7 @@ from odoo.exceptions import UserError
 class SimplyFleetTankerRefillWizard(models.TransientModel):
     _name = 'simply.fleet.tanker.refill.wizard'
     _description = 'Diesel Tanker Refill Wizard'
+    _inherit = ['mail.thread', 'mail.activity.mixin']
     
     tanker_id = fields.Many2one('simply.fleet.diesel.tanker', string='Tanker', required=True, readonly=True)
     quantity = fields.Float(string='Quantity (Liters)', required=True)

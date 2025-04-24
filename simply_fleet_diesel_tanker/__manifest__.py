@@ -14,7 +14,7 @@
     """,
     'author': 'Your Company',
     'website': 'https://www.yourcompany.com',
-    'depends': ['simply_fleet'],
+    'depends': ['simply_fleet','mail','base'],
     'data': [
         'security/ir.model.access.csv',
         'data/diesel_tanker_sequence.xml',
