@@ -60,17 +60,37 @@ class UniformAssignment(models.Model):
     # Alias field for compatibility with the view
     returned_qty = fields.Integer(related='returned_quantity', string='Returned Qty')
     
-    @api.depends('return_ids.quantity')
+    @api.depends('return_ids.return_line_ids.quantity')
     def _compute_returned_quantity(self):
         for record in self:
-            record.returned_quantity = sum(record.return_ids.mapped('quantity') or [0])
+            # Calculate the total returned quantity from all return lines
+            total_returned = 0
+            for return_record in record.return_ids:
+                if hasattr(return_record, 'return_line_ids'):
+                    for line in return_record.return_line_ids:
+                        total_returned += line.quantity
+                else:
+                    # For backwards compatibility with old returns that have direct quantity
+                    total_returned += return_record.quantity if hasattr(return_record, 'quantity') else 0
+            
+            record.returned_quantity = total_returned
+            
+            # Update state based on returned quantity
             if record.returned_quantity == 0:
                 if record.state == 'assigned':
                     pass  # Keep current state
-            elif record.returned_quantity < record.quantity:
-                record.state = 'partially_returned'
-            elif record.returned_quantity >= record.quantity:
-                record.state = 'returned'
+            else:
+                # Calculate total assigned quantity
+                total_assigned = 0
+                if record.uniform_line_ids:
+                    total_assigned = sum(record.uniform_line_ids.mapped('quantity'))
+                else:
+                    total_assigned = record.quantity
+                    
+                if record.returned_quantity < total_assigned:
+                    record.state = 'partially_returned'
+                else:
+                    record.state = 'returned'
     
     @api.model
     def create(self, vals):
@@ -170,11 +190,18 @@ class UniformAssignment(models.Model):
                     if record.uniform_line_ids:
                         for line in record.uniform_line_ids:
                             # Calculate how many to return to inventory
-                            returned = sum(self.env['uniform.return'].search([
-                                ('assignment_id', '=', record.id),
-                                ('line_id', '=', line.id),
-                                ('condition', '=', 'good')
-                            ]).mapped('quantity') or [0])
+                            returned = 0
+                            for return_record in record.return_ids:
+                                if hasattr(return_record, 'return_line_ids'):
+                                    for return_line in return_record.return_line_ids:
+                                        if (return_line.assignment_line_id and 
+                                            return_line.assignment_line_id.id == line.id and
+                                            return_line.condition == 'good'):
+                                            returned += return_line.quantity
+                                elif hasattr(return_record, 'line_id') and hasattr(return_record, 'condition'):
+                                    if return_record.line_id.id == line.id and return_record.condition == 'good':
+                                        returned += return_record.quantity
+                            
                             to_return = line.quantity - returned
                             
                             if to_return > 0:
@@ -212,3 +239,24 @@ class UniformAssignment(models.Model):
                                 })
                         
                 record.state = 'cancelled'
+                
+    def action_return(self):
+        """
+        Open a return wizard for this assignment
+        """
+        self.ensure_one()
+        # Create a context with the current assignment
+        ctx = {
+            'default_assignment_id': self.id,
+            'default_employee_id': self.employee_id.id,
+        }
+        
+        # Return an action to open the uniform return form
+        return {
+            'name': _('Return Uniform'),
+            'type': 'ir.actions.act_window',
+            'res_model': 'uniform.return',
+            'view_mode': 'form',
+            'target': 'new',
+            'context': ctx,
+        }

@@ -7,4 +7,6 @@ access_uniform_return_officer,uniform.return.officer,model_uniform_return,hr.gro
 access_uniform_return_manager,uniform.return.manager,model_uniform_return,hr.group_hr_manager,1,1,1,1
 access_mass_uniform_assignment_hr,mass.uniform.assignment.hr,model_mass_uniform_assignment,hr.group_hr_user,1,1,1,1
 access_uniform_assignment_line_user,uniform.assignment.line.user,model_uniform_assignment_line,hr.group_hr_user,1,1,1,0
-access_uniform_assignment_line_manager,uniform.assignment.line.manager,model_uniform_assignment_line,hr.group_hr_manager,1,1,1,1
+access_uniform_assignment_line_manager,uniform.assignment.line.manager,model_uniform_assignment_line,hr.group_hr_manager,1,1,1,
+access_uniform_return_line_user,uniform.return.line.user,model_uniform_return_line,hr.group_hr_user,1,1,1,0
+access_uniform_return_line_manager,uniform.return.line.manager,model_uniform_return_line,hr.group_hr_manager,1,1,1,1

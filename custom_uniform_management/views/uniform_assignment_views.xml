@@ -24,6 +24,7 @@
                 <header>
                     <button name="action_assign" string="Assign" type="object" class="oe_highlight" invisible="state != 'draft'"/>
                     <button name="action_cancel" string="Cancel" type="object" invisible="state in ['returned', 'cancelled']"/>
+                    <button name="action_return" string="Return" type="object" invisible="state not in ['assigned', 'partially_returned']"/>
                     <field name="state" widget="statusbar" statusbar_visible="draft,assigned,partially_returned,returned"/>
                 </header>
                 <sheet>
@@ -55,10 +56,7 @@
                                 <tree>
                                     <field name="name"/>
                                     <field name="return_date"/>
-                                    <field name="line_id"/>
-                                    <field name="line_variant_id"/>
-                                    <field name="quantity"/>
-                                    <field name="condition"/>
+                                    <field name="return_line_ids" widget="many2many_tags"/>
                                     <field name="notes"/>
                                 </tree>
                             </field>
