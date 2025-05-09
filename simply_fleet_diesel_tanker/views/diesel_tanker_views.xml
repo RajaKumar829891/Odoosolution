@@ -286,8 +286,8 @@
                         </group>
                     </group>
                     <notebook>
-                        <page string="Notes" name="notes">
-                            <field name="notes"/>
+                        <page string="Add Image" name="Add Image">
+                            <field name="attachment_ids" widget="many2many_binary" options="{'accepted_file_extensions': 'image/*,application/pdf'}"/>
                         </page>
                     </notebook>
                 </sheet>

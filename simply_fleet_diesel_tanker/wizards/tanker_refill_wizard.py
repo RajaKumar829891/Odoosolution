@@ -1,3 +1,4 @@
+# Model changes
 from odoo import models, fields, api
 from odoo.exceptions import UserError
 
@@ -12,6 +13,7 @@ class SimplyFleetTankerRefillWizard(models.TransientModel):
     cost = fields.Float(string='Cost')
     date = fields.Datetime(string='Date', default=fields.Datetime.now, required=True)
     notes = fields.Text(string='Notes')
+    attachment_ids = fields.Many2many('ir.attachment', string='Attachments')
     
     current_level = fields.Float(related='tanker_id.current_fuel_level', string='Current Level')
     capacity = fields.Float(related='tanker_id.capacity', string='Total Capacity')
@@ -31,7 +33,7 @@ class SimplyFleetTankerRefillWizard(models.TransientModel):
             raise UserError(f"Cannot refill. The tanker capacity ({self.capacity} L) would be exceeded.")
         
         # Create refill log
-        self.env['simply.fleet.tanker.refill'].create({
+        refill = self.env['simply.fleet.tanker.refill'].create({
             'tanker_id': self.tanker_id.id,
             'date': self.date,
             'quantity': self.quantity,
@@ -39,6 +41,14 @@ class SimplyFleetTankerRefillWizard(models.TransientModel):
             'cost': self.cost,
             'notes': self.notes
         })
+        
+        # Link attachments to the created refill record
+        if self.attachment_ids:
+            for attachment in self.attachment_ids:
+                attachment.write({
+                    'res_model': 'simply.fleet.tanker.refill',
+                    'res_id': refill.id,
+                })
         
         return {
             'type': 'ir.actions.act_window_close'
