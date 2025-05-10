@@ -22,6 +22,7 @@
         'web.assets_backend': [
             'instant_attachment_preview/static/src/js/qcent_many2many_attachment_preview.js',
             'instant_attachment_preview/static/src/xml/qcent_many2many_attachment_preview_template.xml',
+            'instant_attachment_preview/static/src/css/file_viewer_fix.css',  # Add this line
         ],
     },
     'images': [

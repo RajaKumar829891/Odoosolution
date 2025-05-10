@@ -1,0 +1,25 @@
+/* CSS-only fix for file viewer z-index issue */
+
+/* Override only when file viewer is inside a modal */
+.modal.show .o_FileViewer {
+    z-index: calc(var(--zindex-modal) + 1);
+}
+
+/* Fallback for browsers that don't support CSS variables */
+.modal.show .o_FileViewer {
+    z-index: 1056;
+}
+
+/* Ensure backdrop doesn't interfere */
+.modal-backdrop {
+    z-index: var(--zindex-modal-backdrop, 1055);
+}
+
+/* Preserve mobile menu functionality */
+@media (max-width: 991px) {
+    .navbar-collapse,
+    .navbar-nav,
+    .o_main_navbar {
+        z-index: auto !important;
+    }
+}
