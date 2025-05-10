@@ -150,19 +150,49 @@
                             <field name="vendor"/>
                             <field name="cost"/>
                             <field name="created_by"/>
+                            <field name="attachment_ids" 
+                                                        widget="many2many_binary"
+                                                        string="Images"
+                                                        domain="[('mimetype', 'ilike', 'image')]"
+                                                        options="{
+                                                            'accepted_file_extensions': 'image/*',
+                                                            'upload_text': '+'
+                                                        }"/>
+                                                    <style>
+                                                    .o_attachments {
+                                                        display: flex; !important;
+                                                        flex-direction: row; !important;
+                                                        flex-wrap: nowrap; !important;
+                                                        overflow-x: auto; !important;
+                                                        gap: 10px; !important;
+                                                        padding: 5px; !important;
+                                                    }
+                                                    .o_attachment.o_attachment_many2many.o_attachment_editable{
+                                                        height: 70px !important;
+                                                        width: 60px !important;          
+                                                    }
+                                                    .o_attachment_wrap {
+                                                        height: 60px !important;
+                                                        width: 50px !important;
+                                                    }
+                                                    .caption {
+                                                        display: none !important;
+                                                    }
+                                                    .o_attachment_uploaded {
+                                                        display: none !important;
+                                                    }
+                                                    .o_attachment_delete {
+                                                        height: 20px !important;
+                                                        width: 20px !important;
+                                                    }
+                                                    .o_image.o_hover {
+                                                        height: 60px !important;
+                                                        width: 50px !important;
+                                                    }
+                                                    </style>
                         </group>
                     </group>
-                    <notebook>
-                        <page string="Notes" name="notes">
-                            <field name="notes"/>
-                        </page>
-                    </notebook>
                 </sheet>
-                <div class="oe_chatter">
-                    <field name="message_follower_ids" widget="mail_followers"/>
-                    <field name="activity_ids" widget="mail_activity"/>
-                    <field name="message_ids" widget="mail_thread"/>
-                </div>
             </form>
         </field>
     </record>
@@ -288,6 +318,38 @@
                     <notebook>
                         <page string="Add Image" name="Add Image">
                             <field name="attachment_ids" widget="many2many_binary" options="{'accepted_file_extensions': 'image/*,application/pdf'}"/>
+                                                    <style>
+                                                    .o_attachments {
+                                                        display: flex; !important;
+                                                        flex-direction: row; !important;
+                                                        flex-wrap: nowrap; !important;
+                                                        overflow-x: auto; !important;
+                                                        gap: 10px; !important;
+                                                        padding: 5px; !important;
+                                                    }
+                                                    .o_attachment.o_attachment_many2many.o_attachment_editable{
+                                                        height: 70px !important;
+                                                        width: 60px !important;          
+                                                    }
+                                                    .o_attachment_wrap {
+                                                        height: 60px !important;
+                                                        width: 50px !important;
+                                                    }
+                                                    .caption {
+                                                        display: none !important;
+                                                    }
+                                                    .o_attachment_uploaded {
+                                                        display: none !important;
+                                                    }
+                                                    .o_attachment_delete {
+                                                        height: 20px !important;
+                                                        width: 20px !important;
+                                                    }
+                                                    .o_image.o_hover {
+                                                        height: 60px !important;
+                                                        width: 50px !important;
+                                                    }
+                                                    </style>
                         </page>
                     </notebook>
                 </sheet>

@@ -16,7 +16,8 @@ class SimplyFleetTankerRefill(models.Model):
     cost = fields.Float(string='Cost')
     notes = fields.Text(string='Notes')
     created_by = fields.Many2one('res.users', string='Created By', default=lambda self: self.env.user.id, readonly=True)
-    
+    attachment_ids = fields.Many2many('ir.attachment', string='Attachments')
+
     @api.model_create_multi
     def create(self, vals_list):
         for vals in vals_list:
