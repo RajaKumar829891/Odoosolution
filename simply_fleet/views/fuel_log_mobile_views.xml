@@ -28,6 +28,31 @@
               <!-- Add vehicle min and max mileage for comparison -->
               <field name="vehicle_min_mileage"/>
               <field name="vehicle_max_mileage"/>
+              <style>
+                  .fuel_log_kanban {
+                      display: flex !important;
+                      flex-wrap: nowrap !important;
+                      overflow-x: auto !important;
+                  }
+                  
+                  /* Button styling to match exactly */
+                  #diesel_tanker_kanban_button {
+                      width: 160px !important;
+                      height: 47px !important;
+                  }
+                  
+                  .diesel_tanker_button {
+                      font-size: 0.8rem !important;
+                  }
+                  
+                  .diesel_tanker_button .fa {
+                      font-size: 24px !important;
+                  }
+                  
+                  .diesel_tanker_button .text-black {
+                      font-size: 0.7rem !important;
+                  }
+              </style>
               
               <!-- Add direct JavaScript solution -->
               <script type="text/javascript">

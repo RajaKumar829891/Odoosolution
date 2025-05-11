@@ -71,3 +71,6 @@
         margin-bottom: 14px !important; /* Even more spacing on mobile */
     }
 }
+.font-weight-bold {
+    font-weight: bold !important;
+}

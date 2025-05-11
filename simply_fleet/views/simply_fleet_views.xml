@@ -437,13 +437,13 @@
                 <field name="datetime" string="Date &amp; Time"/>
                 <field name="fuel_type" optional="hide"/>
                 <field name="fill_type" optional="hide"/>
-                <field name="liters_display" string="Quantity"/>
+                <field name="liters_display" string="Quantity" class="font-weight-bold"/>
                 <field name="price_per_liter" optional="hide" widget="monetary" options="{'currency_field': 'currency_id'}"/>
                 <field name="total_amount" optional="hide" widget="monetary" options="{'currency_field': 'currency_id'}"/>
                 <field name="previous_odometer_display" optional="hide" string="Previous ODO"/>
                 <field name="odometer_display" string="ODO"/>
                 <field name="distance_travelled_display" string="Distance"/>
-                <field name="mileage_display"/>
+                <field name="mileage_display" class="font-weight-bold"/>
                 <field name="created_by"/>
                 <field name="station_type"/>
             </tree>
@@ -484,6 +484,7 @@
                             <field name="currency_id" invisible="1"/>
                             <field name="price_per_liter" widget="monetary" options="{'currency_field': 'currency_id'}"/>
                             <field name="total_amount" widget="monetary" options="{'currency_field': 'currency_id'}"/>
+                            <field name="driver_id"/>
                         </group>
                     </group>
                     <group string="Odometer Information">
@@ -506,14 +507,50 @@
                                 <field name="mileage" class="oe_inline"/> <span>km/L</span>
                             </div>
                             <field name="created_by" options="{'no_create': True}"/>
+                            <field name="attachment_ids" 
+                                widget="many2many_binary"
+                                string="Images"
+                                domain="[('mimetype', 'ilike', 'image')]"
+                                options="{
+                                    'accepted_file_extensions': 'image/*',
+                                    'upload_text': '+',
+                                    'no_create': true
+                                }"/>
+                                                    <style>
+                                                    .o_attachments {
+                                                        display: flex; !important;
+                                                        flex-direction: row; !important;
+                                                        flex-wrap: nowrap; !important;
+                                                        overflow-x: auto; !important;
+                                                        gap: 10px; !important;
+                                                        padding: 5px; !important;
+                                                    }
+                                                    .o_attachment.o_attachment_many2many.o_attachment_editable{
+                                                        height: 70px !important;
+                                                        width: 60px !important;          
+                                                    }
+                                                    .o_attachment_wrap {
+                                                        height: 60px !important;
+                                                        width: 50px !important;
+                                                    }
+                                                    .caption {
+                                                        display: none !important;
+                                                    }
+                                                    .o_attachment_uploaded {
+                                                        display: none !important;
+                                                    }
+                                                    .o_attachment_delete {
+                                                        height: 20px !important;
+                                                        width: 20px !important;
+                                                    }
+                                                    .o_image.o_hover {
+                                                        height: 60px !important;
+                                                        width: 50px !important;
+                                                    }
+                                                    </style>
                         </group>
                     </group>
                 </sheet>
-                <div class="oe_chatter">
-                    <field name="message_follower_ids" widget="mail_followers"/>
-                    <field name="activity_ids" widget="mail_activity"/>
-                    <field name="message_ids" widget="mail_thread"/>
-                </div>
             </form>
         </field>
     </record>

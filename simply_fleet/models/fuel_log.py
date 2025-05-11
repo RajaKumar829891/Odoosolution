@@ -33,7 +33,8 @@ class SimplyFleetFuelLog(models.Model):
         'simply_fleet_fuel_log_attachment_rel',
         'fuel_log_id',
         'attachment_id',
-        string='Add image'
+        string='Add image',
+        domain=[('mimetype', 'ilike', 'image/')],
     )
     
     # Add new field to get vehicle type code
@@ -228,6 +229,14 @@ class SimplyFleetFuelLog(models.Model):
         compute='_compute_display_fields',
         store=True
     )
+
+    driver_id = fields.Many2one(
+        'hr.employee',
+        string='Driver',
+        tracking=True,
+        domain=[('job_title', 'ilike', 'driver')],
+        help='Assigned driver for this vehicle'
+    )
     
     # Method to handle the attachment button click
     def action_open_attachments(self):
@@ -241,28 +250,100 @@ class SimplyFleetFuelLog(models.Model):
         return {
             'type': 'ir.actions.act_window_close'
         }
-    
-    def _sync_ir_attachments(self):
+    def _handle_attachment_sync(self):
+        """Handle synchronization between custom attachment field and mail messages"""
         for record in self:
-            # Find the related attachments
-            mail_attachments = self.env['ir.attachment'].search([
-                # your existing search criteria
-            ])
-            
-            # Use a context flag to prevent recursion
-            # Get current attachments and compare to avoid unnecessary updates
-            current_attachments = record.attachment_ids
-            if current_attachments != mail_attachments:
-                # Use with_context to set a flag that will prevent further recursion
-                record.with_context(skip_attachment_sync=True).write({
-                    'attachment_ids': [(6, 0, mail_attachments.ids)]
-                })
+            try:
+                # Get all current mail attachments for this record
+                mail_attachments = self.env['ir.attachment'].search([
+                    ('res_model', '=', self._name),
+                    ('res_id', '=', record.id),
+                ])
                 
+                # Get current custom field attachments
+                custom_attachments = record.attachment_ids
+                
+                # Find which attachments to add/remove from mail
+                attachments_to_add = custom_attachments - mail_attachments
+                attachments_to_remove = mail_attachments - custom_attachments
+                
+                # Update mail attachments to match custom field
+                for attachment in attachments_to_add:
+                    attachment.sudo().write({
+                        'res_model': self._name,
+                        'res_id': record.id,
+                    })
+                
+                for attachment in attachments_to_remove:
+                    attachment.sudo().write({
+                        'res_model': self._name,
+                        'res_id': record.id,
+                    })
+                    
+                # Trigger mail message refresh
+                record._notify_record_by_email({}, {}, force_send=False)
+                
+            except Exception as e:
+                _logger.exception('Error in attachment sync: %s', e)
+        
+    def _sync_ir_attachments(self):
+        """Sync attachments from mail to custom field (one-way sync)"""
+        for record in self:
+            try:
+                # Find the related attachments
+                mail_attachments = self.env['ir.attachment'].search([
+                    ('res_model', '=', self._name),
+                    ('res_id', '=', record.id),
+                    ('mimetype', 'ilike', 'image/'),  # Only image files
+                ])
+                
+                # Update custom field if different
+                if set(record.attachment_ids.ids) != set(mail_attachments.ids):
+                    record.sudo().with_context(skip_attachment_sync=True).write({
+                        'attachment_ids': [(6, 0, mail_attachments.ids)]
+                    })
+                    
+            except Exception as e:
+                _logger.exception('Error syncing attachments: %s', e)
+                
+    def unlink(self):
+        """Clean up attachments when record is deleted"""
+        for record in self:
+            # Delete associated attachments
+            attachments = self.env['ir.attachment'].search([
+                ('res_model', '=', self._name),
+                ('res_id', '=', record.id),
+            ])
+            attachments.unlink()
+            
+        return super().unlink()
+    
     def write(self, vals):
+        # Track attachment changes before writing
+        attachment_changes = {}
+        if 'attachment_ids' in vals:
+            for record in self:
+                attachment_changes[record.id] = {
+                    'old': set(record.attachment_ids.ids),
+                    'new': set()
+                }
+                
+                # Parse the new attachment IDs from vals
+                if vals['attachment_ids']:
+                    for command in vals['attachment_ids']:
+                        if isinstance(command, (list, tuple)):
+                            if command[0] == 6:  # Replace all
+                                attachment_changes[record.id]['new'].update(command[2])
+                            elif command[0] == 4:  # Add
+                                attachment_changes[record.id]['new'].add(command[1])
+        
         res = super(SimplyFleetFuelLog, self).write(vals)
-        # Check if we need to skip attachment sync
-        if not self._context.get('skip_attachment_sync'):
-            self._sync_ir_attachments()
+        
+        # Handle attachment sync based on changes
+        if 'attachment_ids' in vals:
+            for record in self:
+                record._handle_attachment_sync()
+                
         return res
     
     # Handle data migration during module upgrade
@@ -444,9 +525,7 @@ class SimplyFleetFuelLog(models.Model):
             if not record.odometer or record.odometer <= 0:
                 raise UserError(_('New odometer reading is required and must be greater than zero'))
                 
-            # Check the relationship between new and previous odometer
-            if record.previous_odometer and record.odometer <= record.previous_odometer:
-                raise UserError(_('New odometer reading must be greater than previous reading'))
+            # The validation requiring odometer > previous_odometer has been removed
                 
             # Check if previous odometer is zero (except for first entry)
             if record.previous_odometer == 0:
@@ -458,7 +537,7 @@ class SimplyFleetFuelLog(models.Model):
                 
                 if previous_logs_count > 0:
                     raise UserError(_('Previous odometer cannot be zero except for the first fuel log entry'))
-
+                
     @api.constrains('liters')
     def _check_fuel_amount(self):
         for record in self:
@@ -467,13 +546,19 @@ class SimplyFleetFuelLog(models.Model):
             elif record.liters <= 0:
                 raise UserError(_('Quantity must be greater than zero'))
 
-    @api.model_create_multi
+    @api.model
     def create(self, vals_list):
-        for vals in vals_list:
-            # Ensure liters is provided in creation
-            if 'liters' not in vals or not vals.get('liters'):
-                raise UserError(_('Quantity (liters) is a required field.'))
+        # Check if vals_list is a dictionary (single record) or list (multiple records)
+        if isinstance(vals_list, dict):
+            vals_list = [vals_list]
+            
+        # ... existing code ...
+        
+        records = super().create(vals_list)
+        
+        # Sync attachments after creation if needed
+        for record in records:
+            if 'attachment_ids' in vals:
+                record._handle_attachment_sync()
                 
-            if not vals.get('name'):
-                vals['name'] = self.env['ir.sequence'].next_by_code('simply.fleet.fuel.log')
-        return super().create(vals_list)
+        return records[0] if len(records) == 1 else records
