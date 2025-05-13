@@ -1,0 +1,10 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <data noupdate="1">
+        <!-- Use a function to create or update the parameter -->
+        <function model="ir.config_parameter" name="set_param">
+            <value>google_api_key</value>
+            <value>AIzaSyB6yP-T09O2hB-cEG8d0-WhPXcSJnDkgro</value>
+        </function>
+    </data>
+</odoo>
