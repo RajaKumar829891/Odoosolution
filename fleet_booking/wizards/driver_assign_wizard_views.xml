@@ -1,0 +1,42 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <!-- Driver Assignment Wizard Form -->
+    <record id="view_fleet_driver_assign_wizard_form" model="ir.ui.view">
+        <field name="name">fleet.driver.assign.wizard.form</field>
+        <field name="model">fleet.driver.assign.wizard</field>
+        <field name="arch" type="xml">
+            <form>
+                <sheet>
+                    <group>
+                        <field name="booking_id" readonly="1"/>
+                        <field name="driver_id" options="{'no_create': True}"/>
+                        <field name="employee_id" invisible="1"/>
+                        <field name="note" placeholder="Assignment notes..."/>
+                    </group>
+                    
+                    <!-- Employee Information Group - uses invisible instead of attrs -->
+                    <group string="Employee Information" invisible="context.get('hide_employee_info', not employee_id)">
+                        <field name="employee_department" readonly="1"/>
+                        <field name="employee_job" readonly="1"/>
+                        <field name="employee_work_phone" readonly="1"/>
+                        <field name="employee_work_email" readonly="1"/>
+                    </group>
+                </sheet>
+                <footer>
+                    <button name="action_assign" string="Assign" type="object" class="btn-primary"/>
+                    <button string="Cancel" class="btn-secondary" special="cancel"/>
+                </footer>
+            </form>
+        </field>
+    </record>
+    
+    <!-- Driver Assignment Action -->
+    <record id="action_fleet_driver_assign" model="ir.actions.act_window">
+        <field name="name">Assign Driver</field>
+        <field name="res_model">fleet.driver.assign.wizard</field>
+        <field name="view_mode">form</field>
+        <field name="target">new</field>
+        <field name="binding_model_id" ref="model_fleet_booking"/>
+        <field name="binding_view_types">form</field>
+    </record>
+</odoo>

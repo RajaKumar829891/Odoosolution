@@ -1,0 +1,142 @@
+/* Fleet Booking CSS */
+
+/* Status colors */
+.o_status_enquiry {
+    background-color: #dfe0e2 !important;
+}
+
+.o_status_quotation {
+    background-color: #c8ddfa !important;
+}
+
+.o_status_followup {
+    background-color: #fceb9f !important;
+}
+
+.o_status_confirmed_pending {
+    background-color: #fcc6c6 !important;
+}
+
+.o_status_confirmed {
+    background-color: #9ddfb8 !important;
+}
+
+.o_status_completed {
+    background-color: #6cc478 !important;
+}
+
+.o_status_feedback {
+    background-color: #b5e8fc !important;
+}
+
+/* Card styles for kanban */
+.fleet_booking_card {
+    border-radius: 5px;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+    transition: all 0.3s ease;
+}
+
+.fleet_booking_card:hover {
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+    transform: translateY(-2px);
+}
+
+/* Better status bar visualization */
+.o_statusbar_status {
+    border-radius: 3px;
+}
+
+/* Better form field styles */
+.o_form_label {
+    font-weight: 500;
+}
+
+/* Driver avatar style */
+.o_driver_avatar {
+    width: 48px;
+    height: 48px;
+    border-radius: 50%;
+    object-fit: cover;
+    border: 2px solid #e9ecef;
+}
+
+/* Vehicle card styles */
+.o_vehicle_card {
+    border-left: 4px solid transparent;
+}
+
+.o_vehicle_available {
+    border-left-color: #28a745;
+}
+
+.o_vehicle_in_use {
+    border-left-color: #007bff;
+}
+
+.o_vehicle_maintenance {
+    border-left-color: #ffc107;
+}
+
+.o_vehicle_out_of_service {
+    border-left-color: #dc3545;
+}
+
+/* Route map container */
+.route_map_container {
+    height: 300px;
+    width: 100%;
+    border-radius: 5px;
+    overflow: hidden;
+    margin-bottom: 16px;
+}
+
+/* Payment status badges */
+.payment_not_invoiced {
+    background-color: #ffc107;
+    color: #212529;
+}
+
+.payment_invoiced {
+    background-color: #6c757d;
+    color: #fff;
+}
+
+.payment_partially_paid {
+    background-color: #17a2b8;
+    color: #fff;
+}
+
+.payment_paid {
+    background-color: #28a745;
+    color: #fff;
+}
+
+/* Dashboard cards */
+.fleet_dashboard_card {
+    border-radius: 8px;
+    padding: 16px;
+    margin-bottom: 20px;
+    color: white;
+}
+
+.fleet_dashboard_card_blue {
+    background-color: #007bff;
+}
+
+.fleet_dashboard_card_green {
+    background-color: #28a745;
+}
+
+.fleet_dashboard_card_yellow {
+    background-color: #ffc107;
+    color: #212529;
+}
+
+.fleet_dashboard_card_red {
+    background-color: #dc3545;
+}
+
+/* Improved form field spacing */
+.o_group {
+    margin-bottom: 16px;
+}

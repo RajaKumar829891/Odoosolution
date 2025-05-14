@@ -1,0 +1,76 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<templates xml:space="preserve">
+    <!-- Dashboard Template -->
+    <t t-name="fleet_booking.Dashboard">
+        <div class="o_fleet_booking_dashboard">
+            <div t-if="state.loading" class="d-flex justify-content-center">
+                <div class="spinner-border text-primary" role="status">
+                    <span class="visually-hidden">Loading...</span>
+                </div>
+            </div>
+            <div t-else="" class="row">
+                <!-- Pending Bookings Widget -->
+                <div class="col-md-4 mb-4">
+                    <div class="card fleet_booking_widget" t-att-data-action="'fleet_booking.action_view_pending_bookings'">
+                        <div class="card-body text-center">
+                            <h5 class="card-title">Pending Bookings</h5>
+                            <p class="card-text display-4">
+                                <t t-esc="state.dashboardData.pending_bookings || 0"/>
+                            </p>
+                        </div>
+                    </div>
+                </div>
+                <!-- Today's Journeys Widget -->
+                <div class="col-md-4 mb-4">
+                    <div class="card fleet_booking_widget" t-att-data-action="'fleet_booking.action_view_today_journeys'">
+                        <div class="card-body text-center">
+                            <h5 class="card-title">Today's Journeys</h5>
+                            <p class="card-text display-4">
+                                <t t-esc="state.dashboardData.today_journeys || 0"/>
+                            </p>
+                        </div>
+                    </div>
+                </div>
+                <!-- Monthly Revenue Widget -->
+                <div class="col-md-4 mb-4">
+                    <div class="card fleet_booking_widget" t-att-data-action="'fleet_booking.action_view_monthly_revenue'">
+                        <div class="card-body text-center">
+                            <h5 class="card-title">Monthly Revenue</h5>
+                            <p class="card-text display-4">
+                                <t t-esc="state.dashboardData.monthly_revenue || 0"/>
+                            </p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </t>
+
+    <!-- Distance Field Template -->
+    <t t-name="fleet_booking.DistanceField">
+        <div class="o_field_float o_field_number">
+            <input type="number" class="o_input js_journey_distance_field" 
+                   t-att-value="props.record.data[props.name] || ''" 
+                   t-on-change="onDistanceChange"/>
+        </div>
+    </t>
+
+    <!-- Vehicle Type Field Template -->
+    <t t-name="fleet_booking.VehicleTypeField">
+        <div class="o_field_many2one">
+            <input type="text" class="o_input js_vehicle_type_field" 
+                   t-att-value="props.record.data[props.name] ? props.record.data[props.name][0] : ''" 
+                   t-on-change="onVehicleTypeChange"/>
+        </div>
+    </t>
+
+    <!-- Driver Select Field Template -->
+    <t t-name="fleet_booking.DriverSelectField">
+        <div class="d-flex align-items-center">
+            <Many2OneField t-props="props"/>
+            <button type="button" class="btn btn-secondary btn-sm ms-2" t-on-click="checkAvailability">
+                Check Availability
+            </button>
+        </div>
+    </t>
+</templates>

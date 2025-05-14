@@ -1,0 +1,26 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<odoo>
+    <!-- This method works in Odoo 17 without relying on direct inheritance -->
+    <data>
+        <!-- Add CSS assets -->
+        <record id="fleet_booking_css_assets" model="ir.asset">
+            <field name="name">Fleet Booking CSS Assets</field>
+            <field name="bundle">web.assets_backend</field>
+            <field name="path">/fleet_booking/static/src/css/jquery.timepicker.css</field>
+        </record>
+        
+        <!-- Add jQuery Timepicker Library -->
+        <record id="fleet_booking_timepicker_js_assets" model="ir.asset">
+            <field name="name">Fleet Booking Timepicker JS Assets</field>
+            <field name="bundle">web.assets_backend</field>
+            <field name="path">/fleet_booking/static/lib/jquery.timepicker.min.js</field>
+        </record>
+        
+        <!-- Add Timepicker Widget JavaScript -->
+        <record id="fleet_booking_field_js_assets" model="ir.asset">
+            <field name="name">Fleet Booking Field JS Assets</field>
+            <field name="bundle">web.assets_backend</field>
+            <field name="path">/fleet_booking/static/src/js/time_field.js</field>
+        </record>
+    </data>
+</odoo>

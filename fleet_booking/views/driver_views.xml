@@ -1,0 +1,248 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <data>
+        <!-- Fleet Driver Form View -->
+        <record id="view_fleet_driver_form" model="ir.ui.view">
+            <field name="name">fleet.driver.form</field>
+            <field name="model">fleet.driver</field>
+            <field name="arch" type="xml">
+                <form string="Driver">
+                    <header>
+                        <button name="action_set_available" string="Set Available" type="object" 
+                                class="oe_highlight" invisible="state == 'available'"/>
+                        <button name="action_set_on_trip" string="Set On Trip" type="object" 
+                                invisible="state == 'on_trip'"/>
+                        <button name="action_set_on_leave" string="Set On Leave" type="object" 
+                                invisible="state == 'on_leave'"/>
+                        <button name="action_set_inactive" string="Set Inactive" type="object" 
+                                groups="fleet_booking.group_fleet_booking_manager" 
+                                invisible="state == 'inactive'"/>
+                        <field name="state" widget="statusbar" statusbar_visible="available,on_trip,on_leave"/>
+                    </header>
+                    <sheet>
+                        <div class="oe_button_box" name="button_box">
+                            <button name="action_view_bookings" type="object" class="oe_stat_button" icon="fa-calendar">
+                                <field name="booking_count" widget="statinfo" string="Bookings"/>
+                            </button>
+                        </div>
+                        <field name="active" invisible="1"/>
+                        <widget name="web_ribbon" title="Archived" bg_color="bg-danger" 
+                                invisible="active"/>
+                        <div class="oe_title">
+                            <h1>
+                                <field name="name" placeholder="Driver Name"/>
+                            </h1>
+                        </div>
+                        <group>
+                            <group>
+                                <field name="mobile"/>
+                                <field name="email"/>
+                                <field name="address"/>
+                                <field name="available"/>
+                            </group>
+                            <group>
+                                <field name="identification_no"/>
+                                <field name="passport_no"/>
+                                <field name="rating" widget="float"/>
+                                <field name="employee_id" options="{'no_create': True}" 
+                                       groups="fleet_booking.group_fleet_booking_manager"/>
+                                <field name="user_id" options="{'no_create': True}" 
+                                       groups="fleet_booking.group_fleet_booking_manager"/>
+                            </group>
+                        </group>
+                        
+                        <notebook>
+                            <page string="License Information" name="license_info">
+                                <group>
+                                    <group>
+                                        <field name="license_number"/>
+                                        <field name="license_type"/>
+                                        <field name="license_expiry"/>
+                                    </group>
+                                    <group>
+                                        <field name="has_first_aid_cert"/>
+                                        <field name="has_dangerous_goods_cert"/>
+                                        <field name="has_passenger_transport_cert"/>
+                                    </group>
+                                </group>
+                                <field name="additional_qualifications" placeholder="Additional qualifications and certifications..."/>
+                            </page>
+                            <page string="Vehicles" name="vehicles">
+                                <field name="vehicle_ids">
+                                    <tree>
+                                        <field name="name"/>
+                                        <field name="license_plate"/>
+                                        <field name="vehicle_type"/>
+                                        <field name="passenger_capacity"/>
+                                        <field name="state"/>
+                                    </tree>
+                                </field>
+                                <group>
+                                    <field name="preferred_vehicle_id" options="{'no_create': True}"/>
+                                </group>
+                            </page>
+                            <page string="Statistics" name="statistics">
+                                <group>
+                                    <group>
+                                        <field name="total_trips"/>
+                                        <field name="completed_trips"/>
+                                        <field name="cancelled_trips"/>
+                                    </group>
+                                    <group>
+                                        <!-- Reserved for additional statistics -->
+                                    </group>
+                                </group>
+                            </page>
+                            <page string="Notes" name="notes">
+                                <field name="notes" placeholder="Additional notes about this driver..."/>
+                            </page>
+                        </notebook>
+                    </sheet>
+                    <div class="oe_chatter">
+                        <field name="message_follower_ids" widget="mail_followers"/>
+                        <field name="activity_ids" widget="mail_activity"/>
+                        <field name="message_ids" widget="mail_thread"/>
+                    </div>
+                </form>
+            </field>
+        </record>
+
+        <!-- Fleet Driver Tree View -->
+        <record id="view_fleet_driver_tree" model="ir.ui.view">
+            <field name="name">fleet.driver.tree</field>
+            <field name="model">fleet.driver</field>
+            <field name="arch" type="xml">
+                <tree string="Drivers" decoration-success="state == 'available'" 
+                      decoration-info="state == 'on_trip'" 
+                      decoration-warning="state == 'on_leave'" 
+                      decoration-muted="state == 'inactive'">
+                    <field name="name"/>
+                    <field name="mobile"/>
+                    <field name="license_number"/>
+                    <field name="license_type"/>
+                    <field name="state"/>
+                    <field name="rating" widget="float"/>
+                    <field name="completed_trips"/>
+                    <field name="preferred_vehicle_id"/>
+                </tree>
+            </field>
+        </record>
+
+        <!-- Fleet Driver Kanban View -->
+        <record id="view_fleet_driver_kanban" model="ir.ui.view">
+            <field name="name">fleet.driver.kanban</field>
+            <field name="model">fleet.driver</field>
+            <field name="arch" type="xml">
+                <kanban default_group_by="state" class="o_kanban_small_column">
+                    <field name="name"/>
+                    <field name="mobile"/>
+                    <field name="state"/>
+                    <field name="rating"/>
+                    <field name="completed_trips"/>
+                    <field name="preferred_vehicle_id"/>
+                    <templates>
+                        <t t-name="kanban-box">
+                            <div t-attf-class="oe_kanban_card oe_kanban_global_click">
+                                <div class="oe_kanban_content">
+                                    <div class="o_kanban_record_top">
+                                        <div class="o_kanban_record_headings">
+                                            <strong class="o_kanban_record_title">
+                                                <span><t t-esc="record.name.value"/></span>
+                                            </strong>
+                                            <small class="o_kanban_record_subtitle text-muted">
+                                                <span><t t-esc="record.mobile.value"/></span>
+                                            </small>
+                                        </div>
+                                        <div t-if="record.rating.value" class="o_kanban_record_top_right">
+                                            <field name="rating" widget="float"/>
+                                        </div>
+                                    </div>
+                                    <div class="o_kanban_record_body">
+                                        <div>
+                                            <strong>Trips: </strong>
+                                            <span><t t-esc="record.completed_trips.value"/></span>
+                                        </div>
+                                        <div t-if="record.preferred_vehicle_id.raw_value">
+                                            <strong>Vehicle: </strong>
+                                            <span><t t-esc="record.preferred_vehicle_id.value"/></span>
+                                        </div>
+                                    </div>
+                                    <div class="o_kanban_record_bottom">
+                                        <div class="oe_kanban_bottom_left">
+                                            <span t-att-class="record.state.raw_value == 'available' ? 'text-success fa fa-circle' : (record.state.raw_value == 'on_trip' ? 'text-primary fa fa-circle' : (record.state.raw_value == 'on_leave' ? 'text-warning fa fa-circle' : 'text-danger fa fa-circle'))" 
+                                                  t-att-title="record.state.value"/>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </t>
+                    </templates>
+                </kanban>
+            </field>
+        </record>
+
+        <!-- Fleet Driver Search View -->
+        <record id="view_fleet_driver_search" model="ir.ui.view">
+            <field name="name">fleet.driver.search</field>
+            <field name="model">fleet.driver</field>
+            <field name="arch" type="xml">
+                <search string="Search Drivers">
+                    <field name="name"/>
+                    <field name="mobile"/>
+                    <field name="email"/>
+                    <field name="license_number"/>
+                    <field name="identification_no"/>
+                    <separator/>
+                    <filter string="Available" name="available" domain="[('state', '=', 'available')]"/>
+                    <filter string="On Trip" name="on_trip" domain="[('state', '=', 'on_trip')]"/>
+                    <filter string="On Leave" name="on_leave" domain="[('state', '=', 'on_leave')]"/>
+                    <filter string="Inactive" name="inactive" domain="[('state', '=', 'inactive')]"/>
+                    <separator/>
+                    <filter string="Archived" name="inactive" domain="[('active', '=', False)]"/>
+                    <group expand="0" string="Group By">
+                        <filter string="Status" name="group_by_state" context="{'group_by': 'state'}"/>
+                        <filter string="License Type" name="group_by_license" context="{'group_by': 'license_type'}"/>
+                    </group>
+                </search>
+            </field>
+        </record>
+
+        <!-- Fleet Driver Action -->
+        <record id="action_fleet_drivers" model="ir.actions.act_window">
+            <field name="name">Drivers</field>
+            <field name="res_model">fleet.driver</field>
+            <field name="view_mode">kanban,tree,form</field>
+            <field name="search_view_id" ref="view_fleet_driver_search"/>
+            <field name="context">{'search_default_available': 1}</field>
+            <field name="help" type="html">
+                <p class="o_view_nocontent_smiling_face">
+                    Create your first driver!
+                </p>
+                <p>
+                    Add drivers to assign them to bookings.
+                </p>
+            </field>
+        </record>
+
+        <!-- Driver Assignment Wizard Form -->
+        <record id="view_fleet_driver_assign_wizard_form" model="ir.ui.view">
+            <field name="name">fleet.driver.assign.wizard.form</field>
+            <field name="model">fleet.driver.assign.wizard</field>
+            <field name="arch" type="xml">
+                <form string="Assign Driver">
+                    <sheet>
+                        <group>
+                            <field name="booking_id" readonly="1"/>
+                            <field name="driver_id" options="{'no_create': True}"/>
+                            <field name="note" placeholder="Assignment notes..."/>
+                        </group>
+                    </sheet>
+                    <footer>
+                        <button name="action_assign" string="Assign" type="object" class="btn-primary"/>
+                        <button string="Cancel" class="btn-secondary" special="cancel"/>
+                    </footer>
+                </form>
+            </field>
+        </record>
+    </data>
+</odoo>

@@ -1,0 +1,30 @@
+id,name,model_id:id,group_id:id,perm_read,perm_write,perm_create,perm_unlink
+access_fleet_booking_user,fleet.booking user,model_fleet_booking,fleet_booking.group_fleet_booking_user,1,1,1,0
+access_fleet_booking_manager,fleet.booking manager,model_fleet_booking,fleet_booking.group_fleet_booking_manager,1,1,1,1
+access_fleet_booking_status_user,fleet.booking.status user,model_fleet_booking_status,fleet_booking.group_fleet_booking_user,1,0,0,0
+access_fleet_booking_status_manager,fleet.booking.status manager,model_fleet_booking_status,fleet_booking.group_fleet_booking_manager,1,1,1,1
+access_fleet_booking_status_change_user,fleet.booking.status.change user,model_fleet_booking_status_change,fleet_booking.group_fleet_booking_user,1,1,1,0
+access_fleet_booking_status_change_manager,fleet.booking.status.change manager,model_fleet_booking_status_change,fleet_booking.group_fleet_booking_manager,1,1,1,1
+access_fleet_driver_user,fleet.driver user,model_fleet_driver,fleet_booking.group_fleet_booking_user,1,0,0,0
+access_fleet_driver_manager,fleet.driver manager,model_fleet_driver,fleet_booking.group_fleet_booking_manager,1,1,1,1
+access_fleet_driver_assign_wizard_user,fleet.driver.assign.wizard user,model_fleet_driver_assign_wizard,fleet_booking.group_fleet_booking_user,1,1,1,0
+access_fleet_driver_assign_wizard_manager,fleet.driver.assign.wizard manager,model_fleet_driver_assign_wizard,fleet_booking.group_fleet_booking_manager,1,1,1,1
+access_fleet_vehicle_user,fleet.vehicle user,model_fleet_vehicle,fleet_booking.group_fleet_booking_user,1,0,0,0
+access_fleet_vehicle_manager,fleet.vehicle manager,model_fleet_vehicle,fleet_booking.group_fleet_booking_manager,1,1,1,1
+access_fleet_route_user,fleet.route user,model_fleet_route,fleet_booking.group_fleet_booking_user,1,1,1,0
+access_fleet_route_manager,fleet.route manager,model_fleet_route,fleet_booking.group_fleet_booking_manager,1,1,1,1
+access_fleet_route_stop_user,fleet.route.stop user,model_fleet_route_stop,fleet_booking.group_fleet_booking_user,1,1,1,0
+access_fleet_route_stop_manager,fleet.route.stop manager,model_fleet_route_stop,fleet_booking.group_fleet_booking_manager,1,1,1,1
+access_fleet_cargo_manifest_user,fleet.cargo.manifest user,model_fleet_cargo_manifest,fleet_booking.group_fleet_booking_user,1,1,1,0
+access_fleet_cargo_manifest_manager,fleet.cargo.manifest manager,model_fleet_cargo_manifest,fleet_booking.group_fleet_booking_manager,1,1,1,1
+access_fleet_cargo_line_user,fleet.cargo.line user,model_fleet_cargo_line,fleet_booking.group_fleet_booking_user,1,1,1,0
+access_fleet_cargo_line_manager,fleet.cargo.line manager,model_fleet_cargo_line,fleet_booking.group_fleet_booking_manager,1,1,1,1
+access_fleet_driver_assign_wizard_user,fleet.driver.assign.wizard.user,model_fleet_driver_assign_wizard,fleet_booking.group_fleet_booking_user,1,1,1,1
+access_fleet_booking_user,fleet.booking.user,model_fleet_booking,fleet_booking.group_fleet_booking_user,1,1,1,1
+access_fleet_driver_user,fleet.driver.user,model_fleet_driver,fleet_booking.group_fleet_booking_user,1,1,1,1
+access_fleet_driver_assign_wizard_user,fleet.driver.assign.wizard.user,model_fleet_driver_assign_wizard,fleet_booking.group_fleet_booking_user,1,1,1,1
+access_fleet_payment_register_wizard_user,fleet.payment.register.wizard.user,model_fleet_payment_register_wizard,fleet_booking.group_fleet_booking_user,1,1,1,1
+access_fleet_route_user,fleet.route.user,model_fleet_route,fleet_booking.group_fleet_booking_user,1,1,1,1
+access_fleet_route_stop_user,fleet.route.stop.user,model_fleet_route_stop,fleet_booking.group_fleet_booking_user,1,1,1,1
+access_fleet_booking_terms_template_manager,fleet.booking.terms.template manager,model_fleet_booking_terms_template,fleet_booking.group_fleet_booking_manager,1,1,1,1
+access_fleet_booking_terms_template_user,fleet.booking.terms.template user,model_fleet_booking_terms_template,fleet_booking.group_fleet_booking_user,1,0,0,0

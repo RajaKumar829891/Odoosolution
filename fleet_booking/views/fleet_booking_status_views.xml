@@ -1,0 +1,188 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <data>
+        <!-- Fleet Booking Status Form View -->
+        <record id="view_fleet_booking_status_form" model="ir.ui.view">
+            <field name="name">fleet.booking.status.form</field>
+            <field name="model">fleet.booking.status</field>
+            <field name="arch" type="xml">
+                <form string="Booking Status">
+                    <sheet>
+                        <div class="oe_title">
+                            <h1>
+                                <field name="name" placeholder="Status Name"/>
+                            </h1>
+                        </div>
+                        <group>
+                            <group>
+                                <field name="code"/>
+                                <field name="sequence"/>
+                                <field name="color" widget="color_picker"/>
+                                <field name="fold"/>
+                            </group>
+                            <group>
+                                <field name="state_mapping"/>
+                                <field name="is_initial"/>
+                                <field name="is_final"/>
+                                <field name="is_cancelled"/>
+                                <field name="is_completed"/>
+                                <field name="is_quotation"/>
+                            </group>
+                        </group>
+                        <group string="Requirements">
+                            <field name="requires_payment"/>
+                            <field name="requires_driver"/>
+                            <field name="requires_feedback"/>
+                        </group>
+                        <group string="Allowed Next Statuses">
+                            <field name="allowed_next_status_ids" widget="many2many_tags"/>
+                        </group>
+                        <group string="Description">
+                            <field name="description" nolabel="1" placeholder="Status description..."/>
+                        </group>
+                    </sheet>
+                </form>
+            </field>
+        </record>
+
+        <!-- Fleet Booking Status Tree View -->
+        <record id="view_fleet_booking_status_tree" model="ir.ui.view">
+            <field name="name">fleet.booking.status.tree</field>
+            <field name="model">fleet.booking.status</field>
+            <field name="arch" type="xml">
+                <tree decoration-success="is_completed" decoration-info="is_quotation" decoration-danger="is_cancelled">
+                    <field name="sequence" widget="handle"/>
+                    <field name="name"/>
+                    <field name="code"/>
+                    <field name="state_mapping"/>
+                    <field name="is_initial"/>
+                    <field name="is_final"/>
+                    <field name="is_cancelled"/>
+                    <field name="is_completed"/>
+                    <field name="is_quotation"/>
+                    <field name="fold"/>
+                    <field name="color" widget="color"/>
+                </tree>
+            </field>
+        </record>
+
+        <!-- Fleet Booking Status Search View -->
+        <record id="view_fleet_booking_status_search" model="ir.ui.view">
+            <field name="name">fleet.booking.status.search</field>
+            <field name="model">fleet.booking.status</field>
+            <field name="arch" type="xml">
+                <search string="Search Booking Statuses">
+                    <field name="name"/>
+                    <field name="code"/>
+                    <field name="state_mapping"/>
+                    <separator/>
+                    <filter string="Initial Statuses" name="initial" domain="[('is_initial', '=', True)]"/>
+                    <filter string="Final Statuses" name="final" domain="[('is_final', '=', True)]"/>
+                    <filter string="Cancelation Statuses" name="cancelled" domain="[('is_cancelled', '=', True)]"/>
+                    <filter string="Completion Statuses" name="completed" domain="[('is_completed', '=', True)]"/>
+                    <filter string="Quotation Statuses" name="quotation" domain="[('is_quotation', '=', True)]"/>
+                    <filter string="Folded in Kanban" name="folded" domain="[('fold', '=', True)]"/>
+                    <group expand="0" string="Group By">
+                        <filter string="State Mapping" name="group_by_state_mapping" context="{'group_by': 'state_mapping'}"/>
+                    </group>
+                </search>
+            </field>
+        </record>
+
+        <!-- Fleet Booking Status Change Tree View -->
+        <record id="view_fleet_booking_status_change_tree" model="ir.ui.view">
+            <field name="name">fleet.booking.status.change.tree</field>
+            <field name="model">fleet.booking.status.change</field>
+            <field name="arch" type="xml">
+                <tree string="Status Changes" create="false">
+                    <field name="booking_id"/>
+                    <field name="old_status_id"/>
+                    <field name="new_status_id"/>
+                    <field name="change_date"/>
+                    <field name="user_id"/>
+                </tree>
+            </field>
+        </record>
+
+        <!-- Fleet Booking Status Change Form View -->
+        <record id="view_fleet_booking_status_change_form" model="ir.ui.view">
+            <field name="name">fleet.booking.status.change.form</field>
+            <field name="model">fleet.booking.status.change</field>
+            <field name="arch" type="xml">
+                <form string="Status Change" create="false" edit="false">
+                    <sheet>
+                        <group>
+                            <group>
+                                <field name="booking_id"/>
+                                <field name="old_status_id"/>
+                                <field name="new_status_id"/>
+                            </group>
+                            <group>
+                                <field name="change_date"/>
+                                <field name="user_id"/>
+                            </group>
+                        </group>
+                        <group string="Notes">
+                            <field name="note" nolabel="1"/>
+                        </group>
+                    </sheet>
+                </form>
+            </field>
+        </record>
+
+        <!-- Fleet Booking Status Actions -->
+        <record id="action_fleet_booking_status" model="ir.actions.act_window">
+            <field name="name">Booking Statuses</field>
+            <field name="res_model">fleet.booking.status</field>
+            <field name="view_mode">tree,form</field>
+            <field name="search_view_id" ref="view_fleet_booking_status_search"/>
+            <field name="help" type="html">
+                <p class="o_view_nocontent_smiling_face">
+                    Create your first booking status!
+                </p>
+                <p>
+                    Booking statuses define the stages a booking can go through.
+                </p>
+            </field>
+        </record>
+
+        <record id="action_fleet_booking_status_changes" model="ir.actions.act_window">
+            <field name="name">Status Changes History</field>
+            <field name="res_model">fleet.booking.status.change</field>
+            <field name="view_mode">tree,form</field>
+            <field name="help" type="html">
+                <p class="o_view_nocontent_neutral_face">
+                    No status changes yet
+                </p>
+                <p>
+                    This shows the history of all booking status changes.
+                </p>
+            </field>
+        </record>
+
+        <!-- Main Settings Menu -->
+        <menuitem id="menu_fleet_booking_root" 
+                name="Fleet Booking" 
+                web_icon="fleet_booking,static/description/icon.png" 
+                sequence="100"/>
+
+        <!-- Settings Submenu -->
+        <menuitem id="menu_fleet_booking_settings" 
+                name="Configuration" 
+                parent="menu_fleet_booking_root" 
+                sequence="100"/>
+
+        <!-- Menu Items -->
+        <menuitem id="menu_fleet_booking_status" 
+                name="Booking Statuses" 
+                parent="menu_fleet_booking_settings" 
+                action="action_fleet_booking_status" 
+                sequence="10"/>
+
+        <menuitem id="menu_fleet_booking_status_changes" 
+                name="Status Changes" 
+                parent="menu_fleet_booking_settings" 
+                action="action_fleet_booking_status_changes" 
+                sequence="11"/>
+    </data>
+</odoo>

@@ -1,0 +1,111 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <data>
+        <!-- Main Menu -->
+        <menuitem id="menu_fleet_booking_root" 
+                  name="Fleet Booking" 
+                  web_icon="fleet_booking,static/description/icon.png" 
+                  sequence="40"/>
+        
+        <!-- Dashboard Menu -->
+        <menuitem id="menu_fleet_booking_dashboard" 
+                  name="Dashboard" 
+                  parent="menu_fleet_booking_root" 
+                  action="action_fleet_bookings" 
+                  sequence="1"/>
+        
+        <!-- Orders Menu -->
+        <menuitem id="menu_fleet_booking_orders" 
+                  name="Orders" 
+                  parent="menu_fleet_booking_root" 
+                  sequence="10"/>
+        
+        <menuitem id="menu_fleet_booking_all_orders" 
+                  name="View Orders" 
+                  parent="menu_fleet_booking_orders" 
+                  action="action_fleet_bookings" 
+                  sequence="1"/>
+        
+        <menuitem id="menu_fleet_booking_add_order" 
+                  name="Add Order" 
+                  parent="menu_fleet_booking_orders" 
+                  action="action_fleet_bookings" 
+                  sequence="2"/>
+        
+        <!-- Customers Menu -->
+        <menuitem id="menu_fleet_booking_customers" 
+                  name="Customers" 
+                  parent="menu_fleet_booking_root" 
+                  action="base.action_partner_form" 
+                  sequence="20"/>
+        
+        <!-- Drivers Menu -->
+        <menuitem id="menu_fleet_booking_drivers" 
+                  name="Drivers" 
+                  parent="menu_fleet_booking_root" 
+                  action="action_fleet_drivers" 
+                  sequence="30"/>
+        
+        <!-- Finance Menu -->
+        <menuitem id="menu_fleet_booking_finance" 
+                  name="Finance" 
+                  parent="menu_fleet_booking_root" 
+                  sequence="40"/>
+        
+        <!-- Transport Menu -->
+        <menuitem id="menu_fleet_booking_transport" 
+                  name="Transport" 
+                  parent="menu_fleet_booking_root" 
+                  sequence="50"/>
+        
+        <menuitem id="menu_fleet_booking_vehicles" 
+                  name="Vehicles" 
+                  parent="menu_fleet_booking_transport" 
+                  action="action_fleet_vehicles" 
+                  sequence="1"/>
+        
+        <menuitem id="menu_fleet_routes" 
+                  name="Routes" 
+                  parent="menu_fleet_booking_transport" 
+                  action="action_fleet_routes" 
+                  sequence="2"/>
+        
+        <menuitem id="menu_fleet_cargo_manifests" 
+                  name="Cargo Manifests" 
+                  parent="menu_fleet_booking_transport" 
+                  action="action_fleet_cargo_manifests" 
+                  sequence="3"/>
+        
+        <!-- Reports Menu -->
+        <menuitem id="menu_fleet_booking_reports" 
+                  name="Reports" 
+                  parent="menu_fleet_booking_root" 
+                  sequence="60"/>
+        
+        <!-- Settings Menu -->
+        <menuitem id="menu_fleet_booking_settings" 
+                  name="Settings" 
+                  parent="menu_fleet_booking_root" 
+                  sequence="99" 
+                  groups="fleet_booking.group_fleet_booking_manager"/>
+                  
+        <!-- Settings Sub-menus -->
+        <menuitem id="menu_fleet_booking_status" 
+                  name="Booking Statuses" 
+                  parent="menu_fleet_booking_settings" 
+                  action="action_fleet_booking_status" 
+                  sequence="10"/>
+                  
+        <menuitem id="menu_fleet_booking_status_changes" 
+                  name="Status Changes" 
+                  parent="menu_fleet_booking_settings" 
+                  action="action_fleet_booking_status_changes" 
+                  sequence="11"/>
+        <!-- Terms Templates Menu - Added to Settings -->
+        <menuitem id="menu_fleet_booking_terms_templates"
+                  name="Terms Templates"
+                  parent="menu_fleet_booking_settings"
+                  action="action_fleet_booking_terms_templates"
+                  sequence="12"/>
+    </data>
+</odoo>

@@ -1,0 +1,144 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <!-- Route Form View -->
+    <record id="view_fleet_route_form" model="ir.ui.view">
+        <field name="name">fleet.route.form</field>
+        <field name="model">fleet.route</field>
+        <field name="arch" type="xml">
+            <form>
+                <header>
+                    <button name="action_get_route_details" string="Get Route Details" type="object" class="oe_highlight"/>
+                    <button name="action_view_on_map" string="View on Google Maps" type="object" icon="fa-map-marker"/>
+                </header>
+                <sheet>
+                    <div class="oe_button_box" name="button_box">
+                        <button name="action_view_bookings" type="object" class="oe_stat_button" icon="fa-calendar"
+                                invisible="booking_count == 0">
+                            <field name="booking_count" widget="statinfo" string="Bookings"/>
+                        </button>
+                    </div>
+                    
+                    <div class="oe_title">
+                        <h1>
+                            <field name="name"/>
+                        </h1>
+                    </div>
+                    
+                    <group>
+                        <group>
+                            <field name="start_location" placeholder="Enter a location"/>
+                            <field name="end_location" placeholder="Enter a location"/>
+                            <field name="distance"/>
+                            <field name="distance_uom"/>
+                        </group>
+                        <group>
+                            <field name="duration"/>
+                            <field name="is_round_trip"/>
+                            <field name="express_route"/>
+                            <field name="route_complexity"/>
+                        </group>
+                    </group>
+                    
+                    <notebook>
+                        <page string="Stops" name="stops">
+                            <field name="stop_ids">
+                                <tree editable="bottom">
+                                    <field name="sequence" widget="handle"/>
+                                    <field name="name"/>
+                                    <field name="stop_type"/>
+                                    <field name="distance"/>
+                                    <field name="duration"/>
+                                    <field name="latitude"/>
+                                    <field name="longitude"/>
+                                    <field name="notes"/>
+                                </tree>
+                            </field>
+                            <div class="mt-4">
+                                <field name="via_stops" placeholder="Via stops (separated by line breaks)" 
+                                       widget="text"/>
+                            </div>
+                        </page>
+                        
+                        <page string="Map Data" name="map_data">
+                            <group>
+                                <field name="start_latitude"/>
+                                <field name="start_longitude"/>
+                                <field name="end_latitude"/>
+                                <field name="end_longitude"/>
+                                <field name="polyline"/>
+                            </group>
+                        </page>
+                        
+                        <page string="Pricing" name="pricing">
+                            <field name="pricing_notes" placeholder="Pricing notes..."/>
+                        </page>
+                        
+                        <page string="Notes" name="notes">
+                            <field name="route_notes" placeholder="Additional route information..."/>
+                        </page>
+                    </notebook>
+                </sheet>
+                <div class="oe_chatter">
+                    <field name="message_follower_ids" widget="mail_followers"/>
+                    <field name="activity_ids" widget="mail_activity"/>
+                    <field name="message_ids" widget="mail_thread"/>
+                </div>
+            </form>
+        </field>
+    </record>
+    
+    <!-- Route Tree View -->
+    <record id="view_fleet_route_tree" model="ir.ui.view">
+        <field name="name">fleet.route.tree</field>
+        <field name="model">fleet.route</field>
+        <field name="arch" type="xml">
+            <tree>
+                <field name="name"/>
+                <field name="distance"/>
+                <field name="distance_uom"/>
+                <field name="duration"/>
+                <field name="is_round_trip"/>
+                <field name="express_route"/>
+                <field name="booking_count"/>
+            </tree>
+        </field>
+    </record>
+    
+    <!-- Route Search View -->
+    <record id="view_fleet_route_search" model="ir.ui.view">
+        <field name="name">fleet.route.search</field>
+        <field name="model">fleet.route</field>
+        <field name="arch" type="xml">
+            <search>
+                <field name="name"/>
+                <field name="start_location"/>
+                <field name="end_location"/>
+                <field name="via_stops"/>
+                <separator/>
+                <filter string="Round Trip" name="round_trip" domain="[('is_round_trip', '=', True)]"/>
+                <filter string="Express Route" name="express_route" domain="[('express_route', '=', True)]"/>
+                <group expand="0" string="Group By">
+                    <filter string="Start Location" name="group_by_start" context="{'group_by': 'start_location'}"/>
+                    <filter string="End Location" name="group_by_end" context="{'group_by': 'end_location'}"/>
+                    <!-- Change this line in your search view XML -->
+                    <filter string="Complexity" name="group_by_complexity" context="{'group_by': 'route_complexity'}"/>
+                </group>
+            </search>
+        </field>
+    </record>
+    
+    <!-- Route Action Window -->
+    <record id="action_fleet_routes" model="ir.actions.act_window">
+        <field name="name">Routes</field>
+        <field name="res_model">fleet.route</field>
+        <field name="view_mode">tree,form</field>
+        <field name="help" type="html">
+            <p class="o_view_nocontent_smiling_face">
+                Create your first route!
+            </p>
+            <p>
+                Define routes for your fleet bookings.
+            </p>
+        </field>
+    </record>
+</odoo>

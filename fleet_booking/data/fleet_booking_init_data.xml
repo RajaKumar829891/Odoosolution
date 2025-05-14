@@ -1,0 +1,7 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <data noupdate="1">
+        <!-- Initialize default terms and conditions templates -->
+        <function model="fleet.booking.terms.template" name="create_default_templates"/>
+    </data>
+</odoo>

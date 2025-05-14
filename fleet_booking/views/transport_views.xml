@@ -1,0 +1,320 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <data>
+        <!-- Fleet Route Form View -->
+        <record id="view_fleet_route_form" model="ir.ui.view">
+            <field name="name">fleet.route.form</field>
+            <field name="model">fleet.route</field>
+            <field name="arch" type="xml">
+                <form string="Route">
+                    <sheet>
+                        <div class="oe_title">
+                            <h1>
+                                <field name="name"/>
+                            </h1>
+                        </div>
+                        <group>
+                            <group>
+                                <field name="start_location"/>
+                                <field name="end_location"/>
+                                <field name="distance"/>
+                                <field name="distance_uom"/>
+                            </group>
+                            <group>
+                                <field name="duration"/>
+                                <field name="is_round_trip"/>
+                                <field name="express_route"/>
+                                <field name="route_complexity"/>
+                            </group>
+                        </group>
+                        <notebook>
+                            <page string="Stops" name="stops">
+                                <field name="stop_ids">
+                                    <tree editable="bottom">
+                                        <field name="sequence" widget="handle"/>
+                                        <field name="name"/>
+                                        <field name="location"/>
+                                        <field name="estimated_arrival" widget="float_time"/>
+                                        <field name="estimated_departure" widget="float_time"/>
+                                        <field name="stop_duration"/>
+                                        <field name="is_pickup"/>
+                                        <field name="is_dropoff"/>
+                                        <field name="passenger_count"/>
+                                        <field name="notes"/>
+                                    </tree>
+                                </field>
+                                <div class="oe_inline" invisible_if="stop_ids">
+                                    <h3 class="text-center">Via Stops</h3>
+                                    <field name="via_stops" placeholder="Enter intermediate stops, one per line..."/>
+                                </div>
+                            </page>
+                            <page string="Pricing" name="pricing">
+                                <group>
+                                    <group>
+                                        <field name="base_price"/>
+                                        <field name="price_per_km"/>
+                                        <field name="toll_fees"/>
+                                    </group>
+                                </group>
+                            </page>
+                            <page string="Route Map" name="route_map">
+                                <div class="route_map_container" id="route_map_view">
+                                    <!-- Map will be rendered here by JS -->
+                                </div>
+                            </page>
+                            <page string="Notes" name="notes">
+                                <group>
+                                    <field name="description" placeholder="Route description..."/>
+                                    <field name="notes" placeholder="Additional notes about this route..."/>
+                                </group>
+                            </page>
+                        </notebook>
+                    </sheet>
+                </form>
+            </field>
+        </record>
+
+        <!-- Fleet Route Tree View -->
+        <record id="view_fleet_route_tree" model="ir.ui.view">
+            <field name="name">fleet.route.tree</field>
+            <field name="model">fleet.route</field>
+            <field name="arch" type="xml">
+                <tree string="Routes">
+                    <field name="name"/>
+                    <field name="start_location"/>
+                    <field name="end_location"/>
+                    <field name="distance"/>
+                    <field name="distance_uom"/>
+                    <field name="duration"/>
+                    <field name="is_round_trip"/>
+                    <field name="route_complexity"/>
+                </tree>
+            </field>
+        </record>
+
+        <!-- Fleet Route Search View -->
+        <record id="view_fleet_route_search" model="ir.ui.view">
+            <field name="name">fleet.route.search</field>
+            <field name="model">fleet.route</field>
+            <field name="arch" type="xml">
+                <search string="Search Routes">
+                    <field name="name"/>
+                    <field name="start_location"/>
+                    <field name="end_location"/>
+                    <separator/>
+                    <filter string="Round Trip" name="round_trip" domain="[('is_round_trip', '=', True)]"/>
+                    <filter string="Express" name="express" domain="[('express_route', '=', True)]"/>
+                    <group expand="0" string="Group By">
+                        <filter string="Start Location" name="group_by_start" context="{'group_by': 'start_location'}"/>
+                        <filter string="End Location" name="group_by_end" context="{'group_by': 'end_location'}"/>
+                        <filter string="Complexity" name="group_by_complexity" context="{'group_by': 'route_complexity'}"/>
+                    </group>
+                </search>
+            </field>
+        </record>
+
+        <!-- Fleet Cargo Manifest Form View -->
+        <record id="view_fleet_cargo_manifest_form" model="ir.ui.view">
+            <field name="name">fleet.cargo.manifest.form</field>
+            <field name="model">fleet.cargo.manifest</field>
+            <field name="arch" type="xml">
+                <form string="Cargo Manifest">
+                    <header>
+                        <button name="action_confirm" string="Confirm" type="object" 
+                                class="oe_highlight" invisible_if="state != 'draft'"/>
+                        <button name="action_set_loaded" string="Mark as Loaded" type="object" 
+                                class="oe_highlight" invisible_if="state != 'confirmed'"/>
+                        <button name="action_set_delivered" string="Mark as Delivered" type="object" 
+                                class="oe_highlight" invisible_if="state != 'loaded'"/>
+                        <field name="state" widget="statusbar" statusbar_visible="draft,confirmed,loaded,delivered"/>
+                    </header>
+                    <sheet>
+                        <div class="oe_title">
+                            <h1>
+                                <field name="name"/>
+                            </h1>
+                        </div>
+                        <group>
+                            <group>
+                                <field name="booking_id"/>
+                                <field name="date"/>
+                            </group>
+                            <group>
+                                <field name="total_weight"/>
+                                <field name="total_volume"/>
+                                <field name="total_items"/>
+                            </group>
+                        </group>
+                        <notebook>
+                            <page string="Cargo Items" name="cargo_items">
+                                <field name="cargo_line_ids">
+                                    <tree editable="bottom">
+                                        <field name="name"/>
+                                        <field name="cargo_type"/>
+                                        <field name="quantity"/>
+                                        <field name="weight"/>
+                                        <field name="volume"/>
+                                        <field name="tracking_number"/>
+                                        <field name="owner_id"/>
+                                        <field name="checked"/>
+                                        <field name="special_instructions"/>
+                                    </tree>
+                                </field>
+                            </page>
+                            <page string="Notes" name="notes">
+                                <field name="notes" placeholder="Notes about this cargo manifest..."/>
+                            </page>
+                        </notebook>
+                    </sheet>
+                </form>
+            </field>
+        </record>
+
+        <!-- Fleet Cargo Manifest Tree View -->
+        <record id="view_fleet_cargo_manifest_tree" model="ir.ui.view">
+            <field name="name">fleet.cargo.manifest.tree</field>
+            <field name="model">fleet.cargo.manifest</field>
+            <field name="arch" type="xml">
+                <tree string="Cargo Manifests" decoration-info="state == 'draft'" 
+                      decoration-success="state == 'delivered'" 
+                      decoration-warning="state == 'loaded'"
+                      decoration-primary="state == 'confirmed'">
+                    <field name="name"/>
+                    <field name="booking_id"/>
+                    <field name="date"/>
+                    <field name="total_items"/>
+                    <field name="total_weight"/>
+                    <field name="total_volume"/>
+                    <field name="state"/>
+                </tree>
+            </field>
+        </record>
+
+        <!-- Fleet Cargo Manifest Search View -->
+        <record id="view_fleet_cargo_manifest_search" model="ir.ui.view">
+            <field name="name">fleet.cargo.manifest.search</field>
+            <field name="model">fleet.cargo.manifest</field>
+            <field name="arch" type="xml">
+                <search string="Search Cargo Manifests">
+                    <field name="name"/>
+                    <field name="booking_id"/>
+                    <field name="date"/>
+                    <separator/>
+                    <filter string="Draft" name="draft" domain="[('state', '=', 'draft')]"/>
+                    <filter string="Confirmed" name="confirmed" domain="[('state', '=', 'confirmed')]"/>
+                    <filter string="Loaded" name="loaded" domain="[('state', '=', 'loaded')]"/>
+                    <filter string="Delivered" name="delivered" domain="[('state', '=', 'delivered')]"/>
+                    <separator/>
+                    <filter string="Today" name="today" domain="[('date', '=', context_today())]"/>
+                    <filter string="This Week" name="this_week" 
+                            domain="[('date', '&gt;=', (context_today() - datetime.timedelta(days=context_today().weekday())).strftime('%Y-%m-%d')),
+                                    ('date', '&lt;=', (context_today() + datetime.timedelta(days=6-context_today().weekday())).strftime('%Y-%m-%d'))]"/>
+                    <group expand="0" string="Group By">
+                        <filter string="Status" name="group_by_state" context="{'group_by': 'state'}"/>
+                        <filter string="Booking" name="group_by_booking" context="{'group_by': 'booking_id'}"/>
+                        <filter string="Date" name="group_by_date" context="{'group_by': 'date'}"/>
+                    </group>
+                </search>
+            </field>
+        </record>
+
+        <!-- Fleet Route Stop Form View -->
+        <record id="view_fleet_route_stop_form" model="ir.ui.view">
+            <field name="name">fleet.route.stop.form</field>
+            <field name="model">fleet.route.stop</field>
+            <field name="arch" type="xml">
+                <form string="Route Stop">
+                    <sheet>
+                        <group>
+                            <group>
+                                <field name="name"/>
+                                <field name="route_id"/>
+                                <field name="sequence"/>
+                                <field name="location"/>
+                            </group>
+                            <group>
+                                <field name="estimated_arrival" widget="float_time"/>
+                                <field name="estimated_departure" widget="float_time"/>
+                                <field name="stop_duration"/>
+                            </group>
+                        </group>
+                        <group>
+                            <group>
+                                <field name="is_pickup"/>
+                                <field name="is_dropoff"/>
+                                <field name="passenger_count"/>
+                            </group>
+                        </group>
+                        <group string="Notes">
+                            <field name="notes" nolabel="1" placeholder="Notes about this stop..."/>
+                        </group>
+                    </sheet>
+                </form>
+            </field>
+        </record>
+
+        <!-- Route View Action Window -->
+        <record id="action_fleet_routes" model="ir.actions.act_window">
+            <field name="name">Routes</field>
+            <field name="res_model">fleet.route</field>
+            <field name="view_mode">tree,form</field>
+            <field name="search_view_id" ref="view_fleet_route_search"/>
+            <field name="help" type="html">
+                <p class="o_view_nocontent_smiling_face">
+                    Create your first route!
+                </p>
+                <p>
+                    Define routes for your bookings with start and end locations,
+                    distances, durations, and via stops.
+                </p>
+            </field>
+        </record>
+
+        <!-- Cargo Manifest View Action Window -->
+        <record id="action_fleet_cargo_manifests" model="ir.actions.act_window">
+            <field name="name">Cargo Manifests</field>
+            <field name="res_model">fleet.cargo.manifest</field>
+            <field name="view_mode">tree,form</field>
+            <field name="search_view_id" ref="view_fleet_cargo_manifest_search"/>
+            <field name="help" type="html">
+                <p class="o_view_nocontent_smiling_face">
+                    Create your first cargo manifest!
+                </p>
+                <p>
+                    Track cargo items and their delivery status.
+                </p>
+            </field>
+        </record>
+
+        <!-- Main Menu (Root) -->
+        <menuitem id="menu_fleet_booking_root" 
+                  name="Fleet Booking"
+                  web_icon="fleet_booking,static/description/icon.png" 
+                  sequence="100"/>
+        
+        <!-- Settings Menu -->
+        <menuitem id="menu_fleet_booking_settings" 
+                  name="Configuration" 
+                  parent="menu_fleet_booking_root" 
+                  sequence="100"/>
+                  
+        <!-- Transport Menu -->
+        <menuitem id="menu_fleet_booking_transport" 
+                  name="Transport" 
+                  parent="menu_fleet_booking_root" 
+                  sequence="20"/>
+
+        <!-- Menu Items -->
+        <menuitem id="menu_fleet_routes" 
+                  name="Routes" 
+                  parent="menu_fleet_booking_transport" 
+                  action="action_fleet_routes" 
+                  sequence="10"/>
+
+        <menuitem id="menu_fleet_cargo_manifests" 
+                  name="Cargo Manifests" 
+                  parent="menu_fleet_booking_transport" 
+                  action="action_fleet_cargo_manifests" 
+                  sequence="20"/>
+    </data>
+</odoo>

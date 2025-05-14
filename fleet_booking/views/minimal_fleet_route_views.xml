@@ -1,0 +1,44 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <!-- Route Form View -->
+    <record id="view_fleet_route_form" model="ir.ui.view">
+        <field name="name">fleet.route.form</field>
+        <field name="model">fleet.route</field>
+        <field name="arch" type="xml">
+            <form>
+                <header>
+                    <button name="action_get_route_details" string="Get Route Details" type="object" class="oe_highlight"/>
+                    <button name="action_view_on_map" string="View on Google Maps" type="object" icon="fa-map-marker"/>
+                </header>
+                <sheet>
+                    <group>
+                        <field name="start_location"/>
+                        <field name="end_location"/>
+                        <field name="distance"/>
+                        <field name="duration"/>
+                    </group>
+                </sheet>
+            </form>
+        </field>
+    </record>
+    
+    <!-- Route Tree View -->
+    <record id="view_fleet_route_tree" model="ir.ui.view">
+        <field name="name">fleet.route.tree</field>
+        <field name="model">fleet.route</field>
+        <field name="arch" type="xml">
+            <tree>
+                <field name="name"/>
+                <field name="distance"/>
+                <field name="duration"/>
+            </tree>
+        </field>
+    </record>
+    
+    <!-- Route Action Window -->
+    <record id="action_fleet_routes" model="ir.actions.act_window">
+        <field name="name">Routes</field>
+        <field name="res_model">fleet.route</field>
+        <field name="view_mode">tree,form</field>
+    </record>
+</odoo>

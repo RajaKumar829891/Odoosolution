@@ -1,0 +1,39 @@
+.o_google_maps_route_widget {
+    padding: 15px;
+    border: 1px solid #dee2e6;
+    border-radius: 4px;
+    background-color: #f8f9fa;
+}
+
+.route-inputs .input-group-text {
+    background-color: white;
+    border-right: none;
+}
+
+.route-inputs .form-control {
+    border-left: none;
+}
+
+.route-inputs .form-control:focus {
+    border-color: #ced4da;
+    box-shadow: none;
+}
+
+.route-actions .btn {
+    min-width: 120px;
+}
+
+.map-container {
+    border: 1px solid #dee2e6;
+    border-radius: 4px;
+    overflow: hidden;
+}
+
+.route-preview img {
+    border-radius: 4px;
+    box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+}
+
+.route-info .alert {
+    margin-bottom: 0;
+}

@@ -1,0 +1,122 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <data>
+        <!-- Extend Partner Form View -->
+        <record id="view_partner_form_fleet_booking" model="ir.ui.view">
+            <field name="name">res.partner.form.fleet.booking</field>
+            <field name="model">res.partner</field>
+            <field name="inherit_id" ref="base.view_partner_form"/>
+            <field name="arch" type="xml">
+                <!-- Add is_fleet_customer checkbox in the header -->
+                <xpath expr="//div[@name='button_box']" position="inside">
+                    <button class="oe_stat_button" type="object" name="action_view_bookings" 
+                            icon="fa-calendar" invisible="is_fleet_customer == False">
+                        <field name="booking_count" widget="statinfo" string="Bookings"/>
+                    </button>
+                </xpath>
+                
+                <!-- Add fleet customer info to notebook -->
+                <xpath expr="//notebook" position="inside">
+                    <page string="Fleet Bookings" invisible="is_fleet_customer == False">
+                        <group>
+                            <group string="Customer Classification">
+                                <field name="is_fleet_customer"/>
+                                <field name="customer_type" required="is_fleet_customer"/>
+                                <field name="loyalty_points" invisible="customer_type != 'individual'"/>
+                                <field name="preferred_vehicle_type"/>
+                            </group>
+                            <group string="Identification">
+                                <field name="id_type" invisible="customer_type == 'corporate'"/>
+                                <field name="id_number" invisible="customer_type == 'corporate'"/>
+                            </group>
+                        </group>
+                        <group string="Corporate Information" invisible="customer_type != 'corporate'">
+                            <field name="billing_instructions"/>
+                            <field name="payment_terms"/>
+                            <field name="credit_limit"/>
+                        </group>
+                        <group string="Customer Notes">
+                            <field name="customer_notes" nolabel="1" placeholder="Additional information about this customer..."/>
+                        </group>
+                    </page>
+                </xpath>
+                
+                <!-- Add is_fleet_customer checkbox to general info -->
+                <xpath expr="//field[@name='vat']" position="after">
+                    <field name="is_fleet_customer"/>
+                </xpath>
+            </field>
+        </record>
+        
+        <!-- Extend Partner Tree View -->
+        <record id="view_partner_tree_fleet_booking" model="ir.ui.view">
+            <field name="name">res.partner.tree.fleet.booking</field>
+            <field name="model">res.partner</field>
+            <field name="inherit_id" ref="base.view_partner_tree"/>
+            <field name="arch" type="xml">
+                <field name="display_name" position="after">
+                    <field name="customer_type" optional="show"/>
+                </field>
+                <field name="phone" position="after">
+                    <field name="is_fleet_customer" optional="show"/>
+                    <field name="booking_count" optional="show"/>
+                </field>
+            </field>
+        </record>
+        
+        <!-- Extend Partner Search View -->
+        <record id="view_res_partner_filter_fleet_booking" model="ir.ui.view">
+            <field name="name">res.partner.select.fleet.booking</field>
+            <field name="model">res.partner</field>
+            <field name="inherit_id" ref="base.view_res_partner_filter"/>
+            <field name="arch" type="xml">
+                <field name="name" position="after">
+                    <field name="customer_type"/>
+                </field>
+                <!-- Changed from 'customer' filter to 'type_company' -->
+                <filter name="type_company" position="after">
+                    <filter string="Fleet Customers" name="fleet_customer" 
+                            domain="[('is_fleet_customer', '=', True)]"/>
+                </filter>
+                <filter name="salesperson" position="after">
+                    <filter string="Customer Type" name="customer_type" 
+                            context="{'group_by': 'customer_type'}"/>
+                </filter>
+            </field>
+        </record>
+        
+        <!-- Fleet Customer Action -->
+        <record id="action_fleet_customers" model="ir.actions.act_window">
+            <field name="name">Fleet Customers</field>
+            <field name="res_model">res.partner</field>
+            <field name="view_mode">kanban,tree,form</field>
+            <field name="domain">[('is_fleet_customer', '=', True)]</field>
+            <field name="context">{'default_is_fleet_customer': True}</field>
+            <field name="help" type="html">
+                <p class="o_view_nocontent_smiling_face">
+                    Create your first fleet customer!
+                </p>
+                <p>
+                    Create customers to book fleet vehicles.
+                </p>
+            </field>
+        </record>
+        
+        <!-- Customer Bookings Action -->
+        <record id="action_customer_bookings" model="ir.actions.act_window">
+            <field name="name">Customer Bookings</field>
+            <field name="res_model">fleet.booking</field>
+            <field name="view_mode">tree,form,calendar</field>
+            <field name="domain">[('customer_id', '=', active_id)]</field>
+            <field name="context">{'default_customer_id': active_id}</field>
+            <field name="help" type="html">
+                <p class="o_view_nocontent_smiling_face">
+                    No bookings yet
+                </p>
+                <p>
+                    Create a new booking for this customer
+                </p>
+            </field>
+        </record>
+    </data>
+</odoo>

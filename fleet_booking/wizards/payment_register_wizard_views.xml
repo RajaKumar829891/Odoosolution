@@ -1,0 +1,35 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <!-- Payment Register Wizard Form -->
+    <record id="view_fleet_payment_register_wizard_form" model="ir.ui.view">
+        <field name="name">fleet.payment.register.wizard.form</field>
+        <field name="model">fleet.payment.register.wizard</field>
+        <field name="arch" type="xml">
+            <form>
+                <sheet>
+                    <group>
+                        <field name="booking_id" readonly="1"/>
+                        <field name="amount" widget="monetary"/>
+                        <field name="payment_method"/>
+                        <field name="payment_date"/>
+                        <field name="notes" placeholder="Payment notes..."/>
+                    </group>
+                </sheet>
+                <footer>
+                    <button name="action_register_payment" string="Register Payment" type="object" class="btn-primary"/>
+                    <button string="Cancel" class="btn-secondary" special="cancel"/>
+                </footer>
+            </form>
+        </field>
+    </record>
+
+    <!-- Payment Register Action -->
+    <record id="action_fleet_payment_register" model="ir.actions.act_window">
+        <field name="name">Register Payment</field>
+        <field name="res_model">fleet.payment.register.wizard</field>
+        <field name="view_mode">form</field>
+        <field name="target">new</field>
+        <field name="binding_model_id" ref="model_fleet_booking"/>
+        <field name="binding_view_types">form</field>
+    </record>
+</odoo>

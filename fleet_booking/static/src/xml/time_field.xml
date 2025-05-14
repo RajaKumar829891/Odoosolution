@@ -1,0 +1,28 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<templates xml:space="preserve">
+    <t t-name="fleet_booking.TimeField" owl="1">
+        <div class="o_time_field">
+            <t t-if="props.readonly">
+                <span t-esc="props.value || ''"/>
+            </t>
+            <t t-else="">
+                <div class="d-flex align-items-center">
+                    <input 
+                        t-ref="input"
+                        type="time" 
+                        class="o_input" 
+                        t-on-change="onChange"
+                    />
+                    <select 
+                        t-ref="ampm"
+                        class="o_input ml-2" 
+                        t-on-change="onChange"
+                    >
+                        <option value="AM">AM</option>
+                        <option value="PM">PM</option>
+                    </select>
+                </div>
+            </t>
+        </div>
+    </t>
+</templates>

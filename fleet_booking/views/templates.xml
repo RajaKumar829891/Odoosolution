@@ -1,0 +1,64 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <data>
+        <!-- Dashboard Templates -->
+        <template id="FleetBookingDashboard">
+            <div class="o_fleet_booking_dashboard">
+                <!-- Dashboard content will be dynamically populated by JS -->
+            </div>
+        </template>
+        
+        <!-- Dashboard Widgets Template -->
+        <template id="FleetBookingDashboardWidgets">
+            <div class="container-fluid mt-3">
+                <div class="row">
+                    <!-- Today's Bookings -->
+                    <div class="col-md-3">
+                        <div class="fleet_dashboard_card fleet_dashboard_card_blue fleet_booking_widget" data-action="action_fleet_bookings_today">
+                            <h4>Today's Journeys</h4>
+                            <h2><t t-esc="data.today or 0"/></h2>
+                        </div>
+                    </div>
+                    
+                    <!-- Upcoming Bookings -->
+                    <div class="col-md-3">
+                        <div class="fleet_dashboard_card fleet_dashboard_card_green fleet_booking_widget" data-action="action_fleet_bookings_upcoming">
+                            <h4>Upcoming Journeys</h4>
+                            <h2><t t-esc="data.upcoming or 0"/></h2>
+                        </div>
+                    </div>
+                    
+                    <!-- Completed Bookings -->
+                    <div class="col-md-3">
+                        <div class="fleet_dashboard_card fleet_dashboard_card_yellow fleet_booking_widget" data-action="action_fleet_bookings_completed">
+                            <h4>Completed</h4>
+                            <h2><t t-esc="data.completed or 0"/></h2>
+                        </div>
+                    </div>
+                    
+                    <!-- Completion Rate -->
+                    <div class="col-md-3">
+                        <div class="fleet_dashboard_card fleet_dashboard_card_red">
+                            <h4>Completion Rate</h4>
+                            <h2><t t-esc="Math.round(data.completion_rate || 0)"/>%</h2>
+                        </div>
+                    </div>
+                </div>
+                
+                <div class="row mt-4">
+                    <div class="col-md-12">
+                        <div class="card">
+                            <div class="card-header">
+                                <h3 class="card-title">Booking Status Overview</h3>
+                            </div>
+                            <div class="card-body">
+                                <!-- This area could be used for charts or advanced visualizations -->
+                                <p>Total Bookings: <strong><t t-esc="data.total or 0"/></strong></p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </template>
+    </data>
+</odoo>

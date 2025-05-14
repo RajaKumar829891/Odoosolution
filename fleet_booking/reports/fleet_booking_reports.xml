@@ -1,0 +1,14 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <!-- Register the invoice report -->
+    <record id="action_report_fleet_booking_invoice" model="ir.actions.report">
+        <field name="name">Booking Invoice</field>
+        <field name="model">fleet.booking</field>
+        <field name="report_type">qweb-pdf</field>
+        <field name="report_name">fleet_booking.report_fleet_booking_invoice</field>
+        <field name="report_file">fleet_booking.report_fleet_booking_invoice</field>
+        <field name="print_report_name">'Invoice - %s' % (object.name)</field>
+        <field name="binding_model_id" ref="model_fleet_booking"/>
+        <field name="binding_type">report</field>
+    </record>
+</odoo>

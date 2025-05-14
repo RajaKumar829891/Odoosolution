@@ -1,0 +1,15 @@
+/* File: static/src/css/time_widget.css */
+.o_time_widget {
+    display: flex;
+    align-items: center;
+}
+
+.o_time_widget .o_time_input {
+    margin-right: 5px;
+    width: 100px;
+}
+
+.o_time_widget .o_time_period {
+    font-weight: bold;
+    min-width: 30px;
+}

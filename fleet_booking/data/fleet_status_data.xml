@@ -1,0 +1,114 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <data noupdate="1">
+        <!-- Booking Status Data -->
+        <record id="booking_status_enquiry" model="fleet.booking.status">
+            <field name="name">Enquiry</field>
+            <field name="code">enquiry</field>
+            <field name="sequence">10</field>
+            <field name="description">Initial booking enquiry</field>
+            <field name="color">1</field>
+            <field name="is_initial">True</field>
+            <field name="state_mapping">enquiry</field>
+        </record>
+        
+        <record id="booking_status_quotation" model="fleet.booking.status">
+            <field name="name">Quotation</field>
+            <field name="code">quotation</field>
+            <field name="sequence">20</field>
+            <field name="description">Quote provided to customer</field>
+            <field name="color">2</field>
+            <field name="is_quotation">True</field>
+            <field name="state_mapping">quotation</field>
+        </record>
+        
+        <record id="booking_status_followup" model="fleet.booking.status">
+            <field name="name">Follow Up</field>
+            <field name="code">followup</field>
+            <field name="sequence">30</field>
+            <field name="description">Following up with the customer</field>
+            <field name="color">3</field>
+            <field name="state_mapping">followup</field>
+        </record>
+        
+        <record id="booking_status_confirmed_lost" model="fleet.booking.status">
+            <field name="name">Confirmed (Lost/Cancelled)</field>
+            <field name="code">confirmed_lost</field>
+            <field name="sequence">40</field>
+            <field name="description">Booking was confirmed but then lost or cancelled</field>
+            <field name="color">1</field>
+            <field name="is_cancelled">True</field>
+            <field name="state_mapping">confirmed_pending</field>
+        </record>
+        
+        <record id="booking_status_confirmed" model="fleet.booking.status">
+            <field name="name">Confirmed</field>
+            <field name="code">confirmed</field>
+            <field name="sequence">50</field>
+            <field name="description">Booking is confirmed</field>
+            <field name="color">8</field>
+            <field name="requires_payment">True</field>
+            <field name="requires_driver">True</field>
+            <field name="state_mapping">confirmed</field>
+        </record>
+        
+        <record id="booking_status_completed" model="fleet.booking.status">
+            <field name="name">Completed</field>
+            <field name="code">completed</field>
+            <field name="sequence">60</field>
+            <field name="description">Journey completed</field>
+            <field name="color">10</field>
+            <field name="is_completed">True</field>
+            <field name="state_mapping">completed</field>
+        </record>
+        
+        <record id="booking_status_feedback" model="fleet.booking.status">
+            <field name="name">Feedback</field>
+            <field name="code">feedback</field>
+            <field name="sequence">70</field>
+            <field name="description">Feedback received from customer</field>
+            <field name="color">6</field>
+            <field name="is_final">True</field>
+            <field name="requires_feedback">True</field>
+            <field name="state_mapping">feedback</field>
+        </record>
+        
+        <!-- Set up allowed transitions -->
+        <record id="booking_status_enquiry" model="fleet.booking.status">
+            <field name="allowed_next_status_ids" eval="[(6, 0, [
+                ref('booking_status_quotation'),
+                ref('booking_status_followup'),
+                ref('booking_status_confirmed_lost')
+            ])]"/>
+        </record>
+        
+        <record id="booking_status_quotation" model="fleet.booking.status">
+            <field name="allowed_next_status_ids" eval="[(6, 0, [
+                ref('booking_status_followup'),
+                ref('booking_status_confirmed'),
+                ref('booking_status_confirmed_lost')
+            ])]"/>
+        </record>
+        
+        <record id="booking_status_followup" model="fleet.booking.status">
+            <field name="allowed_next_status_ids" eval="[(6, 0, [
+                ref('booking_status_confirmed'),
+                ref('booking_status_confirmed_lost'),
+                ref('booking_status_quotation')
+            ])]"/>
+        </record>
+        
+        <record id="booking_status_confirmed" model="fleet.booking.status">
+            <field name="allowed_next_status_ids" eval="[(6, 0, [
+                ref('booking_status_completed'),
+                ref('booking_status_confirmed_lost')
+            ])]"/>
+        </record>
+        
+        <record id="booking_status_completed" model="fleet.booking.status">
+            <field name="allowed_next_status_ids" eval="[(6, 0, [
+                ref('booking_status_feedback')
+            ])]"/>
+        </record>
+    </data>
+</odoo>

@@ -1,0 +1,72 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <data>
+        <!-- Security Groups -->
+        <record id="module_category_fleet_booking" model="ir.module.category">
+            <field name="name">Fleet Booking</field>
+            <field name="description">Fleet Booking Management</field>
+            <field name="sequence">10</field>
+        </record>
+
+        <record id="group_fleet_booking_user" model="res.groups">
+            <field name="name">User</field>
+            <field name="category_id" ref="module_category_fleet_booking"/>
+            <field name="implied_ids" eval="[(4, ref('base.group_user'))]"/>
+        </record>
+
+        <record id="group_fleet_booking_manager" model="res.groups">
+            <field name="name">Manager</field>
+            <field name="category_id" ref="module_category_fleet_booking"/>
+            <field name="implied_ids" eval="[(4, ref('group_fleet_booking_user'))]"/>
+            <field name="users" eval="[(4, ref('base.user_admin'))]"/>
+        </record>
+
+        <!-- Record Rules -->
+        <record id="fleet_booking_rule_user" model="ir.rule">
+            <field name="name">Fleet Booking: User can only see their own and assigned bookings</field>
+            <field name="model_id" ref="model_fleet_booking"/>
+            <field name="domain_force">['|', ('create_uid', '=', user.id), ('user_id', '=', user.id)]</field>
+            <field name="groups" eval="[(4, ref('group_fleet_booking_user'))]"/>
+        </record>
+
+        <record id="fleet_booking_rule_manager" model="ir.rule">
+            <field name="name">Fleet Booking: Manager can see all bookings</field>
+            <field name="model_id" ref="model_fleet_booking"/>
+            <field name="domain_force">[(1, '=', 1)]</field>
+            <field name="groups" eval="[(4, ref('group_fleet_booking_manager'))]"/>
+        </record>
+
+        <record id="fleet_driver_rule_user" model="ir.rule">
+            <field name="name">Fleet Driver: User can only see active drivers</field>
+            <field name="model_id" ref="model_fleet_driver"/>
+            <field name="domain_force">[('active', '=', True)]</field>
+            <field name="groups" eval="[(4, ref('group_fleet_booking_user'))]"/>
+        </record>
+
+        <record id="fleet_driver_rule_manager" model="ir.rule">
+            <field name="name">Fleet Driver: Manager can see all drivers</field>
+            <field name="model_id" ref="model_fleet_driver"/>
+            <field name="domain_force">[(1, '=', 1)]</field>
+            <field name="groups" eval="[(4, ref('group_fleet_booking_manager'))]"/>
+        </record>
+
+        <record id="fleet_vehicle_rule" model="ir.rule">
+            <field name="name">Fleet Vehicle: All users can see all vehicles</field>
+            <field name="model_id" ref="model_fleet_vehicle"/>
+            <field name="domain_force">[(1, '=', 1)]</field>
+            <field name="groups" eval="[(4, ref('base.group_user'))]"/>
+        </record>
+        <record id="group_fleet_booking_user" model="res.groups">
+            <field name="name">Fleet Booking / User</field>
+            <field name="implied_ids" eval="[(4, ref('base.group_user'))]"/>
+            <field name="category_id" ref="base.module_category_services"/>
+        </record>
+
+        <record id="group_fleet_booking_manager" model="res.groups">
+            <field name="name">Fleet Booking / Manager</field>
+            <field name="implied_ids" eval="[(4, ref('group_fleet_booking_user'))]"/>
+            <field name="category_id" ref="base.module_category_services"/>
+            <field name="users" eval="[(4, ref('base.user_root')), (4, ref('base.user_admin'))]"/>
+        </record>
+    </data>
+</odoo>

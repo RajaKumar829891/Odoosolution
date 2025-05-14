@@ -1,0 +1,37 @@
+fleet_booking/
+├── __init__.py
+├── __manifest__.py
+├── controllers/
+│   ├── __init__.py
+│   └── main.py
+├── data/
+│   ├── fleet_booking_data.xml
+│   └── fleet_status_data.xml
+├── models/
+│   ├── __init__.py
+│   ├── fleet_booking.py
+│   ├── fleet_booking_status.py
+│   ├── customer.py
+│   ├── driver.py
+│   ├── transport.py
+│   └── vehicle.py
+├── security/
+│   ├── ir.model.access.csv
+│   └── fleet_booking_security.xml
+├── static/
+│   ├── description/
+│   │   └── icon.png
+│   └── src/
+│       ├── css/
+│       │   └── fleet_booking.css
+│       └── js/
+│           └── fleet_booking.js
+└── views/
+    ├── fleet_booking_views.xml
+    ├── fleet_booking_status_views.xml
+    ├── customer_views.xml
+    ├── driver_views.xml
+    ├── transport_views.xml
+    ├── vehicle_views.xml
+    ├── menu_views.xml
+    └── templates.xml

@@ -1,0 +1,100 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <data>
+        <!-- Fleet Booking Settings Form View -->
+        <record id="fleet_booking_settings_view_form" model="ir.ui.view">
+            <field name="name">fleet.booking.settings.form</field>
+            <field name="model">res.config.settings</field>
+            <field name="inherit_id" ref="base.res_config_settings_view_form"/>
+            <field name="arch" type="xml">
+                <xpath expr="//div[hasclass('settings')]" position="inside">
+                    <div class="app_settings_block" data-string="Fleet Booking" string="Fleet Booking" data-key="fleet_booking">
+                        <h2>Map Integration</h2>
+                        <div class="row mt16 o_settings_container">
+                            <div class="col-12 col-lg-6 o_setting_box">
+                                <div class="o_setting_left_pane"/>
+                                <div class="o_setting_right_pane">
+                                    <span class="o_form_label">Google Maps API Key</span>
+                                    <div class="text-muted">
+                                        Enter your Google Maps API key for route mapping
+                                    </div>
+                                    <div class="mt8">
+                                        <field name="google_maps_api_key" class="oe_inline" 
+                                               placeholder="Enter your Google Maps API key"/>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        
+                        <h2>Route Settings</h2>
+                        <div class="row mt16 o_settings_container">
+                            <div class="col-12 col-lg-6 o_setting_box">
+                                <div class="o_setting_left_pane">
+                                    <field name="auto_calculate_route_details"/>
+                                </div>
+                                <div class="o_setting_right_pane">
+                                    <label for="auto_calculate_route_details"/>
+                                    <div class="text-muted">
+                                        Automatically calculate route distance and duration when locations are entered
+                                    </div>
+                                </div>
+                            </div>
+                            
+                            <div class="col-12 col-lg-6 o_setting_box">
+                                <div class="o_setting_left_pane">
+                                    <field name="default_distance_uom"/>
+                                </div>
+                                <div class="o_setting_right_pane">
+                                    <label for="default_distance_uom"/>
+                                    <div class="text-muted">
+                                        Select the default distance unit of measurement
+                                    </div>
+                                    <div class="mt8">
+                                        <field name="distance_uom" class="oe_inline" widget="radio"/>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        
+                        <h2>Pricing Settings</h2>
+                        <div class="row mt16 o_settings_container">
+                            <div class="col-12 col-lg-6 o_setting_box">
+                                <div class="o_setting_left_pane">
+                                    <field name="auto_calculate_price"/>
+                                </div>
+                                <div class="o_setting_right_pane">
+                                    <label for="auto_calculate_price"/>
+                                    <div class="text-muted">
+                                        Automatically calculate journey price based on distance and vehicle type
+                                    </div>
+                                </div>
+                            </div>
+                            
+                            <div class="col-12 col-lg-6 o_setting_box">
+                                <div class="o_setting_left_pane"/>
+                                <div class="o_setting_right_pane">
+                                    <span class="o_form_label">Default VAT Percentage</span>
+                                    <div class="text-muted">
+                                        Set the default VAT percentage for bookings
+                                    </div>
+                                    <div class="mt8">
+                                        <field name="default_vat_percentage" class="oe_inline"/>%
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </xpath>
+            </field>
+        </record>
+        
+        <!-- Settings model -->
+        <record id="action_fleet_booking_settings" model="ir.actions.act_window">
+            <field name="name">Fleet Booking Settings</field>
+            <field name="res_model">res.config.settings</field>
+            <field name="view_mode">form</field>
+            <field name="target">inline</field>
+            <field name="context">{'module': 'fleet_booking'}</field>
+        </record>
+    </data>
+</odoo>

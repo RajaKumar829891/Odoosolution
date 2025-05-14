@@ -1,0 +1,8 @@
+.o_time_field .o_input[type="time"] {
+    width: 120px;
+    margin-right: 8px;
+}
+
+.o_time_field select.o_input {
+    width: 70px;
+}

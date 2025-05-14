@@ -1,0 +1,84 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<templates xml:space="preserve">
+    <t t-name="fleet_booking.GoogleMapsRouteWidgetTemplate" owl="1">
+        <div class="o_google_maps_route_widget">
+            <div class="route-inputs mb-3">
+                <div class="input-group mb-2">
+                    <span class="input-group-text">
+                        <i class="fa fa-map-marker text-success"/>
+                    </span>
+                    <input type="text" 
+                           class="form-control" 
+                           t-ref="startInput"
+                           t-att-value="props.record.data.journey_start_location"
+                           placeholder="Start Location"
+                           t-on-change="(ev) => this.updateField('journey_start_location', ev.target.value)"/>
+                </div>
+                
+                <div class="input-group mb-2">
+                    <span class="input-group-text">
+                        <i class="fa fa-map-marker text-danger"/>
+                    </span>
+                    <input type="text" 
+                           class="form-control" 
+                           t-ref="endInput"
+                           t-att-value="props.record.data.journey_end_location"
+                           placeholder="End Location"
+                           t-on-change="(ev) => this.updateField('journey_end_location', ev.target.value)"/>
+                </div>
+                
+                <div class="via-stops mb-2" t-if="props.record.data.via_stops">
+                    <div class="input-group">
+                        <span class="input-group-text">
+                            <i class="fa fa-flag text-primary"/>
+                        </span>
+                        <textarea class="form-control" 
+                                  t-ref="viaStops"
+                                  t-att-value="props.record.data.via_stops"
+                                  placeholder="Via Stops (one per line)"
+                                  rows="3"
+                                  t-on-change="(ev) => this.updateField('via_stops', ev.target.value)"/>
+                    </div>
+                </div>
+                
+                <div class="route-actions mb-3">
+                    <button class="btn btn-primary me-2" t-on-click="calculateRoute">
+                        <i class="fa fa-route me-1"/>Calculate Route
+                    </button>
+                    <button class="btn btn-secondary me-2" t-on-click="addDestination">
+                        <i class="fa fa-plus me-1"/>Add Destination
+                    </button>
+                    <button class="btn btn-outline-danger" t-on-click="clearRoute">
+                        <i class="fa fa-times me-1"/>Clear
+                    </button>
+                </div>
+            </div>
+            
+            <div class="route-info mb-3" t-if="props.record.data.journey_distance > 0">
+                <div class="alert alert-info">
+                    <div class="d-flex justify-content-between">
+                        <div>
+                            <i class="fa fa-road me-2"/>
+                            <strong>Distance:</strong> 
+                            <t t-esc="props.record.data.journey_distance"/> km
+                        </div>
+                        <div>
+                            <i class="fa fa-clock-o me-2"/>
+                            <strong>Duration:</strong> 
+                            <t t-esc="Math.floor(props.record.data.journey_duration / 60)"/> hr 
+                            <t t-esc="props.record.data.journey_duration % 60"/> min
+                        </div>
+                    </div>
+                </div>
+            </div>
+            
+            <div class="map-container" style="height: 400px; width: 100%;">
+                <div t-ref="map" style="height: 100%; width: 100%;"/>
+            </div>
+            
+            <div class="route-preview mt-3" t-if="state.mapUrl">
+                <img t-att-src="state.mapUrl" class="img-fluid" alt="Route Preview"/>
+            </div>
+        </div>
+    </t>
+</templates>
