@@ -1,0 +1,38 @@
+myoperator_integration/
+├── __init__.py
+├── __manifest__.py
+├── controllers/
+│   ├── __init__.py
+│   └── main.py
+├── models/
+│   ├── __init__.py
+│   ├── myoperator_config.py
+│   ├── myoperator_call.py
+│   ├── myoperator_message.py
+│   └── res_partner.py
+├── security/
+│   ├── ir.model.access.csv
+│   └── myoperator_security.xml
+├── static/
+│   ├── description/
+│   │   ├── icon.png
+│   │   └── index.html
+│   └── src/
+│       ├── js/
+│       │   └── myoperator_widget.js
+│       └── css/
+│           └── myoperator_style.css
+├── views/
+│   ├── myoperator_config_views.xml
+│   ├── myoperator_call_views.xml
+│   ├── myoperator_message_views.xml
+│   ├── res_partner_views.xml
+│   └── menu_views.xml
+├── wizard/
+│   ├── __init__.py
+│   ├── myoperator_sync_wizard.py
+│   └── views/
+│       └── myoperator_sync_wizard_views.xml
+└── data/
+    ├── ir_cron_data.xml
+    └── myoperator_data.xml

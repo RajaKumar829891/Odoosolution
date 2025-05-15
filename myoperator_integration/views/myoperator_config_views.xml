@@ -1,0 +1,98 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <!-- MyOperator Configuration Form View -->
+    <record id="view_myoperator_config_form" model="ir.ui.view">
+        <field name="name">myoperator.config.form</field>
+        <field name="model">myoperator.config</field>
+        <field name="arch" type="xml">
+            <form string="MyOperator Configuration">
+                <header>
+                    <button name="action_test_connection" string="Test Connection" type="object" class="btn-primary"/>
+                    <button name="sync_calls" string="Sync Calls" type="object" class="btn-secondary"/>
+                    <button name="sync_messages" string="Sync Messages" type="object" class="btn-secondary"/>
+                </header>
+                <sheet>
+                    <div class="oe_title">
+                        <h1>
+                            <field name="name" placeholder="e.g. Main Configuration"/>
+                        </h1>
+                    </div>
+                    <group>
+                        <group>
+                            <field name="api_token" password="True"/>
+                            <field name="api_url"/>
+                            <field name="is_active"/>
+                        </group>
+                        <group>
+                            <field name="company_id" groups="base.group_multi_company"/>
+                            <field name="connection_status"/>
+                            <field name="last_checked"/>
+                        </group>
+                    </group>
+                    <notebook>
+                        <page string="Synchronization Settings">
+                            <group>
+                                <group>
+                                    <field name="auto_sync"/>
+                                    <field name="sync_interval" invisible="auto_sync == False"/>
+                                </group>
+                                <group>
+                                    <field name="last_call_sync"/>
+                                    <field name="last_message_sync"/>
+                                </group>
+                            </group>
+                        </page>
+                        <page string="Advanced">
+                            <group>
+                                <field name="webhook_secret" password="True"/>
+                                <div class="alert alert-info" role="alert">
+                                    <p>
+                                        <strong>Webhook URL:</strong> your-odoo-url.com/myoperator/webhook
+                                    </p>
+                                    <p>
+                                        Set this URL in your MyOperator dashboard to receive real-time notifications.
+                                    </p>
+                                </div>
+                            </group>
+                        </page>
+                        <page string="Error Log" invisible="last_error == False">
+                            <field name="last_error"/>
+                        </page>
+                    </notebook>
+                </sheet>
+            </form>
+        </field>
+    </record>
+
+    <!-- MyOperator Configuration Tree View -->
+    <record id="view_myoperator_config_tree" model="ir.ui.view">
+        <field name="name">myoperator.config.tree</field>
+        <field name="model">myoperator.config</field>
+        <field name="arch" type="xml">
+            <tree string="MyOperator Configurations">
+                <field name="name"/>
+                <field name="api_url"/>
+                <field name="is_active"/>
+                <field name="connection_status"/>
+                <field name="last_call_sync"/>
+                <field name="last_message_sync"/>
+                <field name="company_id" groups="base.group_multi_company"/>
+            </tree>
+        </field>
+    </record>
+
+    <!-- MyOperator Configuration Action -->
+    <record id="action_myoperator_config" model="ir.actions.act_window">
+        <field name="name">MyOperator Configurations</field>
+        <field name="res_model">myoperator.config</field>
+        <field name="view_mode">tree,form</field>
+        <field name="help" type="html">
+            <p class="o_view_nocontent_smiling_face">
+                Create your first MyOperator configuration
+            </p>
+            <p>
+                Configure your MyOperator API credentials to start synchronizing calls and messages.
+            </p>
+        </field>
+    </record>
+</odoo>

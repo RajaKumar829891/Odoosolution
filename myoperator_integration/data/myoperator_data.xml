@@ -1,0 +1,16 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <data noupdate="1">
+        <!-- Demo MyOperator Configuration -->
+        <record id="demo_myoperator_config" model="myoperator.config">
+            <field name="name">Demo Configuration</field>
+            <field name="api_token">demo_token_123456</field>
+            <field name="api_url">https://developers.myoperator.co</field>
+            <field name="is_active" eval="False"/>
+            <field name="auto_sync" eval="True"/>
+            <field name="sync_interval">60</field>
+            <field name="webhook_secret">demo_webhook_secret_123</field>
+            <field name="connection_status">not_tested</field>
+        </record>
+    </data>
+</odoo>

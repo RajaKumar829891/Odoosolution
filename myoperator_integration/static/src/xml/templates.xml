@@ -1,0 +1,19 @@
+<?xml version="1.0" encoding="utf-8"?>
+<templates id="template" xml:space="preserve">
+    <t t-name="MyOperatorSystray">
+        <li class="o_myoperator_systray">
+            <a href="#" class="o_myoperator_make_call" title="Make a Call">
+                <i class="fa fa-phone"></i>
+            </a>
+        </li>
+    </t>
+
+    <t t-name="MyOperatorCallDialog">
+        <div class="o_myoperator_call_dialog">
+            <div class="form-group">
+                <label for="phone">Phone Number</label>
+                <input type="text" name="phone" class="form-control" placeholder="Enter phone number"/>
+            </div>
+        </div>
+    </t>
+</templates>

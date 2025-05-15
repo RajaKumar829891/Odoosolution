@@ -1,0 +1,120 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <!-- MyOperator Message Form View -->
+    <record id="view_myoperator_message_form" model="ir.ui.view">
+        <field name="name">myoperator.message.form</field>
+        <field name="model">myoperator.message</field>
+        <field name="arch" type="xml">
+            <form string="WhatsApp Message">
+                <header>
+                    <button name="action_view_media" string="View Media" type="object" 
+                            class="btn-primary" invisible="media_url == False"/>
+                    <button name="action_create_partner" string="Create Contact" type="object" 
+                            class="btn-secondary" invisible="partner_id != False"/>
+                </header>
+                <sheet>
+                    <div class="oe_title">
+                        <h1>
+                            <field name="name"/>
+                        </h1>
+                    </div>
+                    <group>
+                        <group>
+                            <field name="myoperator_message_id"/>
+                            <field name="partner_id"/>
+                            <field name="phone"/>
+                            <field name="direction"/>
+                            <field name="message_type"/>
+                        </group>
+                        <group>
+                            <field name="timestamp"/>
+                            <field name="status"/>
+                            <field name="user_id"/>
+                            <field name="media_url" widget="url" 
+                                   invisible="media_url == False"/>
+                        </group>
+                    </group>
+                    <notebook>
+                        <page string="Content">
+                            <field name="content"/>
+                        </page>
+                        <page string="Technical Info">
+                            <group>
+                                <field name="config_id"/>
+                                <field name="company_id" groups="base.group_multi_company"/>
+                            </group>
+                            <field name="raw_data" widget="ace" options="{'mode': 'json'}"/>
+                        </page>
+                    </notebook>
+                </sheet>
+                <div class="oe_chatter">
+                    <field name="message_follower_ids"/>
+                    <field name="activity_ids"/>
+                    <field name="message_ids"/>
+                </div>
+            </form>
+        </field>
+    </record>
+
+    <!-- MyOperator Message Tree View -->
+    <record id="view_myoperator_message_tree" model="ir.ui.view">
+        <field name="name">myoperator.message.tree</field>
+        <field name="model">myoperator.message</field>
+        <field name="arch" type="xml">
+            <tree string="Messages" decoration-info="direction=='inbound'" decoration-success="direction=='outbound'">
+                <field name="timestamp"/>
+                <field name="phone"/>
+                <field name="partner_id"/>
+                <field name="direction"/>
+                <field name="message_type"/>
+                <field name="content"/>
+                <field name="status"/>
+                <field name="media_url" widget="boolean" string="Media"/>
+            </tree>
+        </field>
+    </record>
+
+    <!-- MyOperator Message Search View -->
+    <record id="view_myoperator_message_search" model="ir.ui.view">
+        <field name="name">myoperator.message.search</field>
+        <field name="model">myoperator.message</field>
+        <field name="arch" type="xml">
+            <search string="Search Messages">
+                <field name="name"/>
+                <field name="phone"/>
+                <field name="partner_id"/>
+                <field name="content"/>
+                <field name="myoperator_message_id"/>
+                <filter string="Inbound" name="inbound" domain="[('direction', '=', 'inbound')]"/>
+                <filter string="Outbound" name="outbound" domain="[('direction', '=', 'outbound')]"/>
+                <filter string="Text" name="text" domain="[('message_type', '=', 'text')]"/>
+                <filter string="Media" name="media" domain="[('message_type', '!=', 'text')]"/>
+                <!-- Simple date filters without complex calculations -->
+                <filter string="Today" name="today_simple" domain="[('timestamp', '&gt;=', datetime.date.today().strftime('%Y-%m-%d'))]"/>
+                <filter string="Yesterday" name="yesterday" domain="[('timestamp', '&gt;=', (datetime.date.today() - datetime.timedelta(days=1)).strftime('%Y-%m-%d')), ('timestamp', '&lt;', datetime.date.today().strftime('%Y-%m-%d'))]"/>
+                <group expand="0" string="Group By">
+                    <filter string="Partner" name="group_by_partner" context="{'group_by': 'partner_id'}"/>
+                    <filter string="Direction" name="group_by_direction" context="{'group_by': 'direction'}"/>
+                    <filter string="Type" name="group_by_type" context="{'group_by': 'message_type'}"/>
+                    <filter string="Status" name="group_by_status" context="{'group_by': 'status'}"/>
+                    <filter string="Date" name="group_by_date" context="{'group_by': 'timestamp:day'}"/>
+                </group>
+            </search>
+        </field>
+    </record>
+
+    <!-- MyOperator Message Action -->
+    <record id="action_myoperator_message" model="ir.actions.act_window">
+        <field name="name">WhatsApp Messages</field>
+        <field name="res_model">myoperator.message</field>
+        <field name="view_mode">tree,form</field>
+        <field name="help" type="html">
+            <p class="o_view_nocontent_smiling_face">
+                No WhatsApp messages yet!
+            </p>
+            <p>
+                WhatsApp messages will be synchronized from MyOperator automatically.
+            </p>
+        </field>
+    </record>
+</odoo>

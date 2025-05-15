@@ -1,0 +1,12 @@
+id,name,model_id:id,group_id:id,perm_read,perm_write,perm_create,perm_unlink
+access_myoperator_config_manager,myoperator.config manager,model_myoperator_config,myoperator_integration.group_myoperator_manager,1,1,1,1
+access_myoperator_config_user,myoperator.config user,model_myoperator_config,myoperator_integration.group_myoperator_user,1,0,0,0
+
+access_myoperator_call_manager,myoperator.call manager,model_myoperator_call,myoperator_integration.group_myoperator_manager,1,1,1,1
+access_myoperator_call_user,myoperator.call user,model_myoperator_call,myoperator_integration.group_myoperator_user,1,1,1,0
+
+access_myoperator_message_manager,myoperator.message manager,model_myoperator_message,myoperator_integration.group_myoperator_manager,1,1,1,1
+access_myoperator_message_user,myoperator.message user,model_myoperator_message,myoperator_integration.group_myoperator_user,1,1,1,0
+
+access_myoperator_sync_wizard,myoperator.sync.wizard,model_myoperator_sync_wizard,myoperator_integration.group_myoperator_user,1,1,1,0
+access_myoperator_whatsapp_wizard,myoperator.whatsapp.wizard,model_myoperator_whatsapp_wizard,myoperator_integration.group_myoperator_user,1,1,1,0

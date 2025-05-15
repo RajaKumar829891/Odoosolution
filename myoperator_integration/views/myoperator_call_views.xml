@@ -1,0 +1,121 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <!-- MyOperator Call Form View -->
+    <record id="view_myoperator_call_form" model="ir.ui.view">
+        <field name="name">myoperator.call.form</field>
+        <field name="model">myoperator.call</field>
+        <field name="arch" type="xml">
+            <form string="Call">
+                <header>
+                    <button name="action_play_recording" string="Play Recording" type="object" 
+                            class="btn-primary" invisible="recording_url == False"/>
+                    <button name="action_create_partner" string="Create Contact" type="object" 
+                            class="btn-secondary" invisible="partner_id != False"/>
+                </header>
+                <sheet>
+                    <div class="oe_title">
+                        <h1>
+                            <field name="name"/>
+                        </h1>
+                    </div>
+                    <group>
+                        <group>
+                            <field name="myoperator_call_id"/>
+                            <field name="partner_id"/>
+                            <field name="phone"/>
+                            <field name="call_type"/>
+                            <field name="status"/>
+                        </group>
+                        <group>
+                            <field name="start_time"/>
+                            <field name="end_time"/>
+                            <field name="duration" widget="float_time"/>
+                            <field name="agent"/>
+                            <field name="user_id"/>
+                            <field name="recording_url" widget="url"/>
+                        </group>
+                    </group>
+                    <notebook>
+                        <page string="Notes">
+                            <field name="notes"/>
+                        </page>
+                        <page string="Technical Info">
+                            <group>
+                                <field name="config_id"/>
+                                <field name="company_id" groups="base.group_multi_company"/>
+                            </group>
+                            <field name="raw_data" widget="ace" options="{'mode': 'json'}"/>
+                        </page>
+                    </notebook>
+                </sheet>
+                <div class="oe_chatter">
+                    <field name="message_follower_ids"/>
+                    <field name="activity_ids"/>
+                    <field name="message_ids"/>
+                </div>
+            </form>
+        </field>
+    </record>
+
+    <!-- MyOperator Call Tree View -->
+    <record id="view_myoperator_call_tree" model="ir.ui.view">
+        <field name="name">myoperator.call.tree</field>
+        <field name="model">myoperator.call</field>
+        <field name="arch" type="xml">
+            <tree string="Calls" decoration-danger="status=='missed'" decoration-success="status=='connected'">
+                <field name="start_time"/>
+                <field name="phone"/>
+                <field name="partner_id"/>
+                <field name="call_type"/>
+                <field name="status"/>
+                <field name="duration" widget="float_time"/>
+                <field name="agent"/>
+                <field name="recording_url" widget="boolean" string="Recording"/>
+            </tree>
+        </field>
+    </record>
+
+    <!-- MyOperator Call Search View -->
+    <record id="view_myoperator_call_search" model="ir.ui.view">
+        <field name="name">myoperator.call.search</field>
+        <field name="model">myoperator.call</field>
+        <field name="arch" type="xml">
+            <search string="Search Calls">
+                <field name="name"/>
+                <field name="phone"/>
+                <field name="partner_id"/>
+                <field name="agent"/>
+                <field name="myoperator_call_id"/>
+                <filter string="Incoming" name="incoming" domain="[('call_type', '=', 'incoming')]"/>
+                <filter string="Outgoing" name="outgoing" domain="[('call_type', '=', 'outgoing')]"/>
+                <filter string="Missed" name="missed" domain="[('status', '=', 'missed')]"/>
+                <filter string="Connected" name="connected" domain="[('status', '=', 'connected')]"/>
+                <!-- Simple date filters without complex calculations -->
+                <filter string="Today" name="today_simple" domain="[('start_time', '&gt;=', datetime.date.today().strftime('%Y-%m-%d'))]"/>
+                <filter string="Yesterday" name="yesterday" domain="[('start_time', '&gt;=', (datetime.date.today() - datetime.timedelta(days=1)).strftime('%Y-%m-%d')), ('start_time', '&lt;', datetime.date.today().strftime('%Y-%m-%d'))]"/>
+                <group expand="0" string="Group By">
+                    <filter string="Partner" name="group_by_partner" context="{'group_by': 'partner_id'}"/>
+                    <filter string="Call Type" name="group_by_call_type" context="{'group_by': 'call_type'}"/>
+                    <filter string="Status" name="group_by_status" context="{'group_by': 'status'}"/>
+                    <filter string="Agent" name="group_by_agent" context="{'group_by': 'agent'}"/>
+                    <filter string="Date" name="group_by_date" context="{'group_by': 'start_time:day'}"/>
+                </group>
+            </search>
+        </field>
+    </record>
+
+    <!-- MyOperator Call Action -->
+    <record id="action_myoperator_call" model="ir.actions.act_window">
+        <field name="name">Call Logs</field>
+        <field name="res_model">myoperator.call</field>
+        <field name="view_mode">tree,form</field>
+        <field name="help" type="html">
+            <p class="o_view_nocontent_smiling_face">
+                No call logs yet!
+            </p>
+            <p>
+                Call logs will be synchronized from MyOperator automatically.
+            </p>
+        </field>
+    </record>
+</odoo>

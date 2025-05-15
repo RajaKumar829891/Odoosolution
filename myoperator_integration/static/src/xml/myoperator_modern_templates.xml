@@ -1,0 +1,39 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<templates xml:space="preserve">
+    <t t-name="myoperator_integration.SystrayItem" owl="1">
+        <div class="o_myoperator_systray dropdown" t-on-click="openCallDialog">
+            <a href="#" class="dropdown-toggle o-no-caret o-dropdown--narrow" data-bs-toggle="dropdown" aria-expanded="false" title="Make a Call">
+                <i class="fa fa-phone"></i>
+            </a>
+        </div>
+    </t>
+
+    <t t-name="myoperator_integration.CallDialog" owl="1">
+        <Dialog title="'Make a Call'" size="'medium'">
+            <div class="o_myoperator_call_dialog">
+                <div class="form-group mb-3">
+                    <label for="phone" class="form-label">Phone Number</label>
+                    <input type="text" id="phone" class="form-control" placeholder="Enter phone number" 
+                           t-on-input="(ev) => this.onPhoneInput(ev)" t-att-value="state.phone"/>
+                </div>
+                <div class="d-flex justify-content-between">
+                    <button class="btn btn-secondary" t-on-click="props.close">Cancel</button>
+                    <button class="btn btn-primary" t-on-click="makeCall">Call</button>
+                </div>
+            </div>
+        </Dialog>
+    </t>
+    
+    <t t-name="myoperator_integration.CallButtons" owl="1">
+        <div class="d-flex gap-2 my-2">
+            <button t-if="props.record.data.phone || props.record.data.mobile" 
+                   class="btn btn-primary" t-on-click="makeCall">
+                <i class="fa fa-phone me-1"></i>Call
+            </button>
+            <button t-if="props.record.data.phone || props.record.data.mobile" 
+                   class="btn btn-success" t-on-click="sendWhatsApp">
+                <i class="fa fa-whatsapp me-1"></i>WhatsApp
+            </button>
+        </div>
+    </t>
+</templates>

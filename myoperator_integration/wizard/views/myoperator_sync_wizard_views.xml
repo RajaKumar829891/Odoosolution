@@ -1,0 +1,39 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <!-- MyOperator Sync Wizard Form View -->
+    <record id="view_myoperator_sync_wizard_form" model="ir.ui.view">
+        <field name="name">myoperator.sync.wizard.form</field>
+        <field name="model">myoperator.sync.wizard</field>
+        <field name="arch" type="xml">
+            <form string="Synchronize MyOperator Data">
+                <sheet>
+                    <group>
+                        <field name="config_id" options="{'no_create': True, 'no_open': True}"/>
+                    </group>
+                    <group>
+                        <group>
+                            <field name="sync_calls"/>
+                            <field name="sync_messages"/>
+                        </group>
+                        <group>
+                            <field name="date_from"/>
+                            <field name="date_to"/>
+                        </group>
+                    </group>
+                    <footer>
+                        <button name="action_sync" string="Synchronize" type="object" class="btn-primary"/>
+                        <button string="Cancel" class="btn-secondary" special="cancel"/>
+                    </footer>
+                </sheet>
+            </form>
+        </field>
+    </record>
+
+    <!-- MyOperator Sync Wizard Action -->
+    <record id="action_myoperator_sync_wizard" model="ir.actions.act_window">
+        <field name="name">Synchronize MyOperator Data</field>
+        <field name="res_model">myoperator.sync.wizard</field>
+        <field name="view_mode">form</field>
+        <field name="target">new</field>
+    </record>
+</odoo>

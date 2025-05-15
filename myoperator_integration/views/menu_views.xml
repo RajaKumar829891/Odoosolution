@@ -1,0 +1,25 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <!-- Main Menu -->
+    <menuitem id="menu_myoperator_root" name="MyOperator" sequence="90" web_icon="myoperator_integration,static/description/icon.png"/>
+    
+    <!-- Communication Menu -->
+    <menuitem id="menu_myoperator_communication" name="Communication" parent="menu_myoperator_root" sequence="10"/>
+    <menuitem id="menu_myoperator_call" name="Call Logs" action="action_myoperator_call" parent="menu_myoperator_communication" sequence="10"/>
+    <menuitem id="menu_myoperator_message" name="WhatsApp Messages" action="action_myoperator_message" parent="menu_myoperator_communication" sequence="20"/>
+    
+    <!-- Configuration Menu -->
+    <menuitem id="menu_myoperator_config" name="Configuration" parent="menu_myoperator_root" sequence="100"/>
+    <menuitem id="menu_myoperator_config_settings" name="Settings" action="action_myoperator_config" parent="menu_myoperator_config" sequence="10"/>
+    
+    <!-- Create a separate action for synchronization since the wizard action might not be loaded yet -->
+    <record id="action_myoperator_manual_sync" model="ir.actions.act_window">
+        <field name="name">Synchronize MyOperator Data</field>
+        <field name="res_model">myoperator.sync.wizard</field>
+        <field name="view_mode">form</field>
+        <field name="target">new</field>
+    </record>
+    
+    <!-- Wizard Menu -->
+    <menuitem id="menu_myoperator_sync" name="Synchronize" parent="menu_myoperator_root" sequence="20" action="action_myoperator_manual_sync"/>
+</odoo>
