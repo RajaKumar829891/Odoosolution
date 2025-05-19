@@ -19,11 +19,20 @@ class FleetVehicle(models.Model):
     
     # Vehicle type
     vehicle_type = fields.Selection([
-        ('26_seater_ac_coach', '26 Seater AC coach'),
-        ('sedan', 'Sedan'),
-        ('suv', 'SUV'),
-        ('mini_bus', 'Mini Bus'),
-        ('bus', 'Bus'),
+        ('17_seater_luxury_force_traveller', '17 Seater Luxury Force Traveller'),
+        ('26_seater_luxury_force_traveller', '26 Seater Luxury Force Traveller'),
+        ('33_seater_super_luxury_recliner_ac_coach', '33 Seater Super Luxury Recliner AC Coach'),
+        ('41_seater_super_luxury_recliner_ac_coach', '41 Seater Super Luxury Recliner AC Coach'),
+        ('48_seater_luxury_ac_coach', '48 Seater Luxury AC Coach'),
+        ('49_seater_super_luxury_ac_coach_2024', '49 Seater Super Luxury AC Coach 2024'),
+        ('50_seater_super_luxury_ac_coach_2025', '50 Seater Super Luxury AC Coach 2025'),
+        ('toyota_innova', 'Toyota Innova'),
+        ('toyota_innova_crysta', 'Toyota Innova Crysta'),
+        ('ertiga', 'Ertiga'),
+        ('honda_amaze', 'Honda Amaze'),
+        ('hyundai_aura', 'Hyundai Aura'),
+        ('hyundai_xcent', 'Hyundai Xcent'),
+        ('tavera', 'Tavera'),
     ], string='Vehicle Type', required=True)
     
     # Capacity

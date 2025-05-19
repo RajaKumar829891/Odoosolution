@@ -1,0 +1,43 @@
+.o_payment_wipay_form {
+    .card {
+        border-radius: 8px;
+        transition: all 0.2s ease;
+        
+        &:hover {
+            border-color: #0d6efd;
+            box-shadow: 0 0 0 0.25rem rgba(13, 110, 253, 0.25);
+        }
+    }
+    
+    .payment_option_name {
+        display: flex;
+        align-items: center;
+        
+        img {
+            margin-right: 10px;
+        }
+    }
+    
+    .o_payment_icon_list {
+        margin-left: 15px;
+    }
+    
+    .o_payment_icon {
+        display: inline-block;
+        margin: 0 5px;
+        width: 40px;
+        height: 25px;
+        text-indent: -9999px;
+        background-size: contain;
+        background-repeat: no-repeat;
+        background-position: center;
+        
+        &.visa_icon {
+            background-image: url('/payment/static/img/visa.png');
+        }
+        
+        &.mastercard_icon {
+            background-image: url('/payment/static/img/mastercard.png');
+        }
+    }
+}

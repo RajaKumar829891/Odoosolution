@@ -1,0 +1,17 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <!-- Action for Import Wizard -->
+    <record id="action_fleet_import_simply_vehicles" model="ir.actions.act_window">
+        <field name="name">Import Simply Fleet Vehicles</field>
+        <field name="res_model">fleet.import.simply.vehicles.wizard</field>
+        <field name="view_mode">form</field>
+        <field name="target">new</field>
+    </record>
+
+    <!-- Menu Item for Import -->
+    <menuitem id="menu_fleet_import_simply_vehicles"
+              name="Import From Simply Fleet"
+              parent="menu_fleet_booking_transport"
+              action="action_fleet_import_simply_vehicles"
+              sequence="5"/>
+</odoo>

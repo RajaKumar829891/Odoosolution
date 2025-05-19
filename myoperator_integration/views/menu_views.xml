@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <odoo>
     <!-- Main Menu -->
-    <menuitem id="menu_myoperator_root" name="MyOperator" sequence="90" web_icon="myoperator_integration,static/description/icon.png"/>
+    <menuitem id="menu_myoperator_root" name="MyOperator" sequence="90" web_icon="myoperator_integration,/myoperator_integration/static/description/icon.png"/>
     
     <!-- Communication Menu -->
     <menuitem id="menu_myoperator_communication" name="Communication" parent="menu_myoperator_root" sequence="10"/>

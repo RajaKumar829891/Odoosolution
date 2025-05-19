@@ -10,3 +10,4 @@ from . import transport
 from . import fleet_route
 from . import fleet_route_stop
 from . import fleet_booking  # This should come last as it depends on others
+from . import fleet_vehicle_bridge

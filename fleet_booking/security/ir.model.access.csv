@@ -28,3 +28,5 @@ access_fleet_route_user,fleet.route.user,model_fleet_route,fleet_booking.group_f
 access_fleet_route_stop_user,fleet.route.stop.user,model_fleet_route_stop,fleet_booking.group_fleet_booking_user,1,1,1,1
 access_fleet_booking_terms_template_manager,fleet.booking.terms.template manager,model_fleet_booking_terms_template,fleet_booking.group_fleet_booking_manager,1,1,1,1
 access_fleet_booking_terms_template_user,fleet.booking.terms.template user,model_fleet_booking_terms_template,fleet_booking.group_fleet_booking_user,1,0,0,0
+access_fleet_import_simply_vehicles_wizard,fleet.import.simply.vehicles.wizard,model_fleet_import_simply_vehicles_wizard,fleet_booking.group_fleet_booking_manager,1,1,1,1
+access_fleet_import_simply_vehicles_wizard,fleet.import.simply.vehicles.wizard,model_fleet_import_simply_vehicles_wizard,base.group_user,1,1,1,1

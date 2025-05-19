@@ -1,0 +1,8 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <menuitem id="menu_fleet_import_simply_vehicles"
+              name="Import Simply Fleet Vehicles"
+              parent="menu_fleet_booking_transport"
+              action="fleet_booking.action_fleet_import_simply_vehicles"
+              sequence="5"/>
+</odoo>

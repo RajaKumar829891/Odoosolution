@@ -1,0 +1,24 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <data noupdate="1">
+        <record id="payment_provider_wipay" model="payment.provider">
+            <field name="name">WiPay</field>
+            <field name="code">wipay</field>
+            <field name="state">test</field>
+            <field name="company_id" ref="base.main_company"/>
+            <!-- Default values for testing -->
+            <field name="wipay_account_number">1234567890</field>
+            <field name="wipay_api_key">123</field>
+            <field name="wipay_environment">sandbox</field>
+            <field name="wipay_fee_structure">merchant_absorb</field>
+            <field name="wipay_country_code">TT</field>
+            <field name="wipay_currency">TTD</field>
+        </record>
+        
+        <!-- In Odoo 17, payment.method doesn't have a payment_type field -->
+        <record id="payment_method_wipay" model="payment.method">
+            <field name="name">Credit/Debit Card (WiPay)</field>
+            <field name="code">card</field>
+        </record>
+    </data>
+</odoo>

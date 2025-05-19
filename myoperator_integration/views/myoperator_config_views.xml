@@ -19,8 +19,9 @@
                     </div>
                     <group>
                         <group>
-                            <field name="api_token" password="True"/>
-                            <field name="api_url"/>
+                            <field name="api_token" password="True" placeholder="Your MyOperator API token"/>
+                            <field name="api_url" placeholder="https://in.app.myoperator.com/api"/>
+                            <field name="webhook_url" placeholder="https://yourdomain.com/myoperator/webhook"/>
                             <field name="is_active"/>
                         </group>
                         <group>
@@ -29,11 +30,22 @@
                             <field name="last_checked"/>
                         </group>
                     </group>
+                    <!-- Use invisible instead of attrs in Odoo 17.0 -->
+                    <div class="alert alert-info" role="alert" invisible="connection_status != 'failed'">
+                        <p><strong>Connection Troubleshooting:</strong></p>
+                        <ul>
+                            <li>Verify your API token is correct and active</li>
+                            <li>Ensure the API URL is correct (should be the MyOperator API endpoint, not your webhook URL)</li>
+                            <li>Check if your server can reach the MyOperator API (no firewall blocking it)</li>
+                            <li>Check the Error Log tab for detailed error information</li>
+                        </ul>
+                    </div>
                     <notebook>
                         <page string="Synchronization Settings">
                             <group>
                                 <group>
                                     <field name="auto_sync"/>
+                                    <!-- Use invisible instead of attrs in Odoo 17.0 -->
                                     <field name="sync_interval" invisible="auto_sync == False"/>
                                 </group>
                                 <group>
@@ -44,17 +56,24 @@
                         </page>
                         <page string="Advanced">
                             <group>
-                                <field name="webhook_secret" password="True"/>
+                                <field name="webhook_secret" password="True" placeholder="Secret key for webhook validation"/>
                                 <div class="alert alert-info" role="alert">
                                     <p>
-                                        <strong>Webhook URL:</strong> your-odoo-url.com/myoperator/webhook
+                                        <strong>API Configuration:</strong>
                                     </p>
+                                    <ul>
+                                        <li><strong>API URL:</strong> The URL to access MyOperator's API (e.g. https://in.app.myoperator.com/api)</li>
+                                        <li><strong>API Token:</strong> Your authentication token from MyOperator</li>
+                                        <li><strong>Webhook URL:</strong> The URL where MyOperator will send events to your Odoo (e.g. https://yourdomain.com/myoperator/webhook)</li>
+                                        <li><strong>Webhook Secret:</strong> A secret key to validate incoming webhooks</li>
+                                    </ul>
                                     <p>
-                                        Set this URL in your MyOperator dashboard to receive real-time notifications.
+                                        Configure the Webhook URL in your MyOperator dashboard to receive real-time notifications.
                                     </p>
                                 </div>
                             </group>
                         </page>
+                        <!-- Use invisible instead of attrs in Odoo 17.0 -->
                         <page string="Error Log" invisible="last_error == False">
                             <field name="last_error"/>
                         </page>
@@ -69,9 +88,10 @@
         <field name="name">myoperator.config.tree</field>
         <field name="model">myoperator.config</field>
         <field name="arch" type="xml">
-            <tree string="MyOperator Configurations">
+            <tree string="MyOperator Configurations" decoration-warning="connection_status == 'failed'" decoration-success="connection_status == 'connected'">
                 <field name="name"/>
                 <field name="api_url"/>
+                <field name="webhook_url"/>
                 <field name="is_active"/>
                 <field name="connection_status"/>
                 <field name="last_call_sync"/>
@@ -92,6 +112,14 @@
             </p>
             <p>
                 Configure your MyOperator API credentials to start synchronizing calls and messages.
+            </p>
+            <p>
+                <strong>Required fields:</strong>
+                <ul>
+                    <li><strong>API Token:</strong> Your authentication token from MyOperator</li>
+                    <li><strong>API URL:</strong> The MyOperator API endpoint (typically https://in.app.myoperator.com/api)</li>
+                    <li><strong>Webhook URL:</strong> Your public URL that MyOperator will send events to</li>
+                </ul>
             </p>
         </field>
     </record>

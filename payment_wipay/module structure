@@ -1,0 +1,24 @@
+payment_wipay/
+├── __init__.py
+├── __manifest__.py
+├── controllers/
+│   ├── __init__.py
+│   └── main.py
+├── data/
+│   └── payment_provider_data.xml
+├── models/
+│   ├── __init__.py
+│   └── payment_provider.py
+├── static/
+│   ├── description/
+│   │   └── icon.png
+│   └── src/
+│       ├── js/
+│       │   └── payment_form.js
+│       └── scss/
+│           └── payment_wipay.scss
+├── views/
+│   ├── payment_provider_views.xml
+│   └── payment_wipay_templates.xml
+└── security/
+    └── ir.model.access.csv

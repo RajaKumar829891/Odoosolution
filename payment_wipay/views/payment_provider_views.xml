@@ -1,0 +1,20 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <record id="payment_provider_form_wipay" model="ir.ui.view">
+        <field name="name">payment.provider.form.inherit.wipay</field>
+        <field name="model">payment.provider</field>
+        <field name="inherit_id" ref="payment.payment_provider_form"/>
+        <field name="arch" type="xml">
+            <group name="provider_credentials" position="inside">
+                <group name="wipay_credentials" invisible="code != 'wipay'">
+                    <field name="wipay_account_number" required="code == 'wipay'"/>
+                    <field name="wipay_api_key" required="code == 'wipay'"/>
+                    <field name="wipay_environment" required="code == 'wipay'"/>
+                    <field name="wipay_fee_structure" required="code == 'wipay'"/>
+                    <field name="wipay_country_code" required="code == 'wipay'"/>
+                    <field name="wipay_currency" required="code == 'wipay'"/>
+                </group>
+            </group>
+        </field>
+    </record>
+</odoo>

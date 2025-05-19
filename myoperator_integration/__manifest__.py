@@ -44,7 +44,7 @@
         ],
     },
     'demo': [],
-    'images': ['static/description/icon.png'],
+    'icon': '/myoperator_integration/static/description/icon.png',
     'installable': True,
     'application': True,
     'auto_install': False,

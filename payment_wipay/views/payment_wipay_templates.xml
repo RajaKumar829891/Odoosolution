@@ -1,0 +1,39 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <template id="payment_wipay_form">
+        <div class="o_payment_wipay_form">
+            <div class="card mb-3 o_payment_option_card">
+                <div class="card-body">
+                    <label>
+                        <input
+                            name="o_payment_radio"
+                            type="radio"
+                            t-att-data-provider-id="provider_id"
+                            t-att-data-provider-code="provider_code"
+                            t-att-data-payment-option-id="payment_option_id"
+                            t-att-data-payment-option-name="payment_option_name"
+                            class="d-none"
+                        />
+                        <span class="payment_option_name">
+                            <img src="/payment_wipay/static/description/icon.png" class="border rounded" width="24" height="24" alt="WiPay"/>
+                            <span>WiPay</span>
+                        </span>
+                    </label>
+                    <div class="o_payment_icon_list d-inline-block ms-3">
+                        <span class="o_payment_icon visa_icon">Visa</span>
+                        <span class="o_payment_icon mastercard_icon">Mastercard</span>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </template>
+    
+    <template id="wipay_redirect_form">
+        <form id="o_payment_wipay_redirect_form" t-att-action="api_url" method="post">
+            <t t-foreach="inputs" t-as="input">
+                <input t-att-name="input" t-att-value="inputs[input]" type="hidden"/>
+            </t>
+            <button id="o_payment_wipay_redirect_button" class="d-none" />
+        </form>
+    </template>
+</odoo>

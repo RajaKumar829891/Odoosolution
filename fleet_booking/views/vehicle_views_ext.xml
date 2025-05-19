@@ -1,0 +1,35 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <!-- Only Form View - No Tree View -->
+    <record id="view_fleet_vehicle_form_simply_inherit" model="ir.ui.view">
+        <field name="name">fleet.vehicle.form.simply.inherit</field>
+        <field name="model">fleet.vehicle</field>
+        <field name="inherit_id" ref="fleet_booking.view_fleet_vehicle_form"/>
+        <field name="arch" type="xml">
+            <xpath expr="//div[@name='button_box']" position="inside">
+                <button name="action_view_simply_fleet_vehicle" type="object" 
+                        class="oe_stat_button" icon="fa-car"
+                        invisible="not simply_fleet_vehicle_id">
+                    <div class="o_stat_info">
+                        <span class="o_stat_text">Simply Fleet</span>
+                        <span class="o_stat_text">Vehicle</span>
+                    </div>
+                </button>
+            </xpath>
+            
+            <xpath expr="//sheet/group[1]" position="before">
+                <div class="alert alert-info" role="alert" invisible="not simply_fleet_vehicle_id">
+                    <p>This vehicle is synchronized with Simply Fleet. Some fields will be automatically updated.</p>
+                </div>
+            </xpath>
+            
+            <xpath expr="//notebook" position="inside">
+                <page string="Simply Fleet" invisible="not simply_fleet_vehicle_id">
+                    <group>
+                        <field name="simply_fleet_vehicle_id" readonly="1"/>
+                    </group>
+                </page>
+            </xpath>
+        </field>
+    </record>
+</odoo>

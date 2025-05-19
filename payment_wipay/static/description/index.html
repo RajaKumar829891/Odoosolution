@@ -1,0 +1,439 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>WiPay Payment Provider for Odoo</title>
+    <style>
+        body {
+            font-family: 'Roboto', 'Helvetica Neue', sans-serif;
+            line-height: 1.6;
+            color: #333;
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 20px;
+        }
+        .header {
+            text-align: center;
+            margin-bottom: 40px;
+        }
+        .logo {
+            max-width: 300px;
+            margin: 20px auto;
+            display: block;
+        }
+        h1 {
+            color: #00A09D;
+            margin-top: 40px;
+        }
+        h2 {
+            color: #00A09D;
+            border-bottom: 1px solid #ddd;
+            padding-bottom: 10px;
+            margin-top: 30px;
+        }
+        h3 {
+            color: #00A09D;
+            margin-top: 25px;
+        }
+        pre {
+            background-color: #f5f5f5;
+            padding: 15px;
+            border-radius: 5px;
+            overflow-x: auto;
+        }
+        code {
+            font-family: 'Courier New', monospace;
+            background-color: #f5f5f5;
+            padding: 2px 5px;
+            border-radius: 3px;
+        }
+        .screenshot {
+            max-width: 100%;
+            height: auto;
+            border: 1px solid #ddd;
+            border-radius: 5px;
+            margin: 20px 0;
+            box-shadow: 0 2px 5px rgba(0,0,0,0.1);
+        }
+        .feature-box {
+            background-color: #f9f9f9;
+            border-left: 4px solid #00A09D;
+            padding: 15px;
+            margin: 20px 0;
+            border-radius: 0 5px 5px 0;
+        }
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            margin: 20px 0;
+        }
+        table, th, td {
+            border: 1px solid #ddd;
+        }
+        th {
+            background-color: #00A09D;
+            color: white;
+            padding: 10px;
+            text-align: left;
+        }
+        td {
+            padding: 10px;
+        }
+        tr:nth-child(even) {
+            background-color: #f5f5f5;
+        }
+        .warning {
+            background-color: #fff3cd;
+            color: #856404;
+            padding: 15px;
+            border-radius: 5px;
+            border-left: 4px solid #ffeeba;
+            margin: 20px 0;
+        }
+        .info {
+            background-color: #d1ecf1;
+            color: #0c5460;
+            padding: 15px;
+            border-radius: 5px;
+            border-left: 4px solid #bee5eb;
+            margin: 20px 0;
+        }
+        .footer {
+            margin-top: 50px;
+            padding-top: 20px;
+            border-top: 1px solid #ddd;
+            text-align: center;
+            font-size: 0.9em;
+            color: #666;
+        }
+    </style>
+</head>
+<body>
+    <div class="header">
+        <img src="images/wipay_odoo_logo.png" alt="WiPay + Odoo Logo" class="logo" height="100px" width="100px">
+        <h1>WiPay Payment Provider for Odoo</h1>
+        <p>Seamlessly integrate WiPay payment processing with your Odoo eCommerce site</p>
+    </div>
+
+    <div class="feature-box">
+        <h3>Key Features</h3>
+        <ul>
+            <li>Accept Credit and Debit card payments in the Caribbean</li>
+            <li>Support for multiple countries: Trinidad & Tobago, Jamaica, Barbados</li>
+            <li>Multiple currency support: TTD, JMD, USD</li>
+            <li>Configurable fee structures: customer pays, merchant absorbs, or split</li>
+            <li>Address Verification Service (AVS) support</li>
+            <li>Secure payment processing with WiPay's hosted payment pages</li>
+            <li>Comprehensive transaction management and reporting</li>
+        </ul>
+    </div>
+
+    <h2>About WiPay</h2>
+    <p>WiPay is a leading Caribbean payment processor that enables businesses to accept credit and debit card payments across multiple countries in the region. With WiPay's secure hosted payment solution, your customers can make payments with confidence while your business benefits from reliable payment processing.</p>
+    
+    <img src="images/wipay_homepage.png" alt="WiPay Homepage Screenshot" class="screenshot" height="600" width="800">
+
+    <h2>Installation</h2>
+    <p>The WiPay Payment Provider module can be installed like any other Odoo module:</p>
+    <ol>
+        <li>Download the module from the Odoo App Store</li>
+        <li>Extract the downloaded file and place it in your Odoo addons directory</li>
+        <li>Update your module list in Odoo</li>
+        <li>Search for "WiPay" in the Apps menu (make sure to remove the "Apps" filter)</li>
+        <li>Click Install</li>
+    </ol>
+    
+    <div class="info">
+        <p><strong>Note:</strong> This module requires the base <code>payment</code> module, which is installed by default in Odoo.</p>
+    </div>
+
+    <h2>Configuration</h2>
+    
+    <h3>Setting up your WiPay Account</h3>
+    <p>Before configuring the module in Odoo, you need to have a WiPay Business Account. If you don't have one yet, you can sign up at <a href="https://wipayfinancial.com" target="_blank">wipayfinancial.com</a>.</p>
+    
+    <p>Once you have your WiPay Business Account:</p>
+    <ol>
+        <li>Ensure your WiPay Business Account is verified</li>
+        <li>Obtain your WiPay Account Number and API Key (see instructions in the WiPay dashboard)</li>
+    </ol>
+    
+    <img src="images/wipay_dashboard.png" alt="WiPay Dashboard Screenshot" class="screenshot" height="600" width="800">
+
+    <h3>Configuring the WiPay Payment Provider in Odoo</h3>
+    <p>After installing the module, follow these steps to configure the WiPay payment provider:</p>
+    
+    <ol>
+        <li>Go to <strong>Accounting > Configuration > Payment Providers</strong></li>
+        <li>Find and select the WiPay provider from the list</li>
+        <li>Configure the following settings:
+            <ul>
+                <li><strong>WiPay Account Number:</strong> Your WiPay account number</li>
+                <li><strong>WiPay API Key:</strong> Your WiPay API key</li>
+                <li><strong>Environment:</strong> Choose "Sandbox" for testing or "Live" for production</li>
+                <li><strong>Fee Structure:</strong> Select who pays the transaction fee (customer, merchant, or split)</li>
+                <li><strong>WiPay Country Code:</strong> Select your country (TT, JM, or BB)</li>
+                <li><strong>WiPay Currency:</strong> Select your preferred currency (TTD, JMD, or USD)</li>
+            </ul>
+        </li>
+        <li>Set the provider to "Enabled" when ready to use</li>
+    </ol>
+    
+    <img src="images/odoo_wipay_config.png" alt="WiPay Configuration in Odoo" class="screenshot" height="600" width="800">
+
+    <h2>Testing</h2>
+    <p>Before going live, you should thoroughly test the integration using WiPay's sandbox environment:</p>
+    
+    <h3>Sandbox Testing</h3>
+    <ol>
+        <li>Set the Environment to "Sandbox" in the WiPay provider settings</li>
+        <li>Use the test account number <code>1234567890</code> and API key <code>123</code> for sandbox testing</li>
+        <li>Process test payments using the test cards provided by WiPay</li>
+    </ol>
+    
+    <h3>Test Cards</h3>
+    <p>WiPay provides several test cards that can be used for testing different scenarios:</p>
+    
+    <div class="card-table-container" style="margin: 20px 0;">
+        <table style="border: 3px solid #0066cc !important; border-collapse: collapse !important; width: 100% !important;">
+          <tr>
+            <th style="border: 2px solid #0066cc !important; background-color: #f2f2f2 !important; padding: 10px !important; text-align: left !important; font-weight: bold !important;">Card Type</th>
+            <th style="border: 2px solid #0066cc !important; background-color: #f2f2f2 !important; padding: 10px !important; text-align: left !important; font-weight: bold !important;">Card Number</th>
+            <th style="border: 2px solid #0066cc !important; background-color: #f2f2f2 !important; padding: 10px !important; text-align: left !important; font-weight: bold !important;">Result</th>
+          </tr>
+          <tr>
+            <td style="border: 2px solid #0066cc !important; padding: 10px !important; text-align: left !important;">Mastercard</td>
+            <td style="border: 2px solid #0066cc !important; padding: 10px !important; text-align: left !important;">5111111111111111</td>
+            <td style="border: 2px solid #0066cc !important; padding: 10px !important; text-align: left !important;">Normal Approval, CVV2Result=M</td>
+          </tr>
+          <tr style="background-color: #f9f9f9 !important;">
+            <td style="border: 2px solid #0066cc !important; padding: 10px !important; text-align: left !important;">Mastercard</td>
+            <td style="border: 2px solid #0066cc !important; padding: 10px !important; text-align: left !important;">5555666666662222</td>
+            <td style="border: 2px solid #0066cc !important; padding: 10px !important; text-align: left !important;">Normal Decline, OriginalResponseCode=05, CVV2Result=N</td>
+          </tr>
+          <tr>
+            <td style="border: 2px solid #0066cc !important; padding: 10px !important; text-align: left !important;">VISA</td>
+            <td style="border: 2px solid #0066cc !important; padding: 10px !important; text-align: left !important;">4111111111111111</td>
+            <td style="border: 2px solid #0066cc !important; padding: 10px !important; text-align: left !important;">Normal Approval, CVV2Result=M</td>
+          </tr>
+          <tr style="background-color: #f9f9f9 !important;">
+            <td style="border: 2px solid #0066cc !important; padding: 10px !important; text-align: left !important;">VISA</td>
+            <td style="border: 2px solid #0066cc !important; padding: 10px !important; text-align: left !important;">4111111111113333</td>
+            <td style="border: 2px solid #0066cc !important; padding: 10px !important; text-align: left !important;">Normal Decline, OriginalResponseCode=05</td>
+          </tr>
+        </table>
+    </div>
+    
+    <div class="info">
+        <p><strong>Note:</strong> For test cards, any expiry date and any 3-digit CVV2 value will work.</p>
+    </div>
+    
+    <img src="images/wipay_test_payment.png" alt="WiPay Test Payment Screen" class="screenshot" height="600" width="800">
+
+    <h2>Going Live</h2>
+    <p>Once you have thoroughly tested the integration and are ready to accept real payments:</p>
+    <ol>
+        <li>Obtain your production WiPay Account Number and API Key</li>
+        <li>Update the WiPay provider settings in Odoo:
+            <ul>
+                <li>Set Environment to "Live"</li>
+                <li>Update the Account Number and API Key with your production credentials</li>
+            </ul>
+        </li>
+        <li>Save the settings and make a small test purchase to ensure everything works correctly in production</li>
+    </ol>
+    
+    <div class="warning">
+        <p><strong>Important:</strong> Always test thoroughly in the sandbox environment before enabling live payments. Ensure your WiPay account is fully verified before accepting live payments.</p>
+    </div>
+
+    <h2>Payment Flow</h2>
+    <p>When a customer selects WiPay as their payment method, the following flow occurs:</p>
+    
+    <ol>
+        <li>Customer selects WiPay on the Odoo payment page</li>
+        <li>Odoo creates a transaction record and redirects to the WiPay hosted payment page</li>
+        <li>Customer enters their card information on the secure WiPay payment page</li>
+        <li>Upon completion, WiPay redirects back to Odoo with the transaction result</li>
+        <li>Odoo processes the result and updates the order status accordingly</li>
+    </ol>
+    
+    <img src="images/payment_flow_diagram.png" alt="WiPay Payment Flow Diagram" class="screenshot" height="600" width="800">
+
+    <h2>Transaction Management</h2>
+    <p>All WiPay transactions can be viewed and managed in Odoo:</p>
+    <ol>
+        <li>Go to <strong>Accounting > Customers > Payments</strong></li>
+        <li>View transaction details, including WiPay transaction IDs</li>
+        <li>Filter by payment provider to see only WiPay transactions</li>
+    </ol>
+    
+    <img src="images/transaction_management.png" alt="Transaction Management in Odoo" class="screenshot" height="600" width="800">
+
+    <h2>Withdrawing Funds</h2>
+    <p>To withdraw funds from your WiPay account to your bank account:</p>
+    <ol>
+        <li>Log in to your WiPay Business Account</li>
+        <li>Go to "Account" > "Withdraw" in the WiPay dashboard</li>
+        <li>Enter the amount you wish to withdraw</li>
+        <li>Follow the on-screen instructions to complete the withdrawal request</li>
+    </ol>
+    
+    <div class="info">
+        <p><strong>Note:</strong> Withdrawals may take up to seven (7) working days to settle into your bank account. Withdrawal fees may apply based on your country and currency.</p>
+    </div>
+
+    <h2>Troubleshooting</h2>
+    
+    <h3>Common Issues</h3>
+    <div class="troubleshooting-table-container" style="margin: 20px 0;">
+        <table style="border: 3px solid #0066cc !important; border-collapse: collapse !important; width: 100% !important;">
+          <tr>
+            <th style="border: 2px solid #0066cc !important; background-color: #f2f2f2 !important; padding: 10px !important; text-align: left !important; font-weight: bold !important;">Issue</th>
+            <th style="border: 2px solid #0066cc !important; background-color: #f2f2f2 !important; padding: 10px !important; text-align: left !important; font-weight: bold !important;">Possible Cause</th>
+            <th style="border: 2px solid #0066cc !important; background-color: #f2f2f2 !important; padding: 10px !important; text-align: left !important; font-weight: bold !important;">Solution</th>
+          </tr>
+          <tr>
+            <td style="border: 2px solid #0066cc !important; padding: 10px !important; text-align: left !important;">Payment option not appearing</td>
+            <td style="border: 2px solid #0066cc !important; padding: 10px !important; text-align: left !important;">Provider not enabled or currency mismatch</td>
+            <td style="border: 2px solid #0066cc !important; padding: 10px !important; text-align: left !important;">Ensure the WiPay provider is enabled and configured for the correct currency</td>
+          </tr>
+          <tr style="background-color: #f9f9f9 !important;">
+            <td style="border: 2px solid #0066cc !important; padding: 10px !important; text-align: left !important;">Error during payment processing</td>
+            <td style="border: 2px solid #0066cc !important; padding: 10px !important; text-align: left !important;">Incorrect API credentials</td>
+            <td style="border: 2px solid #0066cc !important; padding: 10px !important; text-align: left !important;">Verify your WiPay Account Number and API Key</td>
+          </tr>
+          <tr>
+            <td style="border: 2px solid #0066cc !important; padding: 10px !important; text-align: left !important;">Transaction failed but customer charged</td>
+            <td style="border: 2px solid #0066cc !important; padding: 10px !important; text-align: left !important;">Network or timeout issue</td>
+            <td style="border: 2px solid #0066cc !important; padding: 10px !important; text-align: left !important;">Check transaction status in WiPay dashboard and reconcile manually if needed</td>
+          </tr>
+          <tr style="background-color: #f9f9f9 !important;">
+            <td style="border: 2px solid #0066cc !important; padding: 10px !important; text-align: left !important;">AVS verification failed</td>
+            <td style="border: 2px solid #0066cc !important; padding: 10px !important; text-align: left !important;">Customer address doesn't match card records</td>
+            <td style="border: 2px solid #0066cc !important; padding: 10px !important; text-align: left !important;">Advise customer to enter the address exactly as it appears on their card statement</td>
+          </tr>
+        </table>
+      </div>
+    
+    <h3>Error Messages</h3>
+    <p>Understanding WiPay response codes:</p>
+    <ul>
+        <li><strong>[1-R1]:</strong> Transaction is approved</li>
+        <li><strong>[2-R2]:</strong> Transaction is declined</li>
+        <li><strong>[3-R...]:</strong> Error codes indicate specific issues</li>
+        <li><strong>[N-R5101]:</strong> 3D Secure authentication failed</li>
+    </ul>
+
+    <h2>Supported Countries and Currencies</h2>
+    <p>The WiPay Payment Provider module supports the following countries and currencies:</p>
+    
+<!-- SOLUTION 1: INLINE !IMPORTANT STYLES -->
+<!-- This approach uses inline styles with !important to override any conflicting Odoo styles -->
+
+<div class="countries-table-container" style="margin: 20px 0;">
+    <table style="border: 3px solid #0066cc !important; border-collapse: collapse !important; width: 100% !important;">
+      <tr>
+        <th style="border: 2px solid #0066cc !important; background-color: #f2f2f2 !important; padding: 10px !important; text-align: left !important; font-weight: bold !important;">Country</th>
+        <th style="border: 2px solid #0066cc !important; background-color: #f2f2f2 !important; padding: 10px !important; text-align: left !important; font-weight: bold !important;">Country Code</th>
+        <th style="border: 2px solid #0066cc !important; background-color: #f2f2f2 !important; padding: 10px !important; text-align: left !important; font-weight: bold !important;">Supported Currencies</th>
+        <th style="border: 2px solid #0066cc !important; background-color: #f2f2f2 !important; padding: 10px !important; text-align: left !important; font-weight: bold !important;">Hosted Page Service</th>
+      </tr>
+      <tr>
+        <td style="border: 2px solid #0066cc !important; padding: 10px !important; text-align: left !important;">Trinidad & Tobago</td>
+        <td style="border: 2px solid #0066cc !important; padding: 10px !important; text-align: left !important;">TT</td>
+        <td style="border: 2px solid #0066cc !important; padding: 10px !important; text-align: left !important;">TTD, USD</td>
+        <td style="border: 2px solid #0066cc !important; padding: 10px !important; text-align: left !important;">FAC</td>
+      </tr>
+      <tr style="background-color: #f9f9f9 !important;">
+        <td style="border: 2px solid #0066cc !important; padding: 10px !important; text-align: left !important;">Jamaica</td>
+        <td style="border: 2px solid #0066cc !important; padding: 10px !important; text-align: left !important;">JM</td>
+        <td style="border: 2px solid #0066cc !important; padding: 10px !important; text-align: left !important;">JMD, USD</td>
+        <td style="border: 2px solid #0066cc !important; padding: 10px !important; text-align: left !important;">FGB</td>
+      </tr>
+      <tr>
+        <td style="border: 2px solid #0066cc !important; padding: 10px !important; text-align: left !important;">Barbados</td>
+        <td style="border: 2px solid #0066cc !important; padding: 10px !important; text-align: left !important;">BB</td>
+        <td style="border: 2px solid #0066cc !important; padding: 10px !important; text-align: left !important;">USD</td>
+        <td style="border: 2px solid #0066cc !important; padding: 10px !important; text-align: left !important;">FGB</td>
+      </tr>
+    </table>
+  </div>
+  
+    <h3>Dependencies</h3>
+    <p>This module depends on the following Odoo modules:</p>
+    <ul>
+        <li><code>payment</code> - Odoo's base payment module</li>
+    </ul>
+    
+    <h3>API Integration</h3>
+    <p>The module integrates with WiPay's payment API to process transactions securely. Key integration points include:</p>
+    <ul>
+        <li>Creating payment requests to obtain hosted payment page URLs</li>
+        <li>Processing payment responses and webhooks</li>
+        <li>Handling transaction verification and status updates</li>
+    </ul>
+
+    <h2>Frequently Asked Questions</h2>
+    
+    <h3>What is the difference between the new and old WiPay APIs?</h3>
+    <p>This module uses WiPay's new API, which offers several advantages over the old API:</p>
+    <ul>
+        <li>Support for multiple countries and currencies</li>
+        <li>Enhanced parameter validation and security measures</li>
+        <li>Support for Address Verification Service (AVS)</li>
+        <li>Configurable fee structures</li>
+        <li>Faster transaction recovery turnover (5 minutes vs. up to 1 hour)</li>
+    </ul>
+    
+    <h3>How do I get my WiPay API Key?</h3>
+    <p>To obtain your WiPay API Key:</p>
+    <ol>
+        <li>Log in to your WiPay Business Account</li>
+        <li>Go to the Developer section of your Profile</li>
+        <li>Enter the Website URL from which you will be sending API requests</li>
+        <li>Your API Key will be displayed on the next page</li>
+    </ol>
+    
+    <h3>What are the transaction fee rates?</h3>
+    <p>Transaction fees vary by country, currency, and account type. Please refer to the WiPay documentation or contact your WiPay account manager for the most current fee schedule.</p>
+    
+    <h3>Does the module support recurring payments?</h3>
+    <p>No, the current version of the module does not support recurring payments. This feature may be added in future updates.</p>
+
+    <h2>Changelog</h2>
+    <table>
+        <tr>
+            <th>Version</th>
+            <th>Date</th>
+            <th>Changes</th>
+        </tr>
+        <tr>
+            <td>1.0.0</td>
+            <td>May 2025</td>
+            <td>Initial release for Odoo 17</td>
+        </tr>
+    </table>
+
+    <h2>Support</h2>
+    <p>For technical support with this module, please contact:</p>
+    <ul>
+        <li>Email: <a href="odooviz.com@gmail.com">odooviz.com@gmail.com</a></li>
+        <li>Website: <a href="https://www.odooviz.com" target="_blank">https://www.odooviz.com</a></li>
+    </ul>
+    
+    <p>For questions related to your WiPay account or transaction processing, please contact WiPay directly:</p>
+    <ul>
+        <li>Trinidad & Tobago: <a href="mailto:info@wipayfinancial.com">info@wipayfinancial.com</a></li>
+        <li>Jamaica: <a href="mailto:jamaica@wipayfinancial.com">jamaica@wipayfinancial.com</a></li>
+        <li>Barbados: <a href="mailto:barbados@wipayfinancial.com">barbados@wipayfinancial.com</a></li>
+    </ul>
+
+    <div class="footer">
+        <p>WiPay Payment Provider for Odoo - Developed by Your Company</p>
+        <p>WiPay is a trademark of WiPay Payment Solutions Limited. All rights reserved.</p>
+        <p>Copyright © 2025 - All rights reserved.</p>
+    </div>
+</body>
+</html>
